@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Unix网络编程,Socket," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Chapter1—简介本章内容 概述​    CS架构的网络通信过程。这里有几个概念：  守护程序（daemon）Web服务器长时间运行的一个程序，用来响应来自网络的客户端发来的请求。 异步回调（asynchronous callback）通信由服务器向客户端发起的通信请求。(大多数情况下都是客户先发起请求，这样设计协议和编写程序都比较简单)。   ​    本书聚焦点：传输层和网络层协议。重点介">
+<meta name="keywords" content="Unix网络编程,Socket">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unix网络编程1-1简介">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;01&#x2F;1-%E7%AE%80%E4%BB%8B&#x2F;index.html">
+<meta property="og:site_name" content="CRongbx Blog">
+<meta property="og:description" content="Chapter1—简介本章内容 概述​    CS架构的网络通信过程。这里有几个概念：  守护程序（daemon）Web服务器长时间运行的一个程序，用来响应来自网络的客户端发来的请求。 异步回调（asynchronous callback）通信由服务器向客户端发起的通信请求。(大多数情况下都是客户先发起请求，这样设计协议和编写程序都比较简单)。   ​    本书聚焦点：传输层和网络层协议。重点介">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;CRongbx&#x2F;BlogCRongbxImages&#x2F;blob&#x2F;master&#x2F;Xmind-1.%20%E7%AE%80%E4%BB%8B.png?raw=true">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;CRongbx&#x2F;BlogCRongbxImages&#x2F;blob&#x2F;master&#x2F;image-20191124180309787.png?raw=true">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;CRongbx&#x2F;BlogCRongbxImages&#x2F;blob&#x2F;master&#x2F;image-20191124181249234.png?raw=true">
+<meta property="og:image" content="https:&#x2F;&#x2F;pic1.zhimg.com&#x2F;80&#x2F;v2-6ec6983bc38f7ebdf755c6411bbc548d_hd.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;CRongbx&#x2F;BlogCRongbxImages&#x2F;blob&#x2F;master&#x2F;Snip20191201_13.png?raw=true">
+<meta property="og:updated_time" content="2019-12-01T09:18:56.823Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;CRongbx&#x2F;BlogCRongbxImages&#x2F;blob&#x2F;master&#x2F;Xmind-1.%20%E7%AE%80%E4%BB%8B.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/01/1-简介/"/>
+
+
+
+
+
+  <title>Unix网络编程1-1简介 | CRongbx Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CRongbx Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/01/1-%E7%AE%80%E4%BB%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="R Cong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headerImage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CRongbx Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unix网络编程1-1简介</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-01T17:18:56+08:00">
+                2019-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unix%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%8D%B71%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">Unix网络编程卷1学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/01/1-%E7%AE%80%E4%BB%8B/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/12/01/1-%E7%AE%80%E4%BB%8B/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/12/01/1-%E7%AE%80%E4%BB%8B/" class="leancloud_visitors" data-flag-title="Unix网络编程1-1简介">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Chapter1—简介"><a href="#Chapter1—简介" class="headerlink" title="Chapter1—简介"></a>Chapter1—简介</h1><h2 id="本章内容"><a href="#本章内容" class="headerlink" title="本章内容"></a>本章内容</h2><p><img src="https://github.com/CRongbx/BlogCRongbxImages/blob/master/Xmind-1.%20%E7%AE%80%E4%BB%8B.png?raw=true" alt=""></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>​    CS架构的网络通信过程。这里有几个概念：</p>
+<ul>
+<li>守护程序（daemon）<br>Web服务器长时间运行的一个程序，用来响应来自网络的客户端发来的请求。</li>
+<li>异步回调（asynchronous callback）通信<br>由服务器向客户端发起的通信请求。(大多数情况下都是客户先发起请求，这样设计协议和编写程序都比较简单)。</li>
+</ul>
+<hr>
+<p>​    本书聚焦点：传输层和网络层协议。重点介绍TCP/IP协议族，也会涉及UDP协议。</p>
+<p>​    client和server通过TCP/IP在<strong>同一个局域网</strong>通信的整个过程如下图。这里主要强调网络中“层”的概念，即应用程序通过TCP向服务器通信，TCP又转而使用下层IP通信，IP在通过某种形式的数据链路层通信。具体TCP四层协议的知识可以参考《计算机网络》。</p>
+<p><img src="https://github.com/CRongbx/BlogCRongbxImages/blob/master/image-20191124180309787.png?raw=true" alt=""></p>
+<p>​    client和server在<strong>不同局域网</strong>通信的过程如下图。和上图的区别在于，不同局域网互联要经过广域网（WAN）的连接，如何连接呢——路由器。</p>
+<p><img src="https://github.com/CRongbx/BlogCRongbxImages/blob/master/image-20191124181249234.png?raw=true" alt=""></p>
+<p>小知识：</p>
+<p><strong>网络应用不通过TCP UDP绕过传输层直接使用IPV4或IPV6传是有可能的【raw socket原始套接字】</strong></p>
+<h2 id="知识储备"><a href="#知识储备" class="headerlink" title="知识储备"></a>知识储备</h2><h3 id="大型项目Makefile的编写"><a href="#大型项目Makefile的编写" class="headerlink" title="大型项目Makefile的编写"></a>大型项目Makefile的编写</h3><p>在编写一个C项目时常用的结构^[1]^：</p>
+<p>其中：</p>
+<ul>
+<li>lib\：存放项目中使用的库文件及其源文件（.h,.c）</li>
+<li>lib.h和lib.c: 相应的库文件(.h)及其函数定义的源文件(.c)</li>
+<li>Makefile: 指明<code>make</code>命令如何去编译、链接程序</li>
+<li>bin\：存放项目main函数</li>
+<li>Make.defines：用于指明项目使用的编译器、编译器查找.h文件时应该从哪里查找。其实就是一个总的Makefile文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">----项目demo----lib----lib.h</span><br><span class="line">					 |			|---lib.c</span><br><span class="line">					 |			|---Makefile</span><br><span class="line">					 |---bin</span><br><span class="line">					 |---Make.defines</span><br></pre></td></tr></table></figure>
+<p>假设上述结构中的各个文件如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* lib.h */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* lib.c */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"Fun() is called!\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Makefile</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#加载base配置文件</span></span><br><span class="line"><span class="keyword">include</span> ../Make.defines</span><br><span class="line"><span class="comment">#程序名称demo</span></span><br><span class="line">PROGS=demo</span><br><span class="line"><span class="section">all:<span class="variable">$(PROGS)</span></span></span><br><span class="line"><span class="section">%.o:	%.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span></span><br><span class="line">	</span><br><span class="line"><span class="section">demo:   demo.o <span class="variable">$(LIBS)</span></span></span><br><span class="line">    <span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> -o <span class="variable">$@</span> demo.o <span class="variable">$(LIBS)</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm -rf *.o $&#123;PROGS&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Make.defines</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用的C编译器：gcc</span></span><br><span class="line">CC=gcc</span><br><span class="line"><span class="comment"># CFLAGS表示用于C编译器的选项（C++是CXXFLAGS）。-I用于指定头文件的路径；-g表示要生成调试信息；-O表示默认优化（-O0不优化，-O1低级优化，-O2中级优化，-O3高级优化,-Os代码空间优化）；-Wall是打开警告开关</span></span><br><span class="line">CFLAGS=-g -Wall -O -I../lib</span><br><span class="line"><span class="comment"># 为了方便，将lib下的.o文件静态链接为.a库文件</span></span><br><span class="line">LIBS=../lib.a</span><br></pre></td></tr></table></figure>
+<hr>
+<p>其余关于Makefile编写的细节，准备下次专门写篇博客，这里就先省略了==*</p>
+<hr>
+<p>下面给出Linux下常见的文件后缀意义^[3]^：</p>
+<blockquote>
+<p>.o文件（目标文件）：经过：预编译（预处理）、编译和汇编，形成的二进制文件。</p>
+<p>.a文件：静态链接库文件。将若干.o文件静态打包（链接？）后形成的二进制文件。</p>
+<p>.so文件：动态链接库文件。遵循共享内存机制。</p>
+<p>.lo文件：使用libtool编译出的目标文件，其实就是在.o文件中添加了一些信息。</p>
+<p>.la文件：使用libtool编译链接出的库文件，其实就是个文本文件，记录同名动态库和静态库的相关信息</p>
+</blockquote>
+<p>同时书中的源代码也出现了.lc和.lh后缀的文件，如下图。这类后缀的文件(.lx)是将原本.x文本文件增加了行号、路径等信息而成的文本文件，为了方便编译，但是本质上和source code没有差别。</p>
+<p><img src="https://pic1.zhimg.com/80/v2-6ec6983bc38f7ebdf755c6411bbc548d_hd.jpg" alt=""></p>
+<h3 id="C中define和const的区别"><a href="#C中define和const的区别" class="headerlink" title="C中define和const的区别"></a>C中define和const的区别</h3><p>define：定义的对象为<strong>常数</strong>，常数在编译时展开</p>
+<p>const：定义的对象为<strong>常量</strong>， 常量在运行时初始化后确定^[4][5]^</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>define</th>
+<th>const</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>定义对象</td>
+<td>常数</td>
+<td>常量</td>
+</tr>
+<tr>
+<td>合适确定</td>
+<td>预编译时展开</td>
+<td>运行初始化时</td>
+</tr>
+<tr>
+<td>是否有类型检查</td>
+<td>无</td>
+<td>有</td>
+</tr>
+<tr>
+<td>空间占用</td>
+<td>占用代码空间</td>
+<td>占用运行时数据段空间</td>
+</tr>
+<tr>
+<td>调试</td>
+<td>不可调（预编译时替换）</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>可否重新定义</td>
+<td>可以（#undef取消）</td>
+<td>不能</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="分析：一个简单的时间获取客户程序"><a href="#分析：一个简单的时间获取客户程序" class="headerlink" title="分析：一个简单的时间获取客户程序"></a>分析：一个简单的时间获取客户程序</h2><p>一个简单的客户端时间获取程序【程序1】：</p>
+<p>程序如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span>	<span class="meta-string">"unp.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">main(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span>					sockfd, n;</span><br><span class="line">	<span class="keyword">char</span>				recvline[MAXLINE + <span class="number">1</span>];</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>	<span class="title">servaddr</span>;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (argc != <span class="number">2</span>)</span><br><span class="line">		err_quit(<span class="string">"usage: a.out &lt;IPaddress&gt;"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ( (sockfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) &lt; <span class="number">0</span>)</span><br><span class="line">		err_sys(<span class="string">"socket error"</span>);</span><br><span class="line"></span><br><span class="line">	bzero(&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line">	servaddr.sin_family = AF_INET;</span><br><span class="line">	servaddr.sin_port   = htons(<span class="number">13</span>);	<span class="comment">/* daytime server */</span></span><br><span class="line">	<span class="keyword">if</span> (inet_pton(AF_INET, argv[<span class="number">1</span>], &amp;servaddr.sin_addr) &lt;= <span class="number">0</span>)</span><br><span class="line">		err_quit(<span class="string">"inet_pton error for %s"</span>, argv[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (connect(sockfd, (SA *) &amp;servaddr, <span class="keyword">sizeof</span>(servaddr)) &lt; <span class="number">0</span>)</span><br><span class="line">		err_sys(<span class="string">"connect error"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> ( (n = read(sockfd, recvline, MAXLINE)) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		recvline[n] = <span class="number">0</span>;	<span class="comment">/* null terminate */</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">fputs</span>(recvline, <span class="built_in">stdout</span>) == EOF)</span><br><span class="line">			err_sys(<span class="string">"fputs error"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (n &lt; <span class="number">0</span>)</span><br><span class="line">		err_sys(<span class="string">"read error"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="main函数参数"><a href="#main函数参数" class="headerlink" title="main函数参数"></a>main函数参数</h4><p><code>int main(int argc, char **argv)</code> 其形式参就是命令行参数。 </p>
+<ul>
+<li><code>int argc</code>: 命令行参数个数</li>
+<li><code>char **argv</code>：命令行参数。比如第一个参数argv[0]，第二个参数argv[1]…</li>
+</ul>
+<h4 id="创建TCP-socket"><a href="#创建TCP-socket" class="headerlink" title="创建TCP socket"></a>创建TCP socket</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( (sockfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) &lt; <span class="number">0</span>)</span><br><span class="line">	err_sys(<span class="string">"socket error"</span>);</span><br></pre></td></tr></table></figure>
+<p>函数原型：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socket</span><span class="params">(<span class="keyword">int</span> family, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol)</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>: 设置网络通信的域，socket()通过它选择通信协议的族。常用的domain有：</p>
+<ul>
+<li>AF_INET: IPV4</li>
+<li>PF_INET6: IPV6</li>
+<li>PF_LOCAL: 本地通信</li>
+</ul>
+</li>
+<li><p>type：设置套接字通信的类型。常用的type有：</p>
+<ul>
+<li>SOCK_STREAM: TCP字节流</li>
+<li>SOCK_DGRAM: UDP连接</li>
+</ul>
+</li>
+<li><p>protocol: 用于指明type指定通信类型中的具体协议。大多数协议只有一种类型，所以只能指定0。</p>
+</li>
+<li><p>返回值int: 正确时返回建立的套接字接口的描述符（sockfd）。若错误，int errno用于说明socket产生的错误原因。常见的errno错误原因^[8]^如下，这些errno都为负数，所以本程序中用<code>&lt;0</code>来判断。</p>
+<p>| 值              | 含义                                             |<br>| :——————— | :———————————————————————- |<br>| EACCES          | 没有权限建立制定的domain的type的socket           |<br>| EAFNOSUPPORT    | 不支持所给的地址类型                             |<br>| EINVAL          | 不支持此协议或者协议不可用                       |<br>| EMFILE          | 进程文件表溢出                                   |<br>| ENFILE          | 已经达到系统允许打开的文件数量，打开文件过多     |<br>| ENOBUFS/ENOMEM  | 内存不足。socket只有到资源足够或者有进程释放内存 |<br>| EPROTONOSUPPORT | 制定的协议type在domain中不存在                   |</p>
+</li>
+</ul>
+<hr>
+<p>​    程序中的两条语句，意义是：先建立TCP socket连接，如果连接失败（socket函数调用失败）我们就调用自己定义的<code>err_sys</code>函数放弃程序运行。</p>
+<p>​    函数<code>err_sys</code>的声明在<code>lib\unp.h</code>，定义在<code>lib\error.c</code>，具体定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">err_msg(<span class="keyword">const</span> <span class="keyword">char</span> *fmt, ...)</span><br><span class="line">&#123;</span><br><span class="line">	va_list		ap;</span><br><span class="line"></span><br><span class="line">	va_start(ap, fmt);</span><br><span class="line">	err_doit(<span class="number">0</span>, LOG_INFO, fmt, ap);</span><br><span class="line">	va_end(ap);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    函数功能有2个：    </p>
+<ol>
+<li><p>打印出错消息</p>
+</li>
+<li><p>终止进程</p>
+<p>具体描述见书中D.3节。</p>
+</li>
+</ol>
+<h4 id="指定服务器的IP地址和端口"><a href="#指定服务器的IP地址和端口" class="headerlink" title="指定服务器的IP地址和端口"></a>指定服务器的IP地址和端口</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 清零：struct sockaddr_in类型的servaddr(服务器的套接字地址结构)</span></span><br><span class="line">	bzero(&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));	 <span class="comment">// struct sockaddr_in	servaddr;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//设置地址族为：AF_INET(IPV4)</span></span><br><span class="line">	servaddr.sin_family = AF_INET;</span><br><span class="line"><span class="comment">//设置端口号：13</span></span><br><span class="line">	servaddr.sin_port   = htons(<span class="number">13</span>);	<span class="comment">/* daytime server */</span></span><br><span class="line"><span class="comment">//设置IP地址argv[1]</span></span><br><span class="line">	<span class="keyword">if</span> (inet_pton(AF_INET, argv[<span class="number">1</span>], &amp;servaddr.sin_addr) &lt;= <span class="number">0</span>)</span><br><span class="line">		err_quit(<span class="string">"inet_pton error for %s"</span>, argv[<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>port 13是时间获取server众所周知的端口号。</p>
+</li>
+<li><p>函数：<code>inet_pton</code>用于将ASCII字符串（点分十进制）形式的IP地址转换为相应的套接字地址结构中（二进制）</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">inet_pton</span><span class="params">(<span class="keyword">int</span> family,<span class="keyword">const</span> <span class="keyword">char</span> *strptr, <span class="keyword">void</span> *addrptr)</span></span></span><br></pre></td></tr></table></figure>
+<p>​    本程序中<code>argv[1]</code>是字符串IP地址。</p>
+<h4 id="与服务器建立连接"><a href="#与服务器建立连接" class="headerlink" title="与服务器建立连接"></a>与服务器建立连接</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (connect(sockfd, (SA *) &amp;servaddr, <span class="keyword">sizeof</span>(servaddr)) &lt; <span class="number">0</span>)</span><br><span class="line">	err_sys(<span class="string">"connect error"</span>);</span><br></pre></td></tr></table></figure>
+<p>第三个参数是该套接字地址结构的长度。</p>
+<h4 id="读入并输出响应服务器"><a href="#读入并输出响应服务器" class="headerlink" title="读入并输出响应服务器"></a>读入并输出响应服务器</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> ( (n = read(sockfd, recvline, MAXLINE)) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	recvline[n] = <span class="number">0</span>;	<span class="comment">/* null terminate */</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">fputs</span>(recvline, <span class="built_in">stdout</span>) == EOF)</span><br><span class="line">		err_sys(<span class="string">"fputs error"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (n &lt; <span class="number">0</span>)</span><br><span class="line">	err_sys(<span class="string">"read error"</span>);</span><br></pre></td></tr></table></figure>
+<p><code>read()</code>读取服务器的应答;</p>
+<p>​    返回0：对端关闭连接</p>
+<p>​    返回负数：发生错误</p>
+<p>​    返回正数：实际读入的字节数</p>
+<p><code>fputs()</code>IO函数输出结果;</p>
+<h5 id="为什么要循环read"><a href="#为什么要循环read" class="headerlink" title="为什么要循环read"></a>为什么要循环read</h5><p>需要注意<strong>TCP是个没有记录边界的字节流协议</strong>，比如服务器的应答可能是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mon May 5 12:23:43 2019\r\n</span><br></pre></td></tr></table></figure>
+<p>​    \r是ASCII中的回车符（回到行首）；\n是ASCII中的换行符。</p>
+<p>​    使用TCP传输上面的字符时服务器可能有多种返回方式：</p>
+<ol>
+<li>1个包含所有内容的TCP  segment（分段）</li>
+<li>若干包含a字节（a&lt;消息总长度）的TCP分段</li>
+</ol>
+<p>所以如果数据量很大，我们不能确保TCP只用一个分段就传送所有数据，即可能将data拆分为多段传送，所以我们总是需要把<code>read()</code>写在某个循环中，当它读完（0）或出现错误（&lt;0）时终止循环。</p>
+<h4 id="终止程序"><a href="#终止程序" class="headerlink" title="终止程序"></a>终止程序</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exit</span>(<span class="number">0</span>);		<span class="comment">//终止进程，关闭该进程所打开的所有的文件描述符</span></span><br></pre></td></tr></table></figure>
+<h2 id="协议无关性"><a href="#协议无关性" class="headerlink" title="协议无关性"></a>协议无关性</h2><p>程序1只能运行在ipv4协议上，如果要使用ipv6协议呢？稍稍改动一些地方形成了【程序2】：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"unp.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*描述：ipv6下TCP时间获取客户端程序 </span></span><br><span class="line"><span class="comment">**命令行运行方式：./daytimetcpcliv6 hostaddress </span></span><br><span class="line"><span class="comment">**    例如：./daytimetcpcliv6 0:0:0:0:0:0:0:1 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// main参数，argc命令行参数个数，argv命令行参数</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>         sockfd, n;</span><br><span class="line">    <span class="keyword">char</span>        recvline[MAXLINE + <span class="number">1</span>];  <span class="comment">//读入buffer</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in6</span> <span class="title">servaddr</span>;</span>   <span class="comment">// #ipv6 </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(argc != <span class="number">2</span>)</span><br><span class="line">        err_quit(<span class="string">"usage: a.out &lt;IPaddress&gt;"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建socket</span></span><br><span class="line">    <span class="keyword">if</span>((sockfd = socket(AF_INET6, SOCK_STREAM, <span class="number">0</span>)) &lt; <span class="number">0</span>)     <span class="comment">// #ipv6</span></span><br><span class="line">        err_sys(<span class="string">"socket error"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取服务器IP地址和端口号</span></span><br><span class="line">    bzero(&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line">    servaddr.sin6_family = AF_INET6;     <span class="comment">// #ipv6</span></span><br><span class="line">    servaddr.sin6_port = htos(<span class="number">13</span>)       <span class="comment">// #ipv6 port 13: daytime server port</span></span><br><span class="line">    <span class="keyword">if</span>(inet_pton(AF_INET6, argv[<span class="number">1</span>]， &amp;servaddr.sin_addr) &lt;=<span class="number">0</span> )       <span class="comment">// #ipv6 ip address</span></span><br><span class="line">        err_quit(<span class="string">"inet_pton error for %s"</span>, argv[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接socket</span></span><br><span class="line">    <span class="keyword">if</span>(connect(sockfd, (struct sockaddr_in*)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr)) &lt; <span class="number">0</span>)</span><br><span class="line">        err_sys(<span class="string">"connect error"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//读入服务器的应答并输出</span></span><br><span class="line">    <span class="keyword">while</span>((n = read(sockfd, recvline, MAXLINE)) &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        recvline[n] = <span class="number">0</span>;    <span class="comment">// string的终止符\0</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">fputs</span>(recvline, <span class="built_in">stdout</span>) == EOF)</span><br><span class="line">            err_sys(<span class="string">"fputs error"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(n &lt; <span class="number">0</span>)</span><br><span class="line">        err_sys(<span class="string">"read error"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 退出程序</span></span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>运行时注意！</p>
+<p> ipv4的客户端程序’daytimetcpcli’对应的服务端程序’daytimetcpsrv’. ipv4中本地回环地址’127.0.0.1’</p>
+<p> ipv6的客户端程序’’daytimetcpcliv6’对应的服务端程序’daytimetcpsrvv6’. ipv6中本地回环地址’0:0:0:0:0:0:0:1’</p>
+<p><strong>即，要适应ipv6协议不仅仅客户端要变，服务器端也要改变。</strong></p>
+<p><img src="https://github.com/CRongbx/BlogCRongbxImages/blob/master/Snip20191201_13.png?raw=true" alt=""></p>
+<h3 id="程序1的缺点"><a href="#程序1的缺点" class="headerlink" title="程序1的缺点"></a>程序1的缺点</h3><ol>
+<li>程序和IPV4协议有关，要适应ipv6则还要编写ipv6的程序。没有做到<strong>程序无关性</strong>. 【Chapter11】</li>
+<li>用户必须以点分十进制数来给出服务器地址。实际使用时我们更习惯于用名字如www.bupt.edu.com来代替数字。【使用相应的转换函数 Chapter11】</li>
+<li>错误处理机制繁琐，每调用一个程序就要判断下是否返回错误。【使用Wrapper function简化】</li>
+</ol>
+<h2 id="错误处理：包裹函数（Wrapper-function）"><a href="#错误处理：包裹函数（Wrapper-function）" class="headerlink" title="错误处理：包裹函数（Wrapper function）"></a>错误处理：包裹函数（Wrapper function）</h2><h3 id="Wrapper-function作用"><a href="#Wrapper-function作用" class="headerlink" title="Wrapper function作用"></a>Wrapper function作用</h3><p>​    简化每次调用函数、判断返回值、错误处理的一系列操作。每个Wrapper function可以一次性完成这3个过程。这样在编写代码时，可以使程序更加简洁明了。</p>
+<h3 id="如何编写"><a href="#如何编写" class="headerlink" title="如何编写"></a>如何编写</h3><p>常用命名方式是将实际函数名的首字母大写。</p>
+<p>如socket()的Wrapper function为Socket()</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 未引入Wrapper的写法</span></span><br><span class="line">  <span class="keyword">if</span>((sockfd = socket(AF_INET6, SOCK_STREAM, <span class="number">0</span>)) &lt; <span class="number">0</span>)    </span><br><span class="line">        err_sys(<span class="string">"socket error"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Wrapper</span></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">Socket(<span class="keyword">int</span> family, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span>		n;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ( (n = socket(family, type, protocol)) &lt; <span class="number">0</span>)</span><br><span class="line">		err_sys(<span class="string">"socket error"</span>);</span><br><span class="line">	<span class="keyword">return</span>(n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分析：一个简单的时间获取服务器程序"><a href="#分析：一个简单的时间获取服务器程序" class="headerlink" title="分析：一个简单的时间获取服务器程序"></a>分析：一个简单的时间获取服务器程序</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"unp.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> listenfd, connfd;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">servaddr</span>;</span></span><br><span class="line">    <span class="keyword">char</span> buff[MAXLINE];</span><br><span class="line">    <span class="keyword">time_t</span> ticks;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建TCP socket</span></span><br><span class="line">    listenfd = Socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置服务器端的监听IP和端口</span></span><br><span class="line">    bzero(&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line">    servaddr.sin_family = AF_INET;</span><br><span class="line">    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);       </span><br><span class="line">    servaddr.sin_port = htons(<span class="number">13</span>);      <span class="comment">// daytime server</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将服务器众所周知的端口号捆绑到socket</span></span><br><span class="line">    Bind(listenfd, (struct sockaddr_in *)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将套接字转换为监听套接字，这样来自客户的外来连接就可以在该监听套接字上被接受</span></span><br><span class="line">    Listen(listenfd, LISTENNQ);         <span class="comment">// LISTENNQ在"unp.h"中定义，表示kernel允许在这个监听描述符上排队的最大队列长度</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 接受客户连接，发送应答</span></span><br><span class="line">    <span class="keyword">for</span>( ; ; )&#123;</span><br><span class="line">        <span class="comment">// 监听并接受客户连接</span></span><br><span class="line">        connfd = Accept(listenfd, (struct sockaddr_in *)<span class="literal">NULL</span>, <span class="literal">NULL</span>);  </span><br><span class="line">      </span><br><span class="line">        <span class="comment">// 获取当前时间</span></span><br><span class="line">        ticks = time(<span class="literal">NULL</span>);         <span class="comment">// 获取当前时间</span></span><br><span class="line">        <span class="built_in">snprintf</span>(buff, <span class="keyword">sizeof</span>(buff), <span class="string">"%.24s\r\n"</span>, ctime(&amp;ticks));       </span><br><span class="line"></span><br><span class="line">        <span class="comment">// 向客户发送应答</span></span><br><span class="line">        Write(connfd, buff, <span class="built_in">strlen</span>(buff));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 终止连接</span></span><br><span class="line">        Close(connfd);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意几点:</p>
+<ul>
+<li><code>accept()</code>服务器在未有连接时属于睡眠状态，等待某个client连接的到达并接受，为每个连接到本服务器的客户返回一个新描述符。使用TCP三次握手创建连接手，返回accept的新描述符（connected descriptor） 。服务器使用这个新描述符与建立连接的客户通信。</li>
+<li><code>ctime()</code>将time_t类型时间转换为直观可读的时间格式。</li>
+<li>server的创建的socketIIP地址设置为<code>INADDR_ANY</code>表示server可以在任意网络接口上接受client连接。</li>
+</ul>
+<h3 id="本程序的局限性"><a href="#本程序的局限性" class="headerlink" title="本程序的局限性"></a>本程序的局限性</h3><ul>
+<li>只适用于IPV4</li>
+<li>服务器一次只能处理一个客户。【多线程】</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://www.jianshu.com/p/bbb50240d50c" target="_blank" rel="noopener">https://www.jianshu.com/p/bbb50240d50c</a></li>
+<li><a href="https://zhidao.baidu.com/question/308806242.html" target="_blank" rel="noopener">https://zhidao.baidu.com/question/308806242.html</a></li>
+<li><a href="https://zhidao.baidu.com/question/919515618414397579.html?qbl=relate_question_2&amp;word=.o%CE%C4%BC%FE" target="_blank" rel="noopener">https://zhidao.baidu.com/question/919515618414397579.html?qbl=relate_question_2&amp;word=.o%CE%C4%BC%FE</a></li>
+<li><a href="https://blog.csdn.net/abner_xie/article/details/92838832" target="_blank" rel="noopener">https://blog.csdn.net/abner_xie/article/details/92838832</a></li>
+<li><a href="https://blog.csdn.net/yi_ming_he/article/details/70405364" target="_blank" rel="noopener">https://blog.csdn.net/yi_ming_he/article/details/70405364</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    R Cong
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2019/12/01/1-%E7%AE%80%E4%BB%8B/" title="Unix网络编程1-1简介">http://yoursite.com/2019/12/01/1-%E7%AE%80%E4%BB%8B/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unix%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> Unix网络编程</a>
+          
+            <a href="/tags/Socket/" rel="tag"><i class="fa fa-tag"></i> Socket</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/29/MacOS-Catalina%E4%B8%8BUnix%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B/" rel="next" title="MacOS Catalina下Unix网络编程环境搭建详细教程">
+                <i class="fa fa-chevron-left"></i> MacOS Catalina下Unix网络编程环境搭建详细教程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/02/2-%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%9ATCP-UDP%E5%92%8CSCTP/" rel="prev" title="2 传输层：TCP, UDP和SCTP">
+                2 传输层：TCP, UDP和SCTP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/headerImage.png"
+                alt="R Cong" />
+            
+              <p class="site-author-name" itemprop="name">R Cong</p>
+              <p class="site-description motion-element" itemprop="description">道阻且长，行则将至</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/CRongbx" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:Crong0507@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chapter1—简介"><span class="nav-number">1.</span> <span class="nav-text">Chapter1—简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#本章内容"><span class="nav-number">1.1.</span> <span class="nav-text">本章内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识储备"><span class="nav-number">1.3.</span> <span class="nav-text">知识储备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#大型项目Makefile的编写"><span class="nav-number">1.3.1.</span> <span class="nav-text">大型项目Makefile的编写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C中define和const的区别"><span class="nav-number">1.3.2.</span> <span class="nav-text">C中define和const的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析：一个简单的时间获取客户程序"><span class="nav-number">1.4.</span> <span class="nav-text">分析：一个简单的时间获取客户程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#main函数参数"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">main函数参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建TCP-socket"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">创建TCP socket</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指定服务器的IP地址和端口"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">指定服务器的IP地址和端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#与服务器建立连接"><span class="nav-number">1.4.0.4.</span> <span class="nav-text">与服务器建立连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读入并输出响应服务器"><span class="nav-number">1.4.0.5.</span> <span class="nav-text">读入并输出响应服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要循环read"><span class="nav-number">1.4.0.5.1.</span> <span class="nav-text">为什么要循环read</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#终止程序"><span class="nav-number">1.4.0.6.</span> <span class="nav-text">终止程序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协议无关性"><span class="nav-number">1.5.</span> <span class="nav-text">协议无关性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序1的缺点"><span class="nav-number">1.5.1.</span> <span class="nav-text">程序1的缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误处理：包裹函数（Wrapper-function）"><span class="nav-number">1.6.</span> <span class="nav-text">错误处理：包裹函数（Wrapper function）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Wrapper-function作用"><span class="nav-number">1.6.1.</span> <span class="nav-text">Wrapper function作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何编写"><span class="nav-number">1.6.2.</span> <span class="nav-text">如何编写</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析：一个简单的时间获取服务器程序"><span class="nav-number">1.7.</span> <span class="nav-text">分析：一个简单的时间获取服务器程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本程序的局限性"><span class="nav-number">1.7.1.</span> <span class="nav-text">本程序的局限性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.8.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+ --><div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">R Cong</span>
+
+  
+</div>
+
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'FnnYfirMaecKt74yG3XtWlxL-gzGzoHsz',
+        appKey: 'AzgBpLdxSxwhFdPsjSo96NpK',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("FlEUkFNFyUBR6TbnUJ6lh9yM-gzGzoHsz", "aoBUDIA5arMmIo217kC3o0tb");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/clicklove.js"></script>
+ -->

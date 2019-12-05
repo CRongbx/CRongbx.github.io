@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Game Theory," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="博弈论—粗浅介绍简介基本概念​    博弈（Game）一般指多个理性的玩家（Player），根据自己所知道的信息，在每个参与者的相互制约下，选择使自己利益最大化的策略过程。 ​    假设约束：每个玩家都是理性的，即都会选择使得自己利益最大化的策略。 ​    博弈论研究的就是，如何从多个玩家的基本信息构建数学模型模拟博弈过程中玩家的行为，求得全局最优结果。  ​    纳什均衡（Nash Equ">
+<meta name="keywords" content="Game Theory">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简介：博弈论">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;19&#x2F;%E7%AE%80%E4%BB%8B%EF%BC%9A%E5%8D%9A%E5%BC%88%E8%AE%BA&#x2F;index.html">
+<meta property="og:site_name" content="CRongbx Blog">
+<meta property="og:description" content="博弈论—粗浅介绍简介基本概念​    博弈（Game）一般指多个理性的玩家（Player），根据自己所知道的信息，在每个参与者的相互制约下，选择使自己利益最大化的策略过程。 ​    假设约束：每个玩家都是理性的，即都会选择使得自己利益最大化的策略。 ​    博弈论研究的就是，如何从多个玩家的基本信息构建数学模型模拟博弈过程中玩家的行为，求得全局最优结果。  ​    纳什均衡（Nash Equ">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;CRongbx&#x2F;BlogCRongbxImages&#x2F;blob&#x2F;master&#x2F;%E5%8D%9A%E5%BC%88%E8%AE%BA%E5%AE%9A%E4%B9%89.png?raw=true">
+<meta property="og:image" content="https:&#x2F;&#x2F;github.com&#x2F;CRongbx&#x2F;BlogCRongbxImages&#x2F;blob&#x2F;master&#x2F;MEC%E4%B8%BE%E4%BE%8B%E5%9C%BA%E6%99%AF.png?raw=true">
+<meta property="og:updated_time" content="2019-11-19T06:44:45.469Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;github.com&#x2F;CRongbx&#x2F;BlogCRongbxImages&#x2F;blob&#x2F;master&#x2F;%E5%8D%9A%E5%BC%88%E8%AE%BA%E5%AE%9A%E4%B9%89.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/19/简介：博弈论/"/>
+
+
+
+
+
+  <title>简介：博弈论 | CRongbx Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CRongbx Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/19/%E7%AE%80%E4%BB%8B%EF%BC%9A%E5%8D%9A%E5%BC%88%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="R Cong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headerImage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CRongbx Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">简介：博弈论</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-19T13:05:29+08:00">
+                2019-11-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">算法与模型</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/11/19/%E7%AE%80%E4%BB%8B%EF%BC%9A%E5%8D%9A%E5%BC%88%E8%AE%BA/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/11/19/%E7%AE%80%E4%BB%8B%EF%BC%9A%E5%8D%9A%E5%BC%88%E8%AE%BA/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/11/19/%E7%AE%80%E4%BB%8B%EF%BC%9A%E5%8D%9A%E5%BC%88%E8%AE%BA/" class="leancloud_visitors" data-flag-title="简介：博弈论">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.3k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="博弈论—粗浅介绍"><a href="#博弈论—粗浅介绍" class="headerlink" title="博弈论—粗浅介绍"></a>博弈论—粗浅介绍</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>​    <strong>博弈（Game）</strong>一般指多个理性的玩家（Player），根据自己所知道的信息，在每个参与者的相互制约下，选择使自己利益最大化的策略过程。</p>
+<p>​    假设约束：每个玩家都是理性的，即都会选择使得自己利益最大化的策略。</p>
+<p>​    博弈论研究的就是，如何从多个玩家的基本信息构建数学模型模拟博弈过程中玩家的行为，<strong>求得全局最优结果</strong>。</p>
+<hr>
+<p>​    <strong>纳什均衡（Nash Equilibrium）</strong> 博弈问题中一个重要的概念就是寻找各个玩家间的平衡，即求得该博弈问题的平衡解，使得<em>对于所有玩家来说都是最优的选择方案</em>。</p>
+<p>​    在NashEquilibrium下，如果其他玩家锁定了自己的均衡点策略，没有任何一个玩家可以通过改变自己在均衡点的策略为其他策略而获得更好的收益。即，Nash Equilibrium的状态是稳定的，每个理性的玩家都不会偏离自己的均衡点。</p>
+<hr>
+<p>一些博弈论中常用的术语：</p>
+<ul>
+<li><p>玩家：博弈参与者，追求自身利益最大化</p>
+</li>
+<li><p>策略集：博弈过程中，每个玩家可以选择的行动方案集。即博弈过程的动作规则，每个玩家的动作都不可能超出该集合。</p>
+</li>
+<li><p>收益：所有玩家在选定自己的策略后，形成一个<strong>策略组合(Strategy profile)</strong>。该策略组合下，每个玩家都可以获得一个自己的收益值。</p>
+</li>
+<li><p>策略：玩家基于其他玩家的行动采取的行动（所有行动都要在策略集里）。</p>
+<ul>
+<li>混合策略：基于概率的策略</li>
+<li>纯策略：基于确定值的策略</li>
+</ul>
+<p><img src="https://github.com/CRongbx/BlogCRongbxImages/blob/master/%E5%8D%9A%E5%BC%88%E8%AE%BA%E5%AE%9A%E4%B9%89.png?raw=true" alt=""></p>
+</li>
+</ul>
+<h3 id="博弈分类"><a href="#博弈分类" class="headerlink" title="博弈分类"></a>博弈分类</h3><ol>
+<li>基于进行步数分类<ol>
+<li>一次同时博弈（One-shot Simultaneous Game）<ul>
+<li><strong>静态博弈（Static Game)</strong>:博弈中所有玩家同时行动，进行的步数为1次，博弈过程无来回。</li>
+</ul>
+</li>
+<li>动态博弈（Dynamic Game）：博弈中玩家采取的行动有先后顺序，且博弈过程包含多个阶段，进行的步数可以是n或无限</li>
+</ol>
+</li>
+<li>基于玩家之间关系分类<ol>
+<li><strong>合作博弈Cooperative Game/Congestion Game</strong>:玩家一同合作，追求集体利益最大化</li>
+<li><strong>非合作博弈Non-Cooperative Game</strong>：玩家之间相互独立，追求个人利益最大化。这里引入“纳什均衡”的概念</li>
+</ol>
+</li>
+<li>基于玩家信息掌握程度分类<ol>
+<li>完全信息博弈 Game of Complete Information: 存在玩家不知道其他玩家收益信息的情况</li>
+<li>不完全信息博弈 Game of Incomplete Information: 所有玩家都知道其他玩家的收益函数。i.e. 囚徒困境</li>
+</ol>
+</li>
+</ol>
+<h3 id="纳什均衡"><a href="#纳什均衡" class="headerlink" title="纳什均衡"></a>纳什均衡</h3><p>​    Nash Equilibrium是非合作博弈中的基本概念吗，它是一种策略组合，使得同一时间中每个玩家的策略都是对其他玩家的最优解。</p>
+<p>​    <strong>数学定义</strong>：</p>
+<p>​    设n个玩家的<strong>非合作博弈</strong>$G=\{S_1,S_2,…,S_n; u_1,u_2,…,u_n\}$ (收益u最大化),若策略集$s^<em>$是纳什均衡，那么对任意的玩家i，在其他玩家的策略都已经确定的前提下，记其他玩家的策略集为$s_{-i}^</em>=(s_1^<em>,s_2^</em>,…,s_{i-1}^<em>,s_{i+1}^</em>,…,s_n^<em>)$, 则玩家i能做出的最好决策就是$s_i^</em>$，数学表示为：</p>
+<script type="math/tex; mode=display">
+u_i(s_i^*,s_{-i}^*)≥u_i(s_i,s_{-i}^*) \quad \forall s_i\in S_i, \forall i</script><p>​    从上式可以看出，纳什均衡状态下，每个玩家都不可能通过单方面的改变决策来获得更大的收益。</p>
+<p>​    一个博弈过程中，可能存在1个、多个或0个纳什均衡解。证明纳什均衡存在性是求解博弈的非常重要的环节。</p>
+<p>下面参考[4]来看看博弈论在MEC问题中如何建模求解：</p>
+<h1 id="举例：博弈模型构建"><a href="#举例：博弈模型构建" class="headerlink" title="举例：博弈模型构建"></a>举例：博弈模型构建</h1><p>场景：single-server, multi-user。如下图所示：</p>
+<p><img src="https://github.com/CRongbx/BlogCRongbxImages/blob/master/MEC%E4%B8%BE%E4%BE%8B%E5%9C%BA%E6%99%AF.png?raw=true" alt=""></p>
+<p>​    目标：Min 每个用户的能耗</p>
+<p>​    非合作博弈</p>
+<hr>
+<p>​    记$d_{-i_n}=(d_{i_1},…,d_{(i-1)_n},d_{(i+1)_n},…,d_{K_N})$为除去用户$i_n$外的其他用户的offloading决策向量。那么，给定一个决策向量$d_{-i_n}$，用户$i_n$会根据该决策向量选择一个合适的迁移策略，使得自己的能耗最小：</p>
+<script type="math/tex; mode=display">
+Min_{d_{i_n}} \quad C_i(d_{i_n},d_{-i_n}),\quad \forall i_n \in I</script><p>​    关键：证明该博弈决策存在一个纳什均衡，并且可以在有限的行动步数内达到。</p>
+<p>​    这样就可以证明本问题可以在有限步内求得最优解，使得每个device能耗最小化。</p>
+<p>​    所以算法会在每个时隙内更新一次决策，直到有限时隙后，没有用户要更新决策了，证明就达到了纳什均衡，即求得最优解。    </p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li>基于博弈论的云计算资源配置优化方法研究_杨波</li>
+<li>A Game Theoretic Resource Allocation for Overall Energy Minimization in Mobile Cloud Computing System</li>
+<li>Efficient Multi-User Computation Offloading for Mobile-Edge Cloud Computing</li>
+<li>基于移动边缘计算的任务迁移策略研究_邓茂菲</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    R Cong
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2019/11/19/%E7%AE%80%E4%BB%8B%EF%BC%9A%E5%8D%9A%E5%BC%88%E8%AE%BA/" title="简介：博弈论">http://yoursite.com/2019/11/19/%E7%AE%80%E4%BB%8B%EF%BC%9A%E5%8D%9A%E5%BC%88%E8%AE%BA/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Game-Theory/" rel="tag"><i class="fa fa-tag"></i> Game Theory</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/07/Pareto%E5%88%86%E5%B8%83/" rel="next" title="Pareto分布">
+                <i class="fa fa-chevron-left"></i> Pareto分布
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/20/sublime%E8%AE%BE%E7%BD%AE%E6%BB%9A%E8%BD%AE%E8%B6%85%E8%BF%87%E9%A1%B5%E5%B0%BE/" rel="prev" title="sublime设置滚轮超过页尾">
+                sublime设置滚轮超过页尾 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/headerImage.png"
+                alt="R Cong" />
+            
+              <p class="site-author-name" itemprop="name">R Cong</p>
+              <p class="site-description motion-element" itemprop="description">道阻且长，行则将至</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/CRongbx" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:Crong0507@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#博弈论—粗浅介绍"><span class="nav-number">1.</span> <span class="nav-text">博弈论—粗浅介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">1.1.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#博弈分类"><span class="nav-number">1.1.2.</span> <span class="nav-text">博弈分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#纳什均衡"><span class="nav-number">1.1.3.</span> <span class="nav-text">纳什均衡</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#举例：博弈模型构建"><span class="nav-number">2.</span> <span class="nav-text">举例：博弈模型构建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">2.1.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+ --><div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">R Cong</span>
+
+  
+</div>
+
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'FnnYfirMaecKt74yG3XtWlxL-gzGzoHsz',
+        appKey: 'AzgBpLdxSxwhFdPsjSo96NpK',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("FlEUkFNFyUBR6TbnUJ6lh9yM-gzGzoHsz", "aoBUDIA5arMmIo217kC3o0tb");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
+
+<!-- 页面点击小红心 -->
+<!-- <script type="text/javascript" src="/js/src/clicklove.js"></script>
+ -->
