@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="4-基本TCP套接字编程本章对TCP套接字编程中常用的套接字函数进行描述。">
+<meta name="keywords" content="TCP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4-基本TCP套接字编程">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;10&#x2F;4-%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B&#x2F;index.html">
+<meta property="og:site_name" content="CRongbx Blog">
+<meta property="og:description" content="4-基本TCP套接字编程本章对TCP套接字编程中常用的套接字函数进行描述。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;data2.liuin.cn&#x2F;2018-05-23-15270592134854.jpg">
+<meta property="og:updated_time" content="2019-12-10T08:44:17.154Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;data2.liuin.cn&#x2F;2018-05-23-15270592134854.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2019/12/10/4-%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>4-基本TCP套接字编程 | CRongbx Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CRongbx Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">32</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">24</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/10/4-%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rong CONG">
+      <meta itemprop="description" content="道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CRongbx Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          4-基本TCP套接字编程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-10 16:44:17" itemprop="dateCreated datePublished" datetime="2019-12-10T16:44:17+08:00">2019-12-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unix%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%8D%B71%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">Unix网络编程卷1学习</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/10/4-%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/" class="post-meta-item leancloud_visitors" data-flag-title="4-基本TCP套接字编程" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/12/10/4-%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/10/4-%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="4-基本TCP套接字编程"><a href="#4-基本TCP套接字编程" class="headerlink" title="4-基本TCP套接字编程"></a>4-基本TCP套接字编程</h1><p>本章对TCP套接字编程中常用的套接字函数进行描述。</p>
+<a id="more"></a>
+<h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p>下图给出基本TCP C/S架构程序的套接字函数的调用关系：</p>
+<p><img src="https://data2.liuin.cn/2018-05-23-15270592134854.jpg" alt=""></p>
+<h2 id="socket"><a href="#socket" class="headerlink" title="socket()"></a>socket()</h2><p>在执行网络I/O通信时，第一件需要做的事：调用socket函数。用来指明期望的通信协议类型。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*指明期望的通信协议类型</span></span><br><span class="line"><span class="comment"> *参数：family：协议族  type:套接字类型   protocol:某个协议类型常值，或0</span></span><br><span class="line"><span class="comment"> *返回：非负数:成功，套接字描述符sockfd    -1：出错</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socket</span><span class="params">(<span class="keyword">int</span> family, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="参数family常数值"><a href="#参数family常数值" class="headerlink" title="参数family常数值"></a>参数family常数值</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AF_INET</td>
+<td>IPV4</td>
+</tr>
+<tr>
+<td>AF_INET6</td>
+<td>IPV6</td>
+</tr>
+<tr>
+<td>AF_LOCAL</td>
+<td>UNIX域协议</td>
+</tr>
+<tr>
+<td>AF_ROUTE</td>
+<td>路由套接字</td>
+</tr>
+<tr>
+<td>AF_KEY</td>
+<td>密钥套接字</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="AF-XXXX和PF-XXXX："><a href="#AF-XXXX和PF-XXXX：" class="headerlink" title="AF_XXXX和PF_XXXX："></a>AF_XXXX和PF_XXXX：</h4><ul>
+<li><p>AF_前缀：表示地址族</p>
+</li>
+<li><p>PF_前缀：表示协议族</p>
+<p>历史遗留问题，以前人们认为一个协议族可以支持多个地址族，但目前还没有实现这样的协议。所以在头文件<sys/socket.h>中这两个是一样的。</p>
+</li>
+</ul>
+<h3 id="参数type常数值"><a href="#参数type常数值" class="headerlink" title="参数type常数值"></a>参数type常数值</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SOCK_STREAM</td>
+<td>字节流套接字（TCP）</td>
+</tr>
+<tr>
+<td>SOCK_DGRAM</td>
+<td>数据报套接字（UDP）</td>
+</tr>
+<tr>
+<td>SOCK_SEQPACKET</td>
+<td>有序分组套接字</td>
+</tr>
+<tr>
+<td>SOCK_RAW</td>
+<td>原始套接字</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="参数protocol常数值"><a href="#参数protocol常数值" class="headerlink" title="参数protocol常数值"></a>参数protocol常数值</h3><p>输入0，选择默认值，具体默认值如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>protocol</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IPPROTO_CP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>IPPROTO_UDP</td>
+<td>UDP</td>
+</tr>
+<tr>
+<td>IPPROTO_SCTP</td>
+<td>SCTP</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="connect"><a href="#connect" class="headerlink" title="connect()"></a>connect()</h2><p>client调用connect函数来建立与server的连接。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*client建立与server的连接</span></span><br><span class="line"><span class="comment"> *参数：sockfd:socket函数返回的套接字描述符，描述了通信协议类型  </span></span><br><span class="line"><span class="comment"> *     servaddr:套接字地址结构的指针   addrlen:套接字地址结构的长度</span></span><br><span class="line"><span class="comment"> *返回：0:成功   -1：出错</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">connect</span> <span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">const</span> struct* servaddr, <span class="keyword">socklen_t</span> addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>​    如果仔细看本文中的第一张图会发现，客户端没有服务器端的bind()。原因是：<br>客户端即使不调用bind()，内核需要时会确定源IP地址，并选择一个临时端口作为源端口。</p>
+<p>​    对于TCP协议，调用connect()会引发<a href="[https://crongbx.github.io/2019/12/02/2-%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%9ATCP-UDP%E5%92%8CSCTP/](https://crongbx.github.io/2019/12/02/2-传输层：TCP-UDP和SCTP/">三路握手建立连接</a>)。函数成功建立连接（0）或连接出错（-1）的时候返回。其中，出错返回有以下几种情况：</p>
+<ul>
+<li>client发出<code>SYN J</code>后没有收到<code>ACK J+1</code>。产生错误<code>ETIMEDOUT</code>，重传，若多次重传后超时失败则返回本错误。</li>
+<li>client发出<code>SYN J</code>后收到的响应是<code>RST</code>（表示复位），这表明我们在客户端指定的服务器端口上没有进程在监听端口等待连接（也可能服务器没运行进程）。这种错误叫<strong>硬错误（hard error）</strong>，客户端在收到RST后返回<code>ECONNREFUSE</code>。</li>
+<li>client发出的<code>SYN J</code>在路由阶段引发了目的地不可达（destination unreachable）ICMP错误，则认为是一种软错误（soft error）。client主机内核保存该ICMP消息，按一定时间间隔后重传，若多次重传后超时，则将保存的ICMP消息作为<code>EHOSTUNREACH</code>或<code>ENETUNREACH</code>错误返回。</li>
+</ul>
+<h2 id="bind"><a href="#bind" class="headerlink" title="bind()"></a>bind()</h2><p>bind函数赋予套接字一个本地协议地址<IP,Port></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*赋予套接字一个本地套接字协议地址&lt;IP,Port&gt;， 即用来指定一个端口号和IP地址</span></span><br><span class="line"><span class="comment"> *参数：sockfd:socket函数返回的套接字描述符，描述了通信协议类型  </span></span><br><span class="line"><span class="comment"> *     myaddr:套接字地址结构的指针   addrlen:套接字地址结构的长度</span></span><br><span class="line"><span class="comment"> *返回：0:成功   -1：出错</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bind</span> <span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">const</span> sockaddr* myaddr, <span class="keyword">socklen_t</span> addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>​    绑定端口：<br>​        在TCP中，服务器的端口是其余主机众所周知的，所以server端在socket()后就会调动bind()将总所周知的端口绑定。<br>​        如果不指定端口，内核会为机器分配一个临时端口，此时client又如何知道这个随机分配的端口是什么呢（一个IP下有若干端口）所以server需要实现绑定端口号。</p>
+<p>​    绑定IP：<br>​        在TCP中，进程可以把一个特定的IP地址<strong>（捆绑的都是本机的IP）</strong>绑定到它的套接字上，不过这个IP必须属于其所在<strong>主机的</strong>网络接口。<br>​        对于client，这就为在该套接字上发送的IP数据报指派—源IP地址；<br>​        对于server，这就限定了该套接字只能接受目的IP为该IP的client。 </p>
+<p>​    在TCP编程时，我们常常采用的是：<br>​    client：绑定IP（可选），不绑定端口。【通过<code>connect()</code>】<br>​        client如果不绑定IP（通配地址）代表由内核根据client的外出网络接口来选择主机IP。<br>​        client不绑定端口是因为没必要，系统根据其空闲端口随机分配一个即可（否则还要苦苦等待指定的端口释放）。在客户端第一次向server发送消息时client的端口号会一并给server。<br>​    server：绑定端口，不绑定IP(绑的是<code>INADDR_ANY</code>，表示不确定的IP地址)。    【通过<code>bind()</code>】<br>​        server大多不绑定IP的原因是：这样可以对任何目的端口为指定端口的client进行服务，毕竟client往往只知道xx端口对应xx服务，不知道提供这个服务的服务器IP地址是多少~</p>
+<h2 id="listen"><a href="#listen" class="headerlink" title="listen()"></a>listen()</h2><p>listen仅由服务端调用，它有2个作用：</p>
+<ol>
+<li>将socket函数创建的主动套接字转换为被动套接字，让内核接受来自该套接字的连接请求；否则，对于主动套接字，必须要自己发起连接请求调用connect才行。</li>
+<li>规定内核中该套接字能接受的最大队列长度。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*server端，将socket函数创建的主动套接字转换为被动套接字，让内核接受来自该套接字的连接请求；</span></span><br><span class="line"><span class="comment">       指定队列的最大连接数</span></span><br><span class="line"><span class="comment"> *参数：sockfd:socket函数返回的套接字描述符，描述了通信协议类型  </span></span><br><span class="line"><span class="comment"> *     backlog: 该套接字队列的最大连接数</span></span><br><span class="line"><span class="comment"> *返回：0:成功   -1：出错</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">listen</span> <span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">int</span> backlog)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="监听套接字的队列"><a href="#监听套接字的队列" class="headerlink" title="监听套接字的队列"></a>监听套接字的队列</h3><p>监听套接字维护2个队列：</p>
+<ul>
+<li>未完成连接队列：三路握手过程尚未执行完毕。</li>
+<li>已完成连接队列：完成三路握手。</li>
+</ul>
+<p><code>backlog</code>规定的是这两个队列的总长度的上界。</p>
+<h2 id="accept"><a href="#accept" class="headerlink" title="accept()"></a>accept()</h2><p>​    TCP服务器调用，用来从已完成连接队列取得首部的套接字描述符；若该队列为空（没有客户端与服务器成功建立连接）则将进程投入睡眠。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*server端，用来从已完成连接队列取得首部的套接字描述符；若该队列为空（没有客户端与服务器成</span></span><br><span class="line"><span class="comment">        功建立连接）则将进程投入睡眠。</span></span><br><span class="line"><span class="comment"> *参数：sockfd:监听套接字描述符  </span></span><br><span class="line"><span class="comment">        *cliaddr和*addrlen：用来返回已连接的对端进程的协议地址和该地址的大小（字节)</span></span><br><span class="line"><span class="comment"> *返回：非负数：成功，返回内核生成的已连接套接字描述符；  -1：出错</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">accept</span> <span class="params">(<span class="keyword">int</span> sockfd, struct sockaddr *cliaddr, <span class="keyword">socklen_t</span> *addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="监听套接字-amp-已连接套接字"><a href="#监听套接字-amp-已连接套接字" class="headerlink" title="监听套接字&amp;已连接套接字"></a>监听套接字&amp;已连接套接字</h3><ul>
+<li>监听套接字：服务器启动时创建，生命期结束时才消失，即在该服务器的生命期内一直存在。一个服务器通常只创建一个监听套接字。由socket()创建，随后用作bind，listen和accept函数的第一个参数的描述符。</li>
+<li>已连接套接字：已连接套接字是在完成TCP三路握手后，服务器内核为该连接创建。该套接字仅存在于该TCP连接存在时。当连接关闭时，相应的已连接套接字就被关闭。</li>
+</ul>
+<h3 id="程序：显示客户IP地址和端口号的时间获取（服务端）"><a href="#程序：显示客户IP地址和端口号的时间获取（服务端）" class="headerlink" title="程序：显示客户IP地址和端口号的时间获取（服务端）"></a>程序：显示客户IP地址和端口号的时间获取（服务端）</h3><h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"lib/unp.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>         listenfd, connfd;</span><br><span class="line">    <span class="keyword">socklen_t</span>   len;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">servaddr</span>, <span class="title">cliaddr</span>;</span></span><br><span class="line">    <span class="keyword">char</span>        buff[MAXLINE];</span><br><span class="line">    <span class="keyword">time_t</span>      ticks;</span><br><span class="line"></span><br><span class="line">    listenfd = Socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    bzero(&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line">    servaddr.sin_family = AF_INET;</span><br><span class="line">    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);</span><br><span class="line"></span><br><span class="line">    Bind(listenfd, (struct sockaddr_in*) &amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line"></span><br><span class="line">    Listen(listenfd, LISTENQ);      <span class="comment">// LISTENQ监听套接字队列长度1024（"unp.h"定义）</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(; ; )&#123;</span><br><span class="line">        len = <span class="keyword">sizeof</span>(cliaddr);</span><br><span class="line">        connfd = Accept(listenfd, (struct sockaddr_in*) &amp;cliaddr, len);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"connection from %s, port &amp;d\n"</span>,</span><br><span class="line">                inet_ntop(AF_INET, &amp;cliaddr.sin_addr, buff, <span class="keyword">sizeof</span>(buff)),</span><br><span class="line">                ntohs(cliaddr.sin_port));</span><br><span class="line"></span><br><span class="line">        ticks = time(<span class="literal">NULL</span>);</span><br><span class="line">        <span class="built_in">snprintf</span>(buff, <span class="keyword">sizeof</span>(buff), <span class="string">"%。24s\r\n"</span>, ctime(&amp;ticks));	<span class="comment">//向buff写数据</span></span><br><span class="line">        Write(connfd, buff, <span class="built_in">strlen</span>(buff));</span><br><span class="line"></span><br><span class="line">        Close(connfd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="INADDR-ANY-amp-INADDR-NONE"><a href="#INADDR-ANY-amp-INADDR-NONE" class="headerlink" title="INADDR_ANY &amp; INADDR_NONE"></a>INADDR_ANY &amp; INADDR_NONE</h4><p>htonl函数在调用时传参INADDR_ANY。</p>
+<ul>
+<li><p>INADDR_ANY: 指定地址为0.0.0.0的地址，表示不确定地址。</p>
+</li>
+<li><p>INADDR_NONE: 全为1的地址。但不在htonl函数中使用，使用范围只在函数<code>in_addr_t inet_addr (const char* strptr);</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*ASCII--&gt;网络二进制【已经被废弃】</span></span><br><span class="line"><span class="comment"> *将strptr所指的字符串转换成32位网络字节序的二进制地址</span></span><br><span class="line"><span class="comment"> *返回：32位网络字节序的二进制地址     失败返回INADDR_NONE(全1，意味着本函数不能正常处理广播地址255.255.255.255)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">in_addr_t</span> inet_addr (<span class="keyword">const</span> <span class="keyword">char</span>* strptr);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h4><p>我们在同一个主机上运行服务器和客户端的程序。本主机的IP为10.128.216.220。</p>
+<p>客户端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(base) congrong intro $ ./daytimetcpcli 127.0.0.1</span><br><span class="line">Sun Dec  8 18:41:46 2019</span><br><span class="line"></span><br><span class="line">(base) congrong intro $ ./daytimetcpcli 10.128.216.220</span><br><span class="line">Sun Dec  8 18:43:27 2019</span><br></pre></td></tr></table></figure>
+<p>服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(base) congrong intro $ ./daytimetcpsrv1</span><br><span class="line">connection from 127.0.0.1, port 60592</span><br><span class="line">connection from 10.128.216.220, port 60634</span><br></pre></td></tr></table></figure>
+<p>​    可以看到服务端输出的client IP地址的变化。</p>
+<ul>
+<li>两次连接的客户端IP地址不同。因为我们的客户端程序并没有调用<code>bind</code>，我们在==本文的bind()==中讲过，当客户端没有绑定IP时，客户端内核会根据所用的外出接口选定源IP地址。<ul>
+<li>第一个例子：内核将源IP地址置为回环地址；</li>
+<li>第二个例子：内核将源IP地址置为主机的以太网接口IP地址</li>
+</ul>
+</li>
+<li>客户端内核选择的端口一次为60592一次为60632.这些端口是由内核随机分配的。</li>
+</ul>
+<h4 id="程序局限性"><a href="#程序局限性" class="headerlink" title="程序局限性"></a>程序局限性</h4><ol>
+<li>虽然用<code>sock_ntop</code>来代替<code>inet_ntop</code>将端口号从网络字节序转换为主机字节序的操作变得更具有“协议无关性”，但本程序依旧依赖于IPV4。Chapter11将给出协议无关版本。</li>
+</ol>
+<h2 id="fork-amp-exec"><a href="#fork-amp-exec" class="headerlink" title="fork() &amp; exec()"></a>fork() &amp; exec()</h2><h3 id="fork"><a href="#fork" class="headerlink" title="fork()"></a>fork()</h3><p>Unix中派生新进程的<strong>唯一</strong>方法。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*Unix创建新进程</span></span><br><span class="line"><span class="comment"> * 参数：无</span></span><br><span class="line"><span class="comment"> * 返回：父进程调用返回子进程ID，子进程调用返回0，出错返回-1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">pid_t</span> fork(<span class="keyword">void</span>);</span><br></pre></td></tr></table></figure>
+<p>​    fork函数的返回很特殊：<strong><em>调用它一次，它会返回2次</em></strong>。</p>
+<ul>
+<li>第一个返回：父进程中返回一次，返回创建的子进程ID（PID, process identification）;</li>
+<li>第二个返回：子进程返回一次，返回0。</li>
+</ul>
+<p>​    这个返回值的意义是告诉当前进程是子进程还是父进程</p>
+<hr>
+<p>​    为什么子进程返回的是0，而不是父进程的ID？</p>
+<ul>
+<li>任何子进程都只有一个父进程，而一个父进程可以有多个子进程。</li>
+<li>父进程无法获取各个子进程的ID，所以必须要靠记录fork返回值得到；</li>
+<li>子进程总是可以通过调用<code>getppid</code>函数获得父进程的进程ID。</li>
+</ul>
+<hr>
+<p>​    fork后，父进程之前打开的所有描述符（<strong>文件描述符、已连接套接字描述符</strong>…）都会分享给子进程。</p>
+<p>​    网络服务器正好利用了这个特性：父进程调用accept后调用fork。所接受的<strong>已连接套接字</strong>随后就在父进程和子进程之间共享。==通常，子进程会接着读写这个已连接套接字，父进程则关闭这个已连接套接字。==</p>
+<hr>
+<p>​    fork的两个典型用法：</p>
+<pre><code>1. 一个进程创建自身程序的副本。让创建的这个副本（子进程）去执行程序中的某个操作，父进程可以执行其他操作。例子：网络服务器。
+ 2. 一个进程去执行其他程序。想要执行另一个程序必须要再创造一个进程，我们上面说到fork函数是唯一创建进程的函数，所以*父函数首先调用fork函数创建子进程*，该子进程是自身的副本。然后*子进程再调用exec函数吧自身的程序替换为新的程序*。例子：shell
+</code></pre><h3 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h3><p>​    exec函数将当前进程的程序<strong>替换</strong>(表示进程ID不变)为新的程序文件，并从新程序的main函数开始执行。</p>
+<hr>
+<p>​    Unix系统中运行程序时，我一直有个问题：<strong>Unix是如何执行存放在硬盘上的可执行程序的呢？</strong></p>
+<p>​    这个和exec函数密切相关。存放在硬盘上的可执行文件能够被Unix执行的唯一方法是：有一个现有进程调用6个exec函数中的某一个，将当前进程映像替换为新的程序文件，从该文件开始执行。</p>
+<p>​    注意，exec函数的执行并没有创建一个<strong><em>新进程</em></strong>，它只是在原进程的壳子里替换并执行了<strong><em>新程序</em></strong>。</p>
+<hr>
+<p>​    下面给出exec的6种函数。这6种函数的区别在于：</p>
+<ol>
+<li>待执行的程序文件如何指出：filename  OR  pathname?</li>
+<li>新程序的参数如何获得：一一列出<code>const char* arg</code> OR 指针数组<code>char *const argv[]</code>？</li>
+<li>新程序的运行环境：从调用进程获得 OR 指定并创建一个新的环境<code>char *const envp[]</code>？</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*将当前进程的程序替换(表示进程ID不变)为新的程序文件，并从新程序的main函数开始执行</span></span><br><span class="line"><span class="comment"> * 返回：不返回：成功； -1：出错</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">int execl(const char * path，const char * arg，…)；</span><br><span class="line">int execle(const char * path，const char * arg，char * const envp[])；</span><br><span class="line">int execlp(const char * file，const char * arg，…)；</span><br><span class="line">int execv(const char * path，char * const argv[])；</span><br><span class="line">int execve(const char * path，char * const argv[]，char * const envp[])；</span><br><span class="line">int execvp(const char * file，char * const argv[])；</span><br></pre></td></tr></table></figure>
+<p>​    这6个函数的关系：只有第5个函数:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">execve</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * path，<span class="keyword">char</span> * <span class="keyword">const</span> argv[]，<span class="keyword">char</span> * <span class="keyword">const</span> envp[])</span></span></span><br></pre></td></tr></table></figure>
+<p>​    是在内核中的system call。其余5个函数都可以通过该函数得到，即该函数是其余函数的库函数。</p>
+<h2 id="并发服务器"><a href="#并发服务器" class="headerlink" title="并发服务器"></a>并发服务器</h2><h3 id="迭代服务器（iterative-server）"><a href="#迭代服务器（iterative-server）" class="headerlink" title="迭代服务器（iterative server）"></a>迭代服务器（iterative server）</h3><h3 id="并发服务器（concurrent-server）"><a href="#并发服务器（concurrent-server）" class="headerlink" title="并发服务器（concurrent server）"></a>并发服务器（concurrent server）</h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TCP/" rel="tag"># TCP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/10/%E8%BF%AD%E4%BB%A3%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%92%8C%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="迭代服务器和并发服务器">
+      <i class="fa fa-chevron-left"></i> 迭代服务器和并发服务器
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4-基本TCP套接字编程"><span class="nav-number">1.</span> <span class="nav-text">4-基本TCP套接字编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体结构"><span class="nav-number">1.1.</span> <span class="nav-text">整体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socket"><span class="nav-number">1.2.</span> <span class="nav-text">socket()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数family常数值"><span class="nav-number">1.2.1.</span> <span class="nav-text">参数family常数值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AF-XXXX和PF-XXXX："><span class="nav-number">1.2.1.1.</span> <span class="nav-text">AF_XXXX和PF_XXXX：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数type常数值"><span class="nav-number">1.2.2.</span> <span class="nav-text">参数type常数值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数protocol常数值"><span class="nav-number">1.2.3.</span> <span class="nav-text">参数protocol常数值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#connect"><span class="nav-number">1.3.</span> <span class="nav-text">connect()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bind"><span class="nav-number">1.4.</span> <span class="nav-text">bind()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#listen"><span class="nav-number">1.5.</span> <span class="nav-text">listen()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监听套接字的队列"><span class="nav-number">1.5.1.</span> <span class="nav-text">监听套接字的队列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#accept"><span class="nav-number">1.6.</span> <span class="nav-text">accept()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#监听套接字-amp-已连接套接字"><span class="nav-number">1.6.1.</span> <span class="nav-text">监听套接字&amp;已连接套接字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序：显示客户IP地址和端口号的时间获取（服务端）"><span class="nav-number">1.6.2.</span> <span class="nav-text">程序：显示客户IP地址和端口号的时间获取（服务端）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#INADDR-ANY-amp-INADDR-NONE"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">INADDR_ANY &amp; INADDR_NONE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行结果"><span class="nav-number">1.6.2.3.</span> <span class="nav-text">运行结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#程序局限性"><span class="nav-number">1.6.2.4.</span> <span class="nav-text">程序局限性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork-amp-exec"><span class="nav-number">1.7.</span> <span class="nav-text">fork() &amp; exec()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fork"><span class="nav-number">1.7.1.</span> <span class="nav-text">fork()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exec"><span class="nav-number">1.7.2.</span> <span class="nav-text">exec()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发服务器"><span class="nav-number">1.8.</span> <span class="nav-text">并发服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代服务器（iterative-server）"><span class="nav-number">1.8.1.</span> <span class="nav-text">迭代服务器（iterative server）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发服务器（concurrent-server）"><span class="nav-number">1.8.2.</span> <span class="nav-text">并发服务器（concurrent server）</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rong CONG</p>
+  <div class="site-description" itemprop="description">道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CRongbx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CRongbx" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Crong0507@163.com" title="E-Mail → mailto:Crong0507@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rong CONG</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('[object Object]', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'FnnYfirMaecKt74yG3XtWlxL-gzGzoHsz',
+      appKey: 'AzgBpLdxSxwhFdPsjSo96NpK',
+      placeholder: "Just go go",
+      avatar: '/images/headerImage.png',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
