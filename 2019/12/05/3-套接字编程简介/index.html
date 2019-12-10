@@ -51,6 +51,7 @@
 
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
 <link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
@@ -81,19 +82,19 @@
 
 
 
-<meta name="description" content="Chapter3 套接字编程简介套接字地址结构IPV4套接字地址结构，也称为”网际套接字地址结构“.struct sockaddr_in定义在头文件&amp;lt;netinet&#x2F;in.h&amp;gt;中，具体如下： 1234567891011121314typedef	uint32_t		in_addr_t;struct in_addr &amp;#123;	in_addr_t s_addr;				&#x2F;&#x2F; 32-bi">
+<meta name="description" content="Chapter3 套接字编程简介[TOC] 套接字地址结构IPV4套接字地址结构，也称为”网际套接字地址结构“.struct sockaddr_in定义在头文件&amp;lt;netinet&#x2F;in.h&amp;gt;中，具体如下： 1234567891011121314typedef	uint32_t		in_addr_t;struct in_addr &amp;#123;	in_addr_t s_addr;				&#x2F;&#x2F;">
 <meta name="keywords" content="套接字地址结构,地址转换函数,字节排序函数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="3-套接字编程简介">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;05&#x2F;3-%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B%E7%AE%80%E4%BB%8B&#x2F;index.html">
 <meta property="og:site_name" content="CRongbx Blog">
-<meta property="og:description" content="Chapter3 套接字编程简介套接字地址结构IPV4套接字地址结构，也称为”网际套接字地址结构“.struct sockaddr_in定义在头文件&amp;lt;netinet&#x2F;in.h&amp;gt;中，具体如下： 1234567891011121314typedef	uint32_t		in_addr_t;struct in_addr &amp;#123;	in_addr_t s_addr;				&#x2F;&#x2F; 32-bi">
+<meta property="og:description" content="Chapter3 套接字编程简介[TOC] 套接字地址结构IPV4套接字地址结构，也称为”网际套接字地址结构“.struct sockaddr_in定义在头文件&amp;lt;netinet&#x2F;in.h&amp;gt;中，具体如下： 1234567891011121314typedef	uint32_t		in_addr_t;struct in_addr &amp;#123;	in_addr_t s_addr;				&#x2F;&#x2F;">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https:&#x2F;&#x2F;data2.liuin.cn&#x2F;2018-05-22-15269969711360.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;data2.liuin.cn&#x2F;2018-05-22-15269972347844.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;data2.liuin.cn&#x2F;2018-05-22-15269973186591.jpg">
 <meta property="og:image" content="https:&#x2F;&#x2F;data2.liuin.cn&#x2F;2018-05-22-15269974255787.jpg">
-<meta property="og:updated_time" content="2019-12-05T03:01:21.192Z">
+<meta property="og:updated_time" content="2019-12-10T05:16:24.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;data2.liuin.cn&#x2F;2018-05-22-15269969711360.jpg">
 
@@ -353,6 +354,11 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读量<i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
 
           
             <div class="post-wordcount">
@@ -404,7 +410,8 @@
       
 
       
-        <h1 id="Chapter3-套接字编程简介"><a href="#Chapter3-套接字编程简介" class="headerlink" title="Chapter3 套接字编程简介"></a>Chapter3 套接字编程简介</h1><h2 id="套接字地址结构"><a href="#套接字地址结构" class="headerlink" title="套接字地址结构"></a>套接字地址结构</h2><h3 id="IPV4"><a href="#IPV4" class="headerlink" title="IPV4"></a>IPV4</h3><p>套接字地址结构，也称为”网际套接字地址结构“.<code>struct sockaddr_in</code>定义在头文件<code>&lt;netinet/in.h&gt;</code>中，具体如下：</p>
+        <h1 id="Chapter3-套接字编程简介"><a href="#Chapter3-套接字编程简介" class="headerlink" title="Chapter3 套接字编程简介"></a>Chapter3 套接字编程简介</h1><p>[TOC]</p>
+<h2 id="套接字地址结构"><a href="#套接字地址结构" class="headerlink" title="套接字地址结构"></a>套接字地址结构</h2><h3 id="IPV4"><a href="#IPV4" class="headerlink" title="IPV4"></a>IPV4</h3><p>套接字地址结构，也称为”网际套接字地址结构“.<code>struct sockaddr_in</code>定义在头文件<code>&lt;netinet/in.h&gt;</code>中，具体如下：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span>	<span class="keyword">uint32_t</span>		<span class="keyword">in_addr_t</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> &#123;</span></span><br><span class="line">	<span class="keyword">in_addr_t</span> s_addr;				<span class="comment">// 32-bit IPV4 addreass</span></span><br><span class="line">&#125;;												<span class="comment">// network byte ordered</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Socket address, internet style. */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> &#123;</span></span><br><span class="line">	<span class="keyword">uint8_t</span>	sin_len;</span><br><span class="line">	<span class="keyword">sa_family_t</span>	sin_family;</span><br><span class="line">	<span class="keyword">in_port_t</span>	sin_port; </span><br><span class="line">	<span class="class"><span class="keyword">struct</span>	<span class="title">in_addr</span> <span class="title">sin_addr</span>;</span></span><br><span class="line">	<span class="keyword">char</span>	sin_zero[<span class="number">8</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>下面解释下ipv4套接字地址结构中每个字段的意义：</p>
 <ul>
@@ -513,24 +520,6 @@
 
     
 
-    
-      <div>
-        <ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者：</strong>
-    R Cong
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="http://yoursite.com/2019/12/05/3-%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B%E7%AE%80%E4%BB%8B/" title="3-套接字编程简介">http://yoursite.com/2019/12/05/3-%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B%E7%AE%80%E4%BB%8B/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>
-    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-
-      </div>
     
 
     <footer class="post-footer">
@@ -771,6 +760,26 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量<i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
 
 
 
