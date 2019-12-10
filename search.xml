@@ -197,7 +197,8 @@
 <p>​    这6个函数的关系：只有第5个函数:</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">execve</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * path，<span class="keyword">char</span> * <span class="keyword">const</span> argv[]，<span class="keyword">char</span> * <span class="keyword">const</span> envp[])</span></span></span><br></pre></td></tr></table></figure>
 <p>​    是在内核中的system call。其余5个函数都可以通过该函数得到，即该函数是其余函数的库函数。</p>
-<h2 id="并发服务器"><a href="#并发服务器" class="headerlink" title="并发服务器"></a>并发服务器</h2><h3 id="迭代服务器（iterative-server）"><a href="#迭代服务器（iterative-server）" class="headerlink" title="迭代服务器（iterative server）"></a>迭代服务器（iterative server）</h3><h3 id="并发服务器（concurrent-server）"><a href="#并发服务器（concurrent-server）" class="headerlink" title="并发服务器（concurrent server）"></a>并发服务器（concurrent server）</h3>]]></content>
+<h2 id="并发服务器"><a href="#并发服务器" class="headerlink" title="并发服务器"></a>并发服务器</h2><p>见<a href="https://crongbx.github.io/2019/12/10/%E8%BF%AD%E4%BB%A3%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%92%8C%E5%B9%B6%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8/" target="_blank" rel="noopener">另一篇博客</a>。</p>
+]]></content>
       <categories>
         <category>Unix网络编程卷1学习</category>
       </categories>
