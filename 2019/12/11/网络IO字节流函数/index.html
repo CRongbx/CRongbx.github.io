@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="​    介绍TCP套接字编程时常用于网络端读写字节流套接字的三类函数（自己编写）：read 、writen和readline的功能和实现。 ​    同时穿插Unix编程环境中对文件描述符、read、write函数的介绍，size_t和ssize_t的对比。">
+<meta name="keywords" content="read,writen,realine">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.7 网络IO字节流函数">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;11&#x2F;%E7%BD%91%E7%BB%9CIO%E5%AD%97%E8%8A%82%E6%B5%81%E5%87%BD%E6%95%B0&#x2F;index.html">
+<meta property="og:site_name" content="CRongbx Blog">
+<meta property="og:description" content="​    介绍TCP套接字编程时常用于网络端读写字节流套接字的三类函数（自己编写）：read 、writen和readline的功能和实现。 ​    同时穿插Unix编程环境中对文件描述符、read、write函数的介绍，size_t和ssize_t的对比。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-13T08:25:54.084Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/12/11/%E7%BD%91%E7%BB%9CIO%E5%AD%97%E8%8A%82%E6%B5%81%E5%87%BD%E6%95%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>3.7 网络IO字节流函数 | CRongbx Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CRongbx Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">25</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/11/%E7%BD%91%E7%BB%9CIO%E5%AD%97%E8%8A%82%E6%B5%81%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rong CONG">
+      <meta itemprop="description" content="道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CRongbx Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3.7 网络IO字节流函数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-11 10:19:07" itemprop="dateCreated datePublished" datetime="2019-12-11T10:19:07+08:00">2019-12-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-13 16:25:54" itemprop="dateModified" datetime="2019-12-13T16:25:54+08:00">2019-12-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unix%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%8D%B71%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">Unix网络编程卷1学习</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/11/%E7%BD%91%E7%BB%9CIO%E5%AD%97%E8%8A%82%E6%B5%81%E5%87%BD%E6%95%B0/" class="post-meta-item leancloud_visitors" data-flag-title="3.7 网络IO字节流函数" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/12/11/%E7%BD%91%E7%BB%9CIO%E5%AD%97%E8%8A%82%E6%B5%81%E5%87%BD%E6%95%B0/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/11/%E7%BD%91%E7%BB%9CIO%E5%AD%97%E8%8A%82%E6%B5%81%E5%87%BD%E6%95%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​    介绍TCP套接字编程时常用于网络端读写字节流套接字的三类函数（自己编写）：<code>read</code> 、<code>writen</code>和<code>readline</code>的功能和实现。</p>
+<p>​    同时穿插Unix编程环境中对文件描述符、<code>read</code>、<code>write</code>函数的介绍，<code>size_t</code>和<code>ssize_t</code>的对比。</p>
+<a id="more"></a>
+<p>​    介绍这三个函数前先强调一点：<strong><em>网络中字节流套接字的read, write读写的字节数可能 &lt;&lt; 请求data size</em></strong>.所以在网络编程时，需要<strong>多次从缓冲区中读写</strong>，直到取完所有的数据。</p>
+<h2 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 均返回：读/写的字节数（ssize_t），出错返回-1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// 从一个描述符读文本行，1次1个字节</span></span><br><span class="line"><span class="keyword">ssize_t</span>  readline(<span class="keyword">int</span> filedes, <span class="keyword">void</span> * buff, <span class="keyword">size_t</span> n);</span><br><span class="line"><span class="comment">// 从一个描述符读n字节</span></span><br><span class="line"><span class="keyword">ssize_t</span>  readn(iint filedes, <span class="keyword">void</span> * buff, <span class="keyword">size_t</span> n);</span><br><span class="line"><span class="comment">// 往一个描述符写n个字节</span></span><br><span class="line"><span class="keyword">ssize_t</span>  writen(<span class="keyword">int</span> filedes, <span class="keyword">const</span> <span class="keyword">void</span> * buff, <span class="keyword">size_t</span> n);</span><br></pre></td></tr></table></figure>
+<h2 id="file-descriptor文件描述符"><a href="#file-descriptor文件描述符" class="headerlink" title="file descriptor文件描述符"></a>file descriptor文件描述符</h2><p>​    file descriptor通常是一个小的非负整数，内核用以标识一个特定进程正在访问的文件。</p>
+<p>​    当内核打开一个现有文件或创建并打开一个新文件时，它都会返回一个文件描述符。在读写该文件时，就用这个文件描述符。</p>
+<h3 id="ssize-t和size-t"><a href="#ssize-t和size-t" class="headerlink" title="ssize_t和size_t"></a>ssize_t和size_t</h3><p><code>size_t</code>: 对象（如字符串）长度（<strong>无符号的</strong>）</p>
+<p><code>ssize_t</code>：返回字节计数的函数（<strong>带符号的</strong>）</p>
+<p>上面的函数在声明时提到返回值-1代表出错，所以需要有符号的返回值类型<code>ssize_t</code></p>
+<h2 id="实现-readn函数"><a href="#实现-readn函数" class="headerlink" title="实现: readn函数"></a>实现: readn函数</h2><p>​    从一个描述符读n个字节。（实现时已经考虑到了网络缓冲导致的多次read）</p>
+<h2 id="read函数"><a href="#read函数" class="headerlink" title="read函数"></a>read函数</h2><p>​    从打开文件中读取n个字节。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="comment">// 返回：读到的字节数，若已到文件尾，返回0；若出错，返回-1</span></span><br><span class="line"><span class="keyword">ssize_t</span> read(<span class="keyword">int</span> fd, <span class="keyword">void</span>* buff, <span class="keyword">size_t</span> nbytes);</span><br></pre></td></tr></table></figure>
+<p>​    使用read函数时一定要注意“<strong>实际读到的字节数小于要求读的字节数</strong>”的情况。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"lib/unp.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 从一个描述符读n字节</span></span><br><span class="line"><span class="keyword">ssize_t</span>  readn(iint fd, <span class="keyword">void</span> * buff, <span class="keyword">size_t</span> n)</span><br><span class="line">&#123;</span><br><span class="line">     <span class="keyword">size_t</span>     nleft;    <span class="comment">// read函数的参数size_t n</span></span><br><span class="line">     <span class="keyword">ssize_t</span>    nread;    <span class="comment">// read函数的返回值：读到的字节数，若已到文件尾，返回0；若出错，返回-1</span></span><br><span class="line">     <span class="keyword">char</span>       *ptr;     <span class="comment">// read函数的参数buff</span></span><br><span class="line"></span><br><span class="line">     ptr = buff;</span><br><span class="line">     nleft = n;</span><br><span class="line">     <span class="comment">// 使用while多次read是因为：使用read从网络读时，网络的缓冲机制可能造成返回值</span></span><br><span class="line">     <span class="comment">// 小于所读的字节数，所以需要多次读</span></span><br><span class="line">     <span class="keyword">while</span> (nleft &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span> ( (nread = read(fd, ptr, nleft)) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">// read出错</span></span><br><span class="line">            <span class="keyword">if</span> (errno == EINTR)</span><br><span class="line">                nread = <span class="number">0</span>;      <span class="comment">// 处理不足的字节计数值（避免调用者来处理）：and call read() again</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">return</span> (<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (nread == <span class="number">0</span>)</span><br><span class="line">            <span class="comment">// read到文件尾</span></span><br><span class="line">            <span class="keyword">break</span>;      <span class="comment">// EOF</span></span><br><span class="line">        <span class="comment">// 还没读完，还要read</span></span><br><span class="line">        nleft -= nread;</span><br><span class="line">        ptr += nread;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 成功，返回读入的字节数</span></span><br><span class="line">     <span class="keyword">return</span> (n-nleft);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>errno == <code>EINTR</code>的含义在头文件<code>sys/errno.h</code>可以查找：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> EINTR           4               <span class="comment">/* Interrupted system call */</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="实现-writen函数"><a href="#实现-writen函数" class="headerlink" title="实现: writen函数"></a>实现: writen函数</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ssize_t</span> writen(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">void</span> *buff, <span class="keyword">size_t</span> n)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">size_t</span>      nleft;</span><br><span class="line">    <span class="keyword">ssize_t</span>     nwritten;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">void</span>  *ptr;</span><br><span class="line"></span><br><span class="line">    ptr = buff;</span><br><span class="line">    nleft = n;</span><br><span class="line">    <span class="keyword">while</span>(nleft &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span> ((nwritten = write(fd, ptr, nleft)) &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (nwritten &lt; <span class="number">0</span> &amp;&amp; errno == EINTR)</span><br><span class="line">                nwritten = <span class="number">0</span>;   <span class="comment">// and call write() again</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">return</span> (<span class="number">-1</span>);    <span class="comment">//error</span></span><br><span class="line">        &#125;</span><br><span class="line">        nleft -= nwritten;</span><br><span class="line">        ptr += nwritten;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="实现-readline函数"><a href="#实现-readline函数" class="headerlink" title="实现: readline函数"></a>实现: readline函数</h2><p>有两个版本：</p>
+<ul>
+<li>每次调用read函数读入1个字节【低效】</li>
+<li>从缓冲区读入【高效】</li>
+</ul>
+<h3 id="低效版"><a href="#低效版" class="headerlink" title="低效版"></a>低效版</h3><p>​    本方法的低效在于第19行代码，每读入1个字节就要调用一次read()，非常低效。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 从一个描述符读入1行文本，一次1个字节[slow version]</span></span><br><span class="line"><span class="comment"> * @Author   congrong</span></span><br><span class="line"><span class="comment"> * @DateTime 2019-12-13T14:27:01+0800</span></span><br><span class="line"><span class="comment"> * @param    fd                       [description]</span></span><br><span class="line"><span class="comment"> * @param    buff                     [description]</span></span><br><span class="line"><span class="comment"> * @param    maxlen                   文本行最大读入长度</span></span><br><span class="line"><span class="comment"> * @return                            读入的字节数；若出错，返回-1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">ssize_t</span> readline (<span class="keyword">int</span> fd, <span class="keyword">void</span>* buff, <span class="keyword">size_t</span> maxlen)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">ssize_t</span>     n, rc;      <span class="comment">// 读入的字节数； read()的返回值</span></span><br><span class="line">    <span class="keyword">char</span>        c, *ptr;</span><br><span class="line"></span><br><span class="line">    ptr = buff;</span><br><span class="line">    <span class="keyword">for</span> (n = <span class="number">1</span>; n &lt; maxlen; n++)&#123;</span><br><span class="line">    again:</span><br><span class="line">        <span class="comment">// 本方法每读入1个字节就要调用一次read()，非常低效。</span></span><br><span class="line">        <span class="keyword">if</span> ( (rc = read(fd, ptr, <span class="number">1</span>)) == <span class="number">1</span>)&#123; </span><br><span class="line">            <span class="comment">// 成功read 1-byte.</span></span><br><span class="line">            *ptr++ = c;</span><br><span class="line">            <span class="keyword">if</span> ( c == <span class="string">'\n'</span>) <span class="comment">// 换行符也读，读完1行跳出循环 newline is stored, like fgets()</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (rc == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">// read到文件尾</span></span><br><span class="line">            *ptr = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">return</span> (n<span class="number">-1</span>);   <span class="comment">// EOF</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (errno == EINTR)</span><br><span class="line">                <span class="keyword">goto</span> again;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    *ptr = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="改进版"><a href="#改进版" class="headerlink" title="改进版"></a>改进版</h3><p>​    建议使用缓冲区读入，而不是文本行。</p>
+<pre><code>#### 为何不用stdio？
+</code></pre><p>​    stdio的缓冲机制虽然能解决本问题，但是由于其缓冲区的状态是不可见的，所以可能导致许多隐蔽的缺陷。Richard建议自己编写从缓冲区读取数据的代码，当期待一个文本行时，就查看缓冲区中是否含有那一行。</p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><p>​    从缓冲区<code>static *char* read_buff[MAXLINE]</code>读入。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"unp.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * readline: 从一个描述符读入1行文本（）通过缓冲区读入）</span></span><br><span class="line"><span class="comment"> * @Author   congrong</span></span><br><span class="line"><span class="comment"> * @DateTime 2019-12-13T14:27:01+0800</span></span><br><span class="line"><span class="comment"> * @param    fd                       [description]</span></span><br><span class="line"><span class="comment"> * @param    buff                     [description]</span></span><br><span class="line"><span class="comment"> * @param    maxlen                   文本行最大读入长度</span></span><br><span class="line"><span class="comment"> * @return                            读入的字节数；若出错，返回-1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span>  read_cnt;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">char</span> *read_ptr;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">char</span> read_buff[MAXLINE];</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 从缓冲区读入1个字符 */</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">ssize_t</span></span><br><span class="line">my_read(<span class="keyword">int</span> fd, <span class="keyword">char</span> *ptr)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (read_cnt &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">    again:</span><br><span class="line">        <span class="keyword">if</span> ( (read_cnt = read(fd, read_buff, <span class="keyword">sizeof</span>(read_buff))) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (errno == EINTR)</span><br><span class="line">                <span class="keyword">goto</span> again;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (read_cnt == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        read_ptr = read_buff;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    read_cnt--;</span><br><span class="line">    *ptr = *read_ptr++;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">ssize_t</span> readline (<span class="keyword">int</span> fd, <span class="keyword">void</span>* buff, <span class="keyword">size_t</span> maxlen)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">ssize_t</span>     n, rc;      <span class="comment">// 读入的字节数； read()的返回值</span></span><br><span class="line">    <span class="keyword">char</span>        c, *ptr;</span><br><span class="line"></span><br><span class="line">    ptr = buff;</span><br><span class="line">    <span class="keyword">for</span> (n = <span class="number">1</span>; n &lt; maxlen; n++)&#123;</span><br><span class="line">        <span class="keyword">if</span> ( (rc = my_read(fd, &amp;c)) == <span class="number">1</span>)&#123; </span><br><span class="line">            <span class="comment">// 成功read 1-byte.</span></span><br><span class="line">            *ptr++ = c;</span><br><span class="line">            <span class="keyword">if</span> ( c == <span class="string">'\n'</span>) <span class="comment">// 换行符也读，读完1行跳出循环 newline is stored, like fgets()</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (rc == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">// read到文件尾</span></span><br><span class="line">            *ptr = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">return</span> (n<span class="number">-1</span>);   <span class="comment">// EOF</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    *ptr = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">ssize_t</span> </span><br><span class="line">readlinebuf(<span class="keyword">void</span> **vptrptr)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (read_cnt)</span><br><span class="line">        *vptrptr = read_ptr;</span><br><span class="line">    <span class="keyword">return</span> (read_cnt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/read/" rel="tag"># read</a>
+              <a href="/tags/writen/" rel="tag"># writen</a>
+              <a href="/tags/realine/" rel="tag"># realine</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/10/4-%E5%9F%BA%E6%9C%ACTCP%E5%A5%97%E6%8E%A5%E5%AD%97%E7%BC%96%E7%A8%8B/" rel="prev" title="4-基本TCP套接字编程">
+      <i class="fa fa-chevron-left"></i> 4-基本TCP套接字编程
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数原型"><span class="nav-number">1.</span> <span class="nav-text">函数原型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#file-descriptor文件描述符"><span class="nav-number">2.</span> <span class="nav-text">file descriptor文件描述符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ssize-t和size-t"><span class="nav-number">2.1.</span> <span class="nav-text">ssize_t和size_t</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现-readn函数"><span class="nav-number">3.</span> <span class="nav-text">实现: readn函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#read函数"><span class="nav-number">4.</span> <span class="nav-text">read函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现-writen函数"><span class="nav-number">5.</span> <span class="nav-text">实现: writen函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现-readline函数"><span class="nav-number">6.</span> <span class="nav-text">实现: readline函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#低效版"><span class="nav-number">6.1.</span> <span class="nav-text">低效版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改进版"><span class="nav-number">6.2.</span> <span class="nav-text">改进版</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码"><span class="nav-number">6.2.1.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rong CONG</p>
+  <div class="site-description" itemprop="description">道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CRongbx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CRongbx" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Crong0507@163.com" title="E-Mail → mailto:Crong0507@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rong CONG</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('[object Object]', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'FnnYfirMaecKt74yG3XtWlxL-gzGzoHsz',
+      appKey: 'AzgBpLdxSxwhFdPsjSo96NpK',
+      placeholder: "Just go go",
+      avatar: '/images/headerImage.png',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
