@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。">
+<meta name="keywords" content="Makefile">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Makefile入门">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;Makefile%E5%85%A5%E9%97%A8&#x2F;index.html">
+<meta property="og:site_name" content="CRongbx Blog">
+<meta property="og:description" content="​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-15T05:22:09.928Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/12/15/Makefile%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Makefile入门 | CRongbx Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CRongbx Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">36</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">10</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">26</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/15/Makefile%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rong CONG">
+      <meta itemprop="description" content="道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CRongbx Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Makefile入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-15 13:22:09" itemprop="dateCreated datePublished" datetime="2019-12-15T13:22:09+08:00">2019-12-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Makefile/" itemprop="url" rel="index">
+                    <span itemprop="name">Makefile</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/15/Makefile%E5%85%A5%E9%97%A8/" class="post-meta-item leancloud_visitors" data-flag-title="Makefile入门" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/12/15/Makefile%E5%85%A5%E9%97%A8/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/15/Makefile%E5%85%A5%E9%97%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。</p>
+<a id="more"></a>
+<h1 id="Makefile简介"><a href="#Makefile简介" class="headerlink" title="Makefile简介"></a>Makefile简介</h1><p>make命令执行时，需要一个makefile文件，以告诉make命令需要怎么样的去编译和链接程序。</p>
+<p>比较权威的文档是<a href="https://www.gnu.org/software/make/manual/make.html" target="_blank" rel="noopener">GUN make手册</a>。</p>
+<h1 id="Makefile的规则"><a href="#Makefile的规则" class="headerlink" title="Makefile的规则"></a>Makefile的规则</h1><p>​    Makefile的由一系列规则（rules）组成。每条规则的形式如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;target&gt; : &lt;prerequisites&gt;</span><br><span class="line">[tab] &lt;commands&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>target: 指明make命令要构建的对象</li>
+<li>prerequisites: 指明生成target需要依赖的库和对象，以及target是否需要重建的判断标准</li>
+<li>command: 指明该target要执行的shell命令</li>
+</ul>
+<p>makefile运行的核心规则是：<br>==prerequisites中如果有一个以上的文件比target文件要新的话，command所定义的命令就会被执行。==</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="\目标"></a>\<target\>目标</h2><p>​    一个target就构成了一条规则。目标通常是文件名或伪目标，指明make命令要构建的对象是什么。如果目标是多个文件名，则每个文件用空格分隔开。</p>
+<hr>
+<p>​    伪目标（phony target）：某个操作的名字<br>​    比如我们经常在Makefile中看到这样的代码：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm *.o temp</span><br></pre></td></tr></table></figure>
+<p>​    这个指明了<code>clean</code>操作时的动作。当我们执行命令<code>make clean</code>时，实际会执行定义的rm命令。</p>
+<p>​    但以上代码有个问题：如果当前目录中，正好有一个文件叫做clean，那make时会对谁操作呢？根据make的规则，它会对clean文件操作。这样的话，我们编写的rm命令就不会被执行。<br>​    为了避免这类情况，可以通过关键词<code>.PHONY</code>明确声明clean是“伪目标”:</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm *.o temp</span><br></pre></td></tr></table></figure>
+<p>​    这样声明后，make就不会去查看是否存在一个叫clean的文件，而是每次运行都执行对应的命令。</p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="\前置条件"></a>\<prerequisites>前置条件</h2><p>​    前置条件指定了目标是否重新构建的判断标准：==只要有一个前置文件不存在，或有过更新（last-modification时间戳比目标时间戳新）,目标就需要重新构建。==</p>
+<p>​    比如：如果当前目录中source.txt不存在，则<code>make result.txt</code>不能成功执行。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">result.txt: source.txt</span></span><br><span class="line">	cp source.txt result.txt</span><br></pre></td></tr></table></figure>
+<hr>
+<p>​    如果要生成多个文件：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">source: file1 file2 file3</span></span><br></pre></td></tr></table></figure>
+<p>​    执行命令<code>make source</code>相当于执行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make file1</span><br><span class="line">make file2</span><br><span class="line">make file3</span><br></pre></td></tr></table></figure>
+<h1 id="Makefile的语法"><a href="#Makefile的语法" class="headerlink" title="Makefile的语法"></a>Makefile的语法</h1><h2 id="关闭回声"><a href="#关闭回声" class="headerlink" title="关闭回声"></a>关闭回声</h2><p>make命令默认执行时会打印每条命令（echoing回声），若不想打印，在命令前加上<code>@</code>即可。</p>
+<h2 id="变量和赋值"><a href="#变量和赋值" class="headerlink" title="变量和赋值"></a>变量和赋值</h2><p>Makefile使用<code>=</code> 自定义变量并赋值。</p>
+<p>使用变量时要将变量放在<code>$()</code>内.</p>
+<p>变量之间也可以互相赋值。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = hello world</span><br><span class="line"><span class="section">test:</span></span><br><span class="line">	@echo <span class="variable">$(txt)</span></span><br><span class="line">b = <span class="variable">$(a)</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>Makefile提供了4种赋值运算符：</p>
+<ul>
+<li><code>=</code>在执行时拓展，允许递归扩展</li>
+<li><code>:=</code>在定义时扩展</li>
+<li><code>?=</code>只有在该变量为空时才设置值</li>
+<li><code>+=</code>将值追加到变量尾端</li>
+</ul>
+<h2 id="内置变量Implicit-Variables"><a href="#内置变量Implicit-Variables" class="headerlink" title="内置变量Implicit Variables"></a>内置变量Implicit Variables</h2><p>​    内置变量是make命令本身提供的一组变量，内置变量的值往往和当前工具有关，是个<strong>静态常值</strong>。比如: <code>$(CC)</code>指当前使用的编译器。<code>$(MAKE)</code>指向当前使用的Make工具。</p>
+<p>​    在makefile中，常使用这样的命令：<code>gcc input -o output</code>，在Makefile中可以这样编写：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">output:</span></span><br><span class="line">	<span class="variable">$(CC)</span> input.c -o output</span><br></pre></td></tr></table></figure>
+<h2 id="自动变量Automatic-variables"><a href="#自动变量Automatic-variables" class="headerlink" title="自动变量Automatic variables"></a>自动变量Automatic variables</h2><p>​    自动变量也是由make命令本身提供的一组变量，和内置变量不同，它们的值和当前规则有关，会随着makefile中编写规则的不同而有所不同。</p>
+<p>​    下面给出几个常用的自动变量：</p>
+<h3 id="当前目标"><a href="#当前目标" class="headerlink" title="$@当前目标"></a>$@当前目标</h3><p>​    <code>$@</code>指当前make命令构建的那个target。比如<code>make a</code>的<code>$@</code>就指<code>a</code></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a.out b.out:</span><br><span class="line">	touch <span class="variable">$@</span></span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line"><span class="section">a.out:</span></span><br><span class="line">	touch a.out</span><br><span class="line"><span class="section">b.out:</span></span><br><span class="line">	touch b.out</span><br></pre></td></tr></table></figure>
+<h3 id="lt-第一个前置条件"><a href="#lt-第一个前置条件" class="headerlink" title="$&lt;第一个前置条件"></a>$&lt;第一个前置条件</h3><p>​    比如<code>a: b c</code>那么这里的<code>$&lt;</code>指的是<code>b</code></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">a.txt: b.txt c.txt</span></span><br><span class="line">	cp</span><br></pre></td></tr></table></figure>
+<h3 id="比target更新的所有前置条件"><a href="#比target更新的所有前置条件" class="headerlink" title="$?比target更新的所有前置条件"></a>$?比target更新的所有前置条件</h3><h3 id="匹配符-匹配的部分"><a href="#匹配符-匹配的部分" class="headerlink" title="$*匹配符%匹配的部分"></a>$*匹配符%匹配的部分</h3><h3 id="D-目录名-F-文件名"><a href="#D-目录名-F-文件名" class="headerlink" title="$(@D)目录名  $(@F)文件名"></a>$(@D)目录名  $(@F)文件名</h3><h3 id="lt-D-lt-F-第一个前置条件的目录名和文件名"><a href="#lt-D-lt-F-第一个前置条件的目录名和文件名" class="headerlink" title="$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名"></a>$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名</h3><h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断当前编译器是否gcc，指定不同的库文件</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(CC)</span>, gcc)</span><br><span class="line">	libs = <span class="variable">$(libs_for_gcc)</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	libs = <span class="variable">$(normal_libs)</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LIST = one two three</span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    for i in <span class="variable">$(LIST)</span>; do \</span><br><span class="line">        echo $$i; \</span><br><span class="line">    done</span><br></pre></td></tr></table></figure>
+<h1 id="makefile实例-编译C语言项目"><a href="#makefile实例-编译C语言项目" class="headerlink" title="makefile实例-编译C语言项目"></a>makefile实例-编译C语言项目</h1><h2 id="版本1"><a href="#版本1" class="headerlink" title="版本1"></a>版本1</h2><p>​    举个例子，项目包含3个头文件（defs.h, command.h buffer.h）和8个.c文件（defs.c, command.c, buffer.c, main.c, kbd.c, insert.c, display.c, search.c, files.c, utils.c）</p>
+<p>​    编写的Makefile文件如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">edit : main.o kbd.o command.o display.o \</span><br><span class="line">        insert.o search.o files.o utils.o</span><br><span class="line">    cc -o edit main.o kbd.o command.o display.o \</span><br><span class="line">        insert.o search.o files.o utils.o</span><br><span class="line"></span><br><span class="line">main.o : main.c defs.h</span><br><span class="line">    cc -c main.c</span><br><span class="line">kbd.o : kbd.c defs.h command.h</span><br><span class="line">    cc -c kbd.c</span><br><span class="line">command.o : command.c defs.h command.h</span><br><span class="line">    cc -c command.c</span><br><span class="line">display.o : display.c defs.h buffer.h</span><br><span class="line">    cc -c display.c</span><br><span class="line">insert.o : insert.c defs.h buffer.h</span><br><span class="line">    cc -c insert.c</span><br><span class="line">search.o : search.c defs.h buffer.h</span><br><span class="line">    cc -c search.c</span><br><span class="line">files.o : files.c defs.h buffer.h command.h</span><br><span class="line">    cc -c files.c</span><br><span class="line">utils.o : utils.c defs.h</span><br><span class="line">    cc -c utils.c</span><br><span class="line">clean :</span><br><span class="line">    rm edit main.o kbd.o command.o display.o \</span><br><span class="line">        insert.o search.o files.o utils.o</span><br></pre></td></tr></table></figure>
+<p>​    <code>\</code>表示换行符，无实际意义，只是为了方便makefile文件的阅读和编写。</p>
+<p>​    上述Makefile文件，直接在该目录下输入<code>make</code>就可以生成文件edit；输入<code>make clean</code>则会删除可执行文件和所有的中间目标文件。</p>
+<p>​    <code>.o</code>文件是中间目标文件，每个.o文件都依赖于若干.c和.h文件，而最终的可执行文件edit又依赖于若干.o文件。</p>
+<blockquote>
+<h2 id="make是如何工作的"><a href="#make是如何工作的" class="headerlink" title="make是如何工作的"></a>make是如何工作的</h2><p>在默认的方式下，也就是我们只输入 <code>make</code> 命令。那么，</p>
+<ol>
+<li>make会在当前目录下找名字叫“Makefile”或“makefile”的文件。</li>
+<li>如果找到，它会找文件中的第一个目标文件（target），在上面的例子中，他会找到“edit”这个 文件，并把这个文件作为最终的目标文件。</li>
+<li>如果edit文件不存在，或是edit所依赖的后面的 <code>.o</code> 文件的文件修改时间要比 <code>edit</code> 这个 文件新，那么，他就会执行后面所定义的命令来生成 <code>edit</code> 这个文件。</li>
+<li>如果 <code>edit</code> 所依赖的 <code>.o</code> 文件也不存在，那么make会在当前文件中找目标为 <code>.o</code> 文件 的依赖性，如果找到则再根据那一个规则生成 <code>.o</code> 文件。（这有点像一个堆栈的过程）</li>
+<li>当然，你的C文件和H文件是存在的啦，于是make会生成 <code>.o</code> 文件，然后再用 <code>.o</code> 文件生 成make的终极任务，也就是执行文件 <code>edit</code> 了。</li>
+</ol>
+</blockquote>
+<h2 id="版本2"><a href="#版本2" class="headerlink" title="版本2"></a>版本2</h2><p>​    上述代码对于.o文件会增删的情况比较麻烦，需要在3个地方改动。为了方便后期维护，我们可以将可执行文件依赖的.o变为一个字符串变量。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">objects = main.o kbd.o command.o display.o \</span><br><span class="line">        insert.o search.o files.o utils.o</span><br><span class="line">        </span><br><span class="line">edit : <span class="variable">$(objects)</span></span><br><span class="line">    cc -o edit <span class="variable">$(objects)</span></span><br><span class="line"></span><br><span class="line">main.o : main.c defs.h</span><br><span class="line">    cc -c main.c</span><br><span class="line">kbd.o : kbd.c defs.h command.h</span><br><span class="line">    cc -c kbd.c</span><br><span class="line">command.o : command.c defs.h command.h</span><br><span class="line">    cc -c command.c</span><br><span class="line">display.o : display.c defs.h buffer.h</span><br><span class="line">    cc -c display.c</span><br><span class="line">insert.o : insert.c defs.h buffer.h</span><br><span class="line">    cc -c insert.c</span><br><span class="line">search.o : search.c defs.h buffer.h</span><br><span class="line">    cc -c search.c</span><br><span class="line">files.o : files.c defs.h buffer.h command.h</span><br><span class="line">    cc -c files.c</span><br><span class="line">utils.o : utils.c defs.h</span><br><span class="line">    cc -c utils.c</span><br><span class="line">clean :</span><br><span class="line">    rm edit <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
+<h2 id="版本3"><a href="#版本3" class="headerlink" title="版本3"></a>版本3</h2><p>​    问题1：</p>
+<p>​    上述代码还有一个问题（23-24），如果当前目录下恰好有个文件clean，那么执行<code>make clean</code>命令它会对clean文件进行操作，我们的<code>rm edit $(objects)</code>就不会被执行。</p>
+<p>​    如何避免上述问题呢？使用前文提过的<strong>伪目标</strong><code>.PHONY</code>,这样声明后，make就不会去查看是否存在一个叫clean的文件，而是每次运行都执行对应的命令。</p>
+<hr>
+<p>​    问题2：</p>
+<p>​    上文的Makefile文件（7-22）每个文件都写了类似的编译命令。如utils.o文件依赖于utils.c文件，且编译时通过命令<code>cc -c utils.c</code>。这种东西实际上比较无脑，GNU的make可以自动帮我们推导这类依赖关系和命令，我们不需要再在每一个<code>.o</code>文件后都写上类似的命令。</p>
+<hr>
+<p>​    综合上述两个问题，我们得到版本3的Makefile文件：有没有感觉清爽了不少呢~</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">objects = main.o kbd.o command.o display.o \</span><br><span class="line">        insert.o search.o files.o utils.o</span><br><span class="line">        </span><br><span class="line">edit : <span class="variable">$(objects)</span></span><br><span class="line">    cc -o edit <span class="variable">$(objects)</span></span><br><span class="line"></span><br><span class="line">main.o : defs.h</span><br><span class="line">kbd.o : defs.h command.h</span><br><span class="line">command.o : defs.h command.h</span><br><span class="line">display.o : defs.h buffer.h</span><br><span class="line">insert.o : defs.h buffer.h</span><br><span class="line">search.o : defs.h buffer.h</span><br><span class="line">files.o :  defs.h buffer.h command.h</span><br><span class="line">utils.o :  defs.h</span><br><span class="line"></span><br><span class="line">.PHONY : clean</span><br><span class="line">clean :</span><br><span class="line">    rm edit <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://www.ruanyifeng.com/blog/2015/02/make.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/02/make.html</a></li>
+<li><a href="https://seisman.github.io/how-to-write-makefile/introduction.html" target="_blank" rel="noopener">https://seisman.github.io/how-to-write-makefile/introduction.html</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Makefile/" rel="tag"># Makefile</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/11/%E7%BD%91%E7%BB%9CIO%E5%AD%97%E8%8A%82%E6%B5%81%E5%87%BD%E6%95%B0/" rel="prev" title="3.7 网络IO字节流函数">
+      <i class="fa fa-chevron-left"></i> 3.7 网络IO字节流函数
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile简介"><span class="nav-number">1.</span> <span class="nav-text">Makefile简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile的规则"><span class="nav-number">2.</span> <span class="nav-text">Makefile的规则</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">2.1.</span> <span class="nav-text">\目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前置条件"><span class="nav-number">2.2.</span> <span class="nav-text">\前置条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile的语法"><span class="nav-number">3.</span> <span class="nav-text">Makefile的语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭回声"><span class="nav-number">3.1.</span> <span class="nav-text">关闭回声</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量和赋值"><span class="nav-number">3.2.</span> <span class="nav-text">变量和赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内置变量Implicit-Variables"><span class="nav-number">3.3.</span> <span class="nav-text">内置变量Implicit Variables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动变量Automatic-variables"><span class="nav-number">3.4.</span> <span class="nav-text">自动变量Automatic variables</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#当前目标"><span class="nav-number">3.4.1.</span> <span class="nav-text">$@当前目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-第一个前置条件"><span class="nav-number">3.4.2.</span> <span class="nav-text">$&lt;第一个前置条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比target更新的所有前置条件"><span class="nav-number">3.4.3.</span> <span class="nav-text">$?比target更新的所有前置条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配符-匹配的部分"><span class="nav-number">3.4.4.</span> <span class="nav-text">$*匹配符%匹配的部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D-目录名-F-文件名"><span class="nav-number">3.4.5.</span> <span class="nav-text">$(@D)目录名  $(@F)文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-D-lt-F-第一个前置条件的目录名和文件名"><span class="nav-number">3.4.6.</span> <span class="nav-text">$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断"><span class="nav-number">3.4.7.</span> <span class="nav-text">判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环"><span class="nav-number">3.4.8.</span> <span class="nav-text">循环</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#makefile实例-编译C语言项目"><span class="nav-number">4.</span> <span class="nav-text">makefile实例-编译C语言项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#版本1"><span class="nav-number">4.1.</span> <span class="nav-text">版本1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#make是如何工作的"><span class="nav-number">4.2.</span> <span class="nav-text">make是如何工作的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本2"><span class="nav-number">4.3.</span> <span class="nav-text">版本2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本3"><span class="nav-number">4.4.</span> <span class="nav-text">版本3</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rong CONG</p>
+  <div class="site-description" itemprop="description">道阻且长，行则将至</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CRongbx" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CRongbx" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:Crong0507@163.com" title="E-Mail → mailto:Crong0507@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rong CONG</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('[object Object]', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'FnnYfirMaecKt74yG3XtWlxL-gzGzoHsz',
+      appKey: 'AzgBpLdxSxwhFdPsjSo96NpK',
+      placeholder: "Just go go",
+      avatar: '/images/headerImage.png',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
