@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>MacOS Catalina下npm失败</title>
+    <url>/2019/12/15/MacOS-Catalina%E4%B8%8Bnpm%E5%A4%B1%E8%B4%A5/</url>
+    <content><![CDATA[<p>Catalina下，<code>npm install</code>始终失败，即使更新也无用。</p>
+<p>原因：catalina不允许随意改变内核文件<code>\usr</code>路径下的内容</p>
+<p>方法：重启系统，command+R，打开终端输入<code>csrutil disable</code></p>
+]]></content>
+      <tags>
+        <tag>Catalina</tag>
+        <tag>npm</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Makefile入门</title>
     <url>/2019/12/15/Makefile%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<p>​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。</p>
