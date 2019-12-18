@@ -46,16 +46,18 @@
   };
 </script>
 
-  <meta name="description" content="​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。">
+  <meta name="description" content="​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。 ​    19年12月16日更新 ： 1.  `gcc -MP`选项进一步精简；  2.  Makefile中`gcc`和`cc`的区别和关联。  3.  判断语句的两种写法。">
 <meta name="keywords" content="Makefile">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Makefile入门">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;15&#x2F;Makefile%E5%85%A5%E9%97%A8&#x2F;index.html">
 <meta property="og:site_name" content="CRongbx Blog">
-<meta property="og:description" content="​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。">
+<meta property="og:description" content="​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。 ​    19年12月16日更新 ： 1.  `gcc -MP`选项进一步精简；  2.  Makefile中`gcc`和`cc`的区别和关联。  3.  判断语句的两种写法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-15T05:22:09.928Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20160414160340800?watermark&#x2F;2&#x2F;text&#x2F;aHR0cDovL2Jsb2cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA==&#x2F;dissolve&#x2F;70&#x2F;gravity&#x2F;Center">
+<meta property="og:updated_time" content="2019-12-16T12:01:07.999Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;img-blog.csdn.net&#x2F;20160414160340800?watermark&#x2F;2&#x2F;text&#x2F;aHR0cDovL2Jsb2cuY3Nkbi5uZXQv&#x2F;font&#x2F;5a6L5L2T&#x2F;fontsize&#x2F;400&#x2F;fill&#x2F;I0JBQkFCMA==&#x2F;dissolve&#x2F;70&#x2F;gravity&#x2F;Center">
 
 <link rel="canonical" href="http://yoursite.com/2019/12/15/Makefile%E5%85%A5%E9%97%A8/">
 
@@ -154,7 +156,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">27</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">28</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -231,6 +233,13 @@
 
               <time title="创建时间：2019-12-15 13:22:09" itemprop="dateCreated datePublished" datetime="2019-12-15T13:22:09+08:00">2019-12-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-16 20:01:07" itemprop="dateModified" datetime="2019-12-16T20:01:07+08:00">2019-12-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -276,9 +285,14 @@
 
       
         <p>​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。</p>
-<a id="more"></a>
-<h1 id="Makefile简介"><a href="#Makefile简介" class="headerlink" title="Makefile简介"></a>Makefile简介</h1><p>make命令执行时，需要一个makefile文件，以告诉make命令需要怎么样的去编译和链接程序。</p>
-<p>比较权威的文档是<a href="https://www.gnu.org/software/make/manual/make.html" target="_blank" rel="noopener">GUN make手册</a>。</p>
+<p>​    19年12月16日更新 ：</p>
+<pre><code>1.  `gcc -MP`选项进一步精简；
+ 2.  Makefile中`gcc`和`cc`的区别和关联。
+ 3.  判断语句的两种写法。
+</code></pre><a id="more"></a>
+<h1 id="Makefile简介"><a href="#Makefile简介" class="headerlink" title="Makefile简介"></a>Makefile简介</h1><p>​    make命令执行时，需要一个makefile文件，以告诉make命令需要怎么样的去编译和链接程序。</p>
+<p>​    为什么要编写Makefile呢？Windows或macOS环境下，有VS2015, Eclipse, XCode等优秀的IDE作为开发工具，只需要点击下编译运行的按钮就可以运行程序了。但是Unix环境下的开发工作，没有IDE，怎么样才能编译运行我们写的代码呢？编写Makefile“自动编译”。</p>
+<p>​    比较权威的文档是<a href="https://www.gnu.org/software/make/manual/make.html" target="_blank" rel="noopener">GUN make手册</a>。</p>
 <h1 id="Makefile的规则"><a href="#Makefile的规则" class="headerlink" title="Makefile的规则"></a>Makefile的规则</h1><p>​    Makefile的由一系列规则（rules）组成。每条规则的形式如下：</p>
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;target&gt; : &lt;prerequisites&gt;</span><br><span class="line">[tab] &lt;commands&gt;</span><br></pre></td></tr></table></figure>
 <ul>
@@ -325,7 +339,16 @@
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a.out b.out:</span><br><span class="line">	touch <span class="variable">$@</span></span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line"><span class="section">a.out:</span></span><br><span class="line">	touch a.out</span><br><span class="line"><span class="section">b.out:</span></span><br><span class="line">	touch b.out</span><br></pre></td></tr></table></figure>
 <h3 id="lt-第一个前置条件"><a href="#lt-第一个前置条件" class="headerlink" title="$&lt;第一个前置条件"></a>$&lt;第一个前置条件</h3><p>​    比如<code>a: b c</code>那么这里的<code>$&lt;</code>指的是<code>b</code></p>
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">a.txt: b.txt c.txt</span></span><br><span class="line">	cp</span><br></pre></td></tr></table></figure>
-<h3 id="比target更新的所有前置条件"><a href="#比target更新的所有前置条件" class="headerlink" title="$?比target更新的所有前置条件"></a>$?比target更新的所有前置条件</h3><h3 id="匹配符-匹配的部分"><a href="#匹配符-匹配的部分" class="headerlink" title="$*匹配符%匹配的部分"></a>$*匹配符%匹配的部分</h3><h3 id="D-目录名-F-文件名"><a href="#D-目录名-F-文件名" class="headerlink" title="$(@D)目录名  $(@F)文件名"></a>$(@D)目录名  $(@F)文件名</h3><h3 id="lt-D-lt-F-第一个前置条件的目录名和文件名"><a href="#lt-D-lt-F-第一个前置条件的目录名和文件名" class="headerlink" title="$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名"></a>$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名</h3><h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断当前编译器是否gcc，指定不同的库文件</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(CC)</span>, gcc)</span><br><span class="line">	libs = <span class="variable">$(libs_for_gcc)</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	libs = <span class="variable">$(normal_libs)</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<h3 id="比target更加新的所有前置条件"><a href="#比target更加新的所有前置条件" class="headerlink" title="$?比target更加新的所有前置条件"></a>$?比target更加新的所有前置条件</h3><h3 id="匹配符-匹配的部分"><a href="#匹配符-匹配的部分" class="headerlink" title="$*匹配符%匹配的部分"></a>$*匹配符%匹配的部分</h3><h3 id="D-目录名-F-文件名"><a href="#D-目录名-F-文件名" class="headerlink" title="$(@D)目录名  $(@F)文件名"></a>$(@D)目录名  $(@F)文件名</h3><h3 id="lt-D-lt-F-第一个前置条件的目录名和文件名"><a href="#lt-D-lt-F-第一个前置条件的目录名和文件名" class="headerlink" title="$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名"></a>$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名</h3><h3 id="模式匹配"><a href="#模式匹配" class="headerlink" title="模式匹配%"></a>模式匹配%</h3><p>​    Make命令允许对文件名，进行类似正则运算的匹配，主要用到的匹配符是%。比如，假定当前目录下有 f1.c 和 f2.c 两个源码文件，需要将它们编译为对应的对象文件。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">%.o: %.c</span></span><br></pre></td></tr></table></figure>
+<p>等同于下面的写法。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">f1.o: f1.c</span></span><br><span class="line"><span class="section">f2.o: f2.c</span></span><br></pre></td></tr></table></figure>
+<p>使用匹配符%，可以将大量同类型的文件，只用一条规则就完成构建。</p>
+<h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><p>第1种写法if-else：<br><code>if-else-endif</code></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 判断当前编译器是否gcc，指定不同的库文件</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(CC)</span>, gcc)</span><br><span class="line">	libs = <span class="variable">$(libs_for_gcc)</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	libs = <span class="variable">$(normal_libs)</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<p>第2种写法if：<br><code>if-then-fi</code></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">obj/%.o:%.cpp</span></span><br><span class="line">    @if test ! -d<span class="string">"obj"</span>; then\</span><br><span class="line">        mkdir -p obj;\</span><br><span class="line">    fi;</span><br><span class="line">    g++ -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure>
+<p>​    上述代码用于检查当前目录下是否有名为“obj”的目录，如果没有，则使用mkdir命令创建这个目录。</p>
 <h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LIST = one two three</span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    for i in <span class="variable">$(LIST)</span>; do \</span><br><span class="line">        echo $$i; \</span><br><span class="line">    done</span><br></pre></td></tr></table></figure>
 <h1 id="makefile实例-编译C语言项目"><a href="#makefile实例-编译C语言项目" class="headerlink" title="makefile实例-编译C语言项目"></a>makefile实例-编译C语言项目</h1><h2 id="版本1"><a href="#版本1" class="headerlink" title="版本1"></a>版本1</h2><p>​    举个例子，项目包含3个头文件（defs.h, command.h buffer.h）和8个.c文件（defs.c, command.c, buffer.c, main.c, kbd.c, insert.c, display.c, search.c, files.c, utils.c）</p>
 <p>​    编写的Makefile文件如下：</p>
@@ -333,8 +356,8 @@
 <p>​    <code>\</code>表示换行符，无实际意义，只是为了方便makefile文件的阅读和编写。</p>
 <p>​    上述Makefile文件，直接在该目录下输入<code>make</code>就可以生成文件edit；输入<code>make clean</code>则会删除可执行文件和所有的中间目标文件。</p>
 <p>​    <code>.o</code>文件是中间目标文件，每个.o文件都依赖于若干.c和.h文件，而最终的可执行文件edit又依赖于若干.o文件。</p>
-<blockquote>
-<h2 id="make是如何工作的"><a href="#make是如何工作的" class="headerlink" title="make是如何工作的"></a>make是如何工作的</h2><p>在默认的方式下，也就是我们只输入 <code>make</code> 命令。那么，</p>
+<h3 id="make如何工作"><a href="#make如何工作" class="headerlink" title="make如何工作"></a>make如何工作</h3><blockquote>
+<p>在默认的方式下，也就是我们只输入 <code>make</code> 命令。那么，</p>
 <ol>
 <li>make会在当前目录下找名字叫“Makefile”或“makefile”的文件。</li>
 <li>如果找到，它会找文件中的第一个目标文件（target），在上面的例子中，他会找到“edit”这个 文件，并把这个文件作为最终的目标文件。</li>
@@ -343,6 +366,15 @@
 <li>当然，你的C文件和H文件是存在的啦，于是make会生成 <code>.o</code> 文件，然后再用 <code>.o</code> 文件生 成make的终极任务，也就是执行文件 <code>edit</code> 了。</li>
 </ol>
 </blockquote>
+<h3 id="gcc和cc的区别"><a href="#gcc和cc的区别" class="headerlink" title="gcc和cc的区别"></a>gcc和cc的区别</h3><p>​    仔细阅读上面的Makefile，我们会发现编译的命令使用的是<code>cc</code>而不是<code>gcc</code>。这两个有什么区别？</p>
+<blockquote>
+<p>cc是Unix下使用的编译命令；</p>
+<p>gcc是Linux下使用的编译命令。</p>
+</blockquote>
+<p>​    由于许多Makefile文件是在Unix下编写的，即使用<code>cc</code>编译。但现在许多人喜欢用Linux来编译，所以有人想到在Linux上用连接的方法把cc连接到gcc命令上，即运行cc就是在运行gcc。</p>
+<p><img src="https://img-blog.csdn.net/20160414160340800?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p>​    但是，我在Mac下实验了一下，发现在macOS下，cc和gcc皆可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(base) congrong ~ $ <span class="built_in">which</span> cc</span><br><span class="line">/usr/bin/cc</span><br><span class="line">(base) congrong ~ $ <span class="built_in">which</span> gcc</span><br><span class="line">/usr/bin/gcc</span><br></pre></td></tr></table></figure>
 <h2 id="版本2"><a href="#版本2" class="headerlink" title="版本2"></a>版本2</h2><p>​    上述代码对于.o文件会增删的情况比较麻烦，需要在3个地方改动。为了方便后期维护，我们可以将可执行文件依赖的.o变为一个字符串变量。</p>
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">objects = main.o kbd.o command.o display.o \</span><br><span class="line">        insert.o search.o files.o utils.o</span><br><span class="line">        </span><br><span class="line">edit : <span class="variable">$(objects)</span></span><br><span class="line">    cc -o edit <span class="variable">$(objects)</span></span><br><span class="line"></span><br><span class="line">main.o : main.c defs.h</span><br><span class="line">    cc -c main.c</span><br><span class="line">kbd.o : kbd.c defs.h command.h</span><br><span class="line">    cc -c kbd.c</span><br><span class="line">command.o : command.c defs.h command.h</span><br><span class="line">    cc -c command.c</span><br><span class="line">display.o : display.c defs.h buffer.h</span><br><span class="line">    cc -c display.c</span><br><span class="line">insert.o : insert.c defs.h buffer.h</span><br><span class="line">    cc -c insert.c</span><br><span class="line">search.o : search.c defs.h buffer.h</span><br><span class="line">    cc -c search.c</span><br><span class="line">files.o : files.c defs.h buffer.h command.h</span><br><span class="line">    cc -c files.c</span><br><span class="line">utils.o : utils.c defs.h</span><br><span class="line">    cc -c utils.c</span><br><span class="line">clean :</span><br><span class="line">    rm edit <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
 <h2 id="版本3"><a href="#版本3" class="headerlink" title="版本3"></a>版本3</h2><p>​    问题1：</p>
@@ -354,9 +386,25 @@
 <hr>
 <p>​    综合上述两个问题，我们得到版本3的Makefile文件：有没有感觉清爽了不少呢~</p>
 <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">objects = main.o kbd.o command.o display.o \</span><br><span class="line">        insert.o search.o files.o utils.o</span><br><span class="line">        </span><br><span class="line">edit : <span class="variable">$(objects)</span></span><br><span class="line">    cc -o edit <span class="variable">$(objects)</span></span><br><span class="line"></span><br><span class="line">main.o : defs.h</span><br><span class="line">kbd.o : defs.h command.h</span><br><span class="line">command.o : defs.h command.h</span><br><span class="line">display.o : defs.h buffer.h</span><br><span class="line">insert.o : defs.h buffer.h</span><br><span class="line">search.o : defs.h buffer.h</span><br><span class="line">files.o :  defs.h buffer.h command.h</span><br><span class="line">utils.o :  defs.h</span><br><span class="line"></span><br><span class="line">.PHONY : clean</span><br><span class="line">clean :</span><br><span class="line">    rm edit <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
+<h2 id="版本4"><a href="#版本4" class="headerlink" title="版本4"></a>版本4</h2><p>​    经过网友提醒，发现版本3的Makefile可以使用gcc提供的<code>-M</code>选项进一步精简。r</p>
+<p>​    <a href="https://www.gnu.org/software/make/manual/make.html#Automatic-Prerequisites" target="_blank" rel="noopener">GNU的文档4.14章节:《4.14 Generating Prerequisites Automatically》</a>中专门给出了介绍. 这里我用自己的理解介绍下：</p>
+<hr>
+<p>​    举个例子，我们编写main.c文件中<code>#include &quot;defs.h&quot;``#include &lt;stdio.h&gt;</code>,那么在写Makefile时会在前置条件中这样写：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main: defs.h stdio.h</span></span><br><span class="line">	cc -c main</span><br></pre></td></tr></table></figure>
+<p>​    但如果main.c中的<code>#include</code>改变，那么我们的Makefile也要随之改变，维护起来非常麻烦。是否有方法能够避免这个问题呢？</p>
+<blockquote>
+<p>To avoid this hassle, most modern C compilers can write these rules for you, by looking at the <code>#include</code> lines in the source files. Usually this is done with the ‘-M’ option to the compiler. </p>
+</blockquote>
+<p>​    gcc中提供了一个编译选项<code>-M</code>，比如上述的例子，如果我们调用编译命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -M main.c</span><br><span class="line">$ main.o: main.c \</span><br><span class="line">  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdio.h \</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<p>​    可以看出<code>-M</code>命令会自动生成文件的所有依赖关系。</p>
+<p>​    所以我们在编写Makefile时也可以不用直接写明所有的依赖文件，调用<code>-M</code>选项让编译器帮我们自动生成即可，这样还能减少后期维护makefile的成本。</p>
+<p>​    如何精简？见下篇博文~</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a href="http://www.ruanyifeng.com/blog/2015/02/make.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/02/make.html</a></li>
 <li><a href="https://seisman.github.io/how-to-write-makefile/introduction.html" target="_blank" rel="noopener">https://seisman.github.io/how-to-write-makefile/introduction.html</a></li>
+<li><a href="https://www.gnu.org/software/make/manual/make.html" target="_blank" rel="noopener">https://www.gnu.org/software/make/manual/make.html</a></li>
+<li><a href="https://blog.csdn.net/dddd0216/article/details/51152234" target="_blank" rel="noopener">https://blog.csdn.net/dddd0216/article/details/51152234</a></li>
 </ol>
 
     </div>
@@ -443,7 +491,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile简介"><span class="nav-number">1.</span> <span class="nav-text">Makefile简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile的规则"><span class="nav-number">2.</span> <span class="nav-text">Makefile的规则</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">2.1.</span> <span class="nav-text">\目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前置条件"><span class="nav-number">2.2.</span> <span class="nav-text">\前置条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile的语法"><span class="nav-number">3.</span> <span class="nav-text">Makefile的语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭回声"><span class="nav-number">3.1.</span> <span class="nav-text">关闭回声</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量和赋值"><span class="nav-number">3.2.</span> <span class="nav-text">变量和赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内置变量Implicit-Variables"><span class="nav-number">3.3.</span> <span class="nav-text">内置变量Implicit Variables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动变量Automatic-variables"><span class="nav-number">3.4.</span> <span class="nav-text">自动变量Automatic variables</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#当前目标"><span class="nav-number">3.4.1.</span> <span class="nav-text">$@当前目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-第一个前置条件"><span class="nav-number">3.4.2.</span> <span class="nav-text">$&lt;第一个前置条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比target更新的所有前置条件"><span class="nav-number">3.4.3.</span> <span class="nav-text">$?比target更新的所有前置条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配符-匹配的部分"><span class="nav-number">3.4.4.</span> <span class="nav-text">$*匹配符%匹配的部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D-目录名-F-文件名"><span class="nav-number">3.4.5.</span> <span class="nav-text">$(@D)目录名  $(@F)文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-D-lt-F-第一个前置条件的目录名和文件名"><span class="nav-number">3.4.6.</span> <span class="nav-text">$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断"><span class="nav-number">3.4.7.</span> <span class="nav-text">判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环"><span class="nav-number">3.4.8.</span> <span class="nav-text">循环</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#makefile实例-编译C语言项目"><span class="nav-number">4.</span> <span class="nav-text">makefile实例-编译C语言项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#版本1"><span class="nav-number">4.1.</span> <span class="nav-text">版本1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#make是如何工作的"><span class="nav-number">4.2.</span> <span class="nav-text">make是如何工作的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本2"><span class="nav-number">4.3.</span> <span class="nav-text">版本2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本3"><span class="nav-number">4.4.</span> <span class="nav-text">版本3</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile简介"><span class="nav-number">1.</span> <span class="nav-text">Makefile简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile的规则"><span class="nav-number">2.</span> <span class="nav-text">Makefile的规则</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">2.1.</span> <span class="nav-text">\目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前置条件"><span class="nav-number">2.2.</span> <span class="nav-text">\前置条件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile的语法"><span class="nav-number">3.</span> <span class="nav-text">Makefile的语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭回声"><span class="nav-number">3.1.</span> <span class="nav-text">关闭回声</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量和赋值"><span class="nav-number">3.2.</span> <span class="nav-text">变量和赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内置变量Implicit-Variables"><span class="nav-number">3.3.</span> <span class="nav-text">内置变量Implicit Variables</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动变量Automatic-variables"><span class="nav-number">3.4.</span> <span class="nav-text">自动变量Automatic variables</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#当前目标"><span class="nav-number">3.4.1.</span> <span class="nav-text">$@当前目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-第一个前置条件"><span class="nav-number">3.4.2.</span> <span class="nav-text">$&lt;第一个前置条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比target更加新的所有前置条件"><span class="nav-number">3.4.3.</span> <span class="nav-text">$?比target更加新的所有前置条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配符-匹配的部分"><span class="nav-number">3.4.4.</span> <span class="nav-text">$*匹配符%匹配的部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D-目录名-F-文件名"><span class="nav-number">3.4.5.</span> <span class="nav-text">$(@D)目录名  $(@F)文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lt-D-lt-F-第一个前置条件的目录名和文件名"><span class="nav-number">3.4.6.</span> <span class="nav-text">$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式匹配"><span class="nav-number">3.4.7.</span> <span class="nav-text">模式匹配%</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断"><span class="nav-number">3.4.8.</span> <span class="nav-text">判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环"><span class="nav-number">3.4.9.</span> <span class="nav-text">循环</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#makefile实例-编译C语言项目"><span class="nav-number">4.</span> <span class="nav-text">makefile实例-编译C语言项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#版本1"><span class="nav-number">4.1.</span> <span class="nav-text">版本1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#make如何工作"><span class="nav-number">4.1.1.</span> <span class="nav-text">make如何工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gcc和cc的区别"><span class="nav-number">4.1.2.</span> <span class="nav-text">gcc和cc的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本2"><span class="nav-number">4.2.</span> <span class="nav-text">版本2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本3"><span class="nav-number">4.3.</span> <span class="nav-text">版本3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本4"><span class="nav-number">4.4.</span> <span class="nav-text">版本4</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -457,7 +505,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

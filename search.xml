@@ -1,6 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Makefile学习（二）</title>
+    <url>/2019/12/16/Makefile%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+    <content><![CDATA[<p>​    <a href="https://crongbx.github.io/2019/12/15/Makefile%E5%85%A5%E9%97%A8/" target="_blank" rel="noopener">上一篇博客</a>只是介绍了Makefile的基本规则和语法，但是缺乏编写C项目的Makefile的实例。</p>
+<p>​    本文内容如下：</p>
+<pre><code>1. 单个文件的Makefile
+ 2. 多个文件的Makefile
+ 3. 存在互相引用关系的多个文件的Makefile
+ 4. .h和.c存放在不同目录下的Makefile
+ 5. 应用了静态库的Makefile
+ 6. 适用于多个编译器的Makefile
+</code></pre><a id="more"></a>
+<h1 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h1><p>操作系统： MacOS Catalina 10.15</p>
+<p>编译器：gcc 4.2.1</p>
+<p>这里需要注意下，MacOS下，如果不指定编译器，则默认的编译器是clang</p>
+<h1 id="单个文件的Makefile"><a href="#单个文件的Makefile" class="headerlink" title="单个文件的Makefile"></a>单个文件的Makefile</h1><p>​    假设在当前目录下有个main.c文件.使用命令行如何编译？</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(base) congrong make_test $ gcc -o main main.c</span><br><span class="line">(base) congrong make_test $ ls</span><br><span class="line">main     main.c   makefile</span><br></pre></td></tr></table></figure>
+<p>​    可以看到，执行完后目录中多了一个可执行文件main.</p>
+<p>​    编写Makefile使make命令达到和上述shell命令行一样的效果:</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">main: main.c</span></span><br><span class="line">	gcc -o main main.c</span><br></pre></td></tr></table></figure>
+<p>​    shell执行命令<code>make main</code>：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(base) congrong make_test $ make main</span><br><span class="line">gcc -o main main.c</span><br><span class="line">(base) congrong make_test $ ls</span><br><span class="line">main     main.c   makefile</span><br></pre></td></tr></table></figure>
+<p>​    当然如果不想让<code>gcc -o main main.c</code>打印出来，可以在Makefile中的这一行首加上@</p>
+<h1 id="多个文件的Makefile"><a href="#多个文件的Makefile" class="headerlink" title="多个文件的Makefile"></a>多个文件的Makefile</h1><p>​    假设目录下包含main.c，它引用了w1.h, w2.h, w3.h.项目中还包含w1.h, w1.c, w2.h, w2.c, w3.h, w3.c。</p>
+<p>​    如果在shell中使用命令需要敲下这三行：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gcc -c w1.c -o w1.o </span><br><span class="line">gcc -c w2.c -o w2.o </span><br><span class="line">gcc -c w3.c -o w3.o </span><br><span class="line">gcc -o main main.c w1.o w2.o w3.o</span><br></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="gcc的选项："><a href="#gcc的选项：" class="headerlink" title="gcc的选项："></a>gcc的选项：</h4><p>-c: 将程序生成二进制文件obj(.o).只编译不链接，通常用于生成.o文件时使用</p>
+<p>-o: 指定程序的输出文件名称</p>
+</blockquote>
+<p>​    每次编译运行该程序都要敲4行，太麻烦了。程序员始终懒懒的生物…所以发明了makefile来偷懒，只用敲一条make命令就可以一劳永逸。</p>
+<p>​    上述shell命令的Makefile编写如下：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">PROGS = w1.o w2.o w3.o</span><br><span class="line"></span><br><span class="line"><span class="section">main: main.c <span class="variable">$(PROGS)</span></span></span><br><span class="line">	@gcc -o main main.c <span class="variable">$(PROGS)</span></span><br><span class="line"><span class="section">w1.o: w1.c</span></span><br><span class="line">	@gcc -c -o w1.o w1.c</span><br><span class="line"><span class="section">w2.o: w2.c</span></span><br><span class="line">	@gcc -c -o w2.o w2.c</span><br><span class="line"><span class="section">w3.o: w3.c</span></span><br><span class="line">	@gcc -c -o w3.o w3.c</span><br></pre></td></tr></table></figure>
+<h2 id="添加伪目标clean"><a href="#添加伪目标clean" class="headerlink" title="添加伪目标clean"></a>添加伪目标clean</h2><p>​     编写Makefile，使得我们使用<code>make clean</code>就能清理所有中间过程文件（.o和可执行文件）</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean: </span></span><br><span class="line">	rm -f *.o main</span><br></pre></td></tr></table></figure>
+<pre><code>## 添加变量简化Makefile
+</code></pre><p>​    添加如下变量：</p>
+<ul>
+<li>TRAGET 目标文件名</li>
+<li>C_FILES 所有.c后缀的文件的文件名（包含.c后缀）</li>
+<li>BASE 所有.c后缀的文件出去后缀的文件名</li>
+<li>OBJS 所有.c后缀的文件，文件名不变变为.o后缀</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">TARGET = main</span><br><span class="line"></span><br><span class="line">C_FILES = <span class="variable">$(<span class="built_in">shell</span> ls *.c)</span></span><br><span class="line">BASE = <span class="variable">$(<span class="built_in">basename</span> <span class="variable">$(C_FILES)</span>)</span></span><br><span class="line">OBJS = <span class="variable">$(<span class="built_in">addsuffix</span> .o, $(<span class="built_in">addprefix</span> obj/, <span class="variable">$(BASE)</span>)</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$(TARGET)</span>: <span class="variable">$(OBJS)</span></span><br><span class="line">	rm -f <span class="variable">$@</span></span><br><span class="line">	gcc -o <span class="variable">$(TARGET)</span> <span class="variable">$(OBJS)</span> </span><br><span class="line"></span><br><span class="line"><span class="section">obj/%.o: %.c</span></span><br><span class="line">	@if test ! -d <span class="string">"obj"</span> ; then \</span><br><span class="line">	mkdir -p obj; \</span><br><span class="line">	fi;</span><br><span class="line">	gcc -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean: </span></span><br><span class="line">	rm -f obj/*.o </span><br><span class="line">	rm -f <span class="variable">$(TARGET)</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>$(shell )</strong>格式表示这里将会用shell命令执行后输出的内容进行替换。</p>
+</blockquote>
+<hr>
+<h3 id="三个常用函数"><a href="#三个常用函数" class="headerlink" title="三个常用函数"></a>三个常用函数</h3><blockquote>
+<p><strong>basename</strong> 是一个函数，其作用就是去除掉文件名的后缀部分，例如“test.cpp”，经过这一步后就变成了“test”。</p>
+<p><code>$(basename names…)</code></p>
+<p>Extracts all but the suffix of each file name in names. If the file name contains a period, the basename is everything starting up to (and not including) the last period. Periods in the directory part are ignored. If there is no period, the basename is the entire file name. For example,</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">&gt;<span class="variable">$(<span class="built_in">basename</span> src/foo.c src-1.0/bar hacks)</span></span><br></pre></td></tr></table></figure>
+<p>produces the result ‘src/foo src-1.0/bar hacks’.</p>
+<p><strong>addsuffix</strong>也是一个函数，用于为每个文件名加上后缀.</p>
+<p><code>$(addsuffix suffix,names…)</code></p>
+<p>The argument names is regarded as a series of names, separated by whitespace; suffix is used as a unit. The value of suffix is appended to the end of each individual name and the resulting larger names are concatenated with single spaces between them. For example,</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">&gt;<span class="variable">$(<span class="built_in">addsuffix</span> .c,foo bar)</span></span><br></pre></td></tr></table></figure>
+<p>produces the result ‘foo.c bar.c’.</p>
+<p><strong>addprefix</strong>是一个函数，用于为每个文件名加上前缀。</p>
+<p><code>$(addprefix prefix,names…)</code></p>
+<p>The argument names is regarded as a series of names, separated by whitespace; prefix is used as a unit. The value of prefix is prepended to the front of each individual name and the resulting larger names are concatenated with single spaces between them. For example,</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">&gt;<span class="variable">$(<span class="built_in">addprefix</span> src/,foo bar)</span></span><br></pre></td></tr></table></figure>
+<p>produces the result ‘src/foo src/bar’.</p>
+</blockquote>
+<p>​    如果我们想要将所有.o文件统一放到子目录/obj下，该如何操作呢？<br>​    生成和.c文件同名的.o文件前先加上前缀/obj目录即可：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">C_FILES = <span class="variable">$(<span class="built_in">shell</span> ls *.c)</span></span><br><span class="line">BASE = <span class="variable">$(<span class="built_in">basename</span> <span class="variable">$(C_FILES)</span>)</span></span><br><span class="line">OBJS = <span class="variable">$(<span class="built_in">addsuffix</span> .o, $(<span class="built_in">addprefix</span> obj/, <span class="variable">$(BASE)</span>)</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="使用匹配符-简化类同名操作"><a href="#使用匹配符-简化类同名操作" class="headerlink" title="使用匹配符%简化类同名操作"></a>使用匹配符%简化类同名操作</h2><p>​    上文Makefile的w1 w2 w3的操作除了名字不同，其余都一样，如何简化？</p>
+<p>​    使用通配符%：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line">	gcc -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>mkdir -p</code>：没有父目录就主动创建父目录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">basename `pwd` #打印当前的目录名</span><br></pre></td></tr></table></figure>
+<p><code>test</code>或<code>[]</code>用于检测文件特性，选项<code>-d</code>用于检测目录文件</p>
+</blockquote>
+<h1 id="存在互相引用的多个文件的Makefile"><a href="#存在互相引用的多个文件的Makefile" class="headerlink" title="存在互相引用的多个文件的Makefile"></a>存在互相引用的多个文件的Makefile</h1><p>​    在上文的基础上，我们考虑一种情况：w1.h文件中包含了头文件w2.h和w3.h定义的函数。这种情况下，如果我们还用上文的makefile，就会造成当w2.h和w3.h中的内容改变时，执行make 命令并不会重新编译w1.c。所以我们需要再Makefile中加上W1.o对w2.h和w3.h的依赖：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">w1.o: w2.h w3.h</span></span><br><span class="line">	gcc -o <span class="variable">$@</span> <span class="variable">$?</span></span><br></pre></td></tr></table></figure>
+<p>​    但如果每个头文件都互相包含呢？w1.o依赖的头文件会不断增删呢？我们的Makefile岂不是也要紧跟着维护？这样做显然效率太低。所幸，GCC编译器可以帮我们自动生成依赖关系，<code>-M</code>选项让编译器自动寻找源文件中包含的目标文件，并生成一个依赖关系：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gcc -MM w1.h</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> w1.o: w1.h w2.h w3.h</span></span><br></pre></td></tr></table></figure>
+<p>​    这里我们用的是<code>-MM</code>选项，因为<code>-M</code>会将包含的标准库的头文件也囊括进去，<code>-MM</code>忽略标准库的头文件。</p>
+<p>​    ==GUN组织建议开发者将每一个源文件自动生成的依赖关系放到一个<code>.d</code>文件中，让每个.c文件都有一个.d文件与其对应。==</p>
+<p>​    下面是上述的例子生成.d文件的makefile:</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">dep/%.d : %.c</span><br><span class="line">	@if test ! -d <span class="string">"dep"</span> ; then \</span><br><span class="line">	mkdir -p dep; \</span><br><span class="line">	fi; \</span><br><span class="line">	set -e;	rm -f <span class="variable">$@</span>;	</span><br><span class="line">	<span class="comment"># 如果命令执行错误就直接退出</span></span><br><span class="line">	<span class="comment"># $$$$表示一个随机编号</span></span><br><span class="line">	<span class="comment"># sed文本替换工具。s替换,g全局替换. s/old/new/g</span></span><br><span class="line">	gcc -MM <span class="variable">$&lt;</span> &gt; <span class="variable">$@</span>.$$$$; \</span><br><span class="line">	sed 's/<span class="variable">$*</span>\.o[ :]*/obj\/<span class="variable">$*</span>\.o dep\/<span class="variable">$*</span>\.d: /g' &lt; <span class="variable">$@</span>.$$$$ &gt; <span class="variable">$@</span>; \</span><br><span class="line">	rm -f <span class="variable">$@</span>.$$$$</span><br><span class="line">	<span class="comment"># 删掉这个临时文件</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>​    生成的.d文件需要我们在其他makefile中使用，才可以自动让makefile包含.c或.cpp文件依赖的文件信息。如何在其他Makefile中引用.d文件呢？</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#include w1.d</span></span><br></pre></td></tr></table></figure>
+<p>​    如果想要智能一点，可以将所有的.d文件定义成变量，然后再引用变量即可：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">DEPS = <span class="variable">$(<span class="built_in">addsuffix</span> .d,$(<span class="built_in">addprefix</span> dep/,<span class="variable">$(BASE)</span>)</span>)</span><br><span class="line"><span class="comment">#include $(DEPS)</span></span><br></pre></td></tr></table></figure>
+<h1 id="h和-c存放在不同目录下的Makefile"><a href="#h和-c存放在不同目录下的Makefile" class="headerlink" title=".h和.c存放在不同目录下的Makefile"></a>.h和.c存放在不同目录下的Makefile</h1><p>​    假设有2个目录，lib目录下存放.h和对应的.c文件，bin下存放主程序.c文件。如何让编译器在编译链接主程序时找到引用的.h文件在哪个目录下呢？</p>
+<p>​    使用<code>-I目录名</code>选项，为编译器指定需要寻找的.h文件位置。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">INCLUDEDIR = -I../lib</span><br><span class="line">gcc -c -o <span class="variable">$@</span> <span class="variable">$(INCLUDEDIR)</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="使用静态库"><a href="#使用静态库" class="headerlink" title="使用静态库"></a>使用静态库</h1><p>​    有的时候我们不需要生成一个可执行的程序，而是生成一个静态库文件<code>.a</code>，之后在其他的地方引用这个静态库文件。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://blog.fatedier.com/2014/09/08/learn-to-write-makefile-01/" target="_blank" rel="noopener">http://blog.fatedier.com/2014/09/08/learn-to-write-makefile-01/</a></li>
+<li><a href="http://blog.fatedier.com/2014/09/24/learn-to-write-makefile-02/" target="_blank" rel="noopener">http://blog.fatedier.com/2014/09/24/learn-to-write-makefile-02/</a></li>
+<li><a href="https://www.gnu.org/software/make/manual/make.html#Automatic-Prerequisites" target="_blank" rel="noopener">https://www.gnu.org/software/make/manual/make.html#Automatic-Prerequisites</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Makefile</category>
+      </categories>
+      <tags>
+        <tag>Makefile</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MacOS Catalina下npm失败</title>
     <url>/2019/12/15/MacOS-Catalina%E4%B8%8Bnpm%E5%A4%B1%E8%B4%A5/</url>
     <content><![CDATA[<p>Catalina下，<code>npm install</code>始终失败，即使更新也无用。</p>
@@ -16,9 +121,14 @@
     <title>Makefile入门</title>
     <url>/2019/12/15/Makefile%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<p>​    本文主要介绍Makefile的基本编写格式和语法，目标是完成小型项目的Makefile编写。</p>
-<a id="more"></a>
-<h1 id="Makefile简介"><a href="#Makefile简介" class="headerlink" title="Makefile简介"></a>Makefile简介</h1><p>make命令执行时，需要一个makefile文件，以告诉make命令需要怎么样的去编译和链接程序。</p>
-<p>比较权威的文档是<a href="https://www.gnu.org/software/make/manual/make.html" target="_blank" rel="noopener">GUN make手册</a>。</p>
+<p>​    19年12月16日更新 ：</p>
+<pre><code>1.  `gcc -MP`选项进一步精简；
+ 2.  Makefile中`gcc`和`cc`的区别和关联。
+ 3.  判断语句的两种写法。
+</code></pre><a id="more"></a>
+<h1 id="Makefile简介"><a href="#Makefile简介" class="headerlink" title="Makefile简介"></a>Makefile简介</h1><p>​    make命令执行时，需要一个makefile文件，以告诉make命令需要怎么样的去编译和链接程序。</p>
+<p>​    为什么要编写Makefile呢？Windows或macOS环境下，有VS2015, Eclipse, XCode等优秀的IDE作为开发工具，只需要点击下编译运行的按钮就可以运行程序了。但是Unix环境下的开发工作，没有IDE，怎么样才能编译运行我们写的代码呢？编写Makefile“自动编译”。</p>
+<p>​    比较权威的文档是<a href="https://www.gnu.org/software/make/manual/make.html" target="_blank" rel="noopener">GUN make手册</a>。</p>
 <h1 id="Makefile的规则"><a href="#Makefile的规则" class="headerlink" title="Makefile的规则"></a>Makefile的规则</h1><p>​    Makefile的由一系列规则（rules）组成。每条规则的形式如下：</p>
 <figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">&lt;target&gt; : &lt;prerequisites&gt;</span><br><span class="line">[tab] &lt;commands&gt;</span><br></pre></td></tr></table></figure>
 <ul>
@@ -65,7 +175,16 @@
 <figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">a.out b.out:</span><br><span class="line">	touch <span class="variable">$@</span></span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line"><span class="section">a.out:</span></span><br><span class="line">	touch a.out</span><br><span class="line"><span class="section">b.out:</span></span><br><span class="line">	touch b.out</span><br></pre></td></tr></table></figure>
 <h3 id="lt-第一个前置条件"><a href="#lt-第一个前置条件" class="headerlink" title="$&lt;第一个前置条件"></a>$&lt;第一个前置条件</h3><p>​    比如<code>a: b c</code>那么这里的<code>$&lt;</code>指的是<code>b</code></p>
 <figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">a.txt: b.txt c.txt</span></span><br><span class="line">	cp</span><br></pre></td></tr></table></figure>
-<h3 id="比target更新的所有前置条件"><a href="#比target更新的所有前置条件" class="headerlink" title="$?比target更新的所有前置条件"></a>$?比target更新的所有前置条件</h3><h3 id="匹配符-匹配的部分"><a href="#匹配符-匹配的部分" class="headerlink" title="$*匹配符%匹配的部分"></a>$*匹配符%匹配的部分</h3><h3 id="D-目录名-F-文件名"><a href="#D-目录名-F-文件名" class="headerlink" title="$(@D)目录名  $(@F)文件名"></a>$(@D)目录名  $(@F)文件名</h3><h3 id="lt-D-lt-F-第一个前置条件的目录名和文件名"><a href="#lt-D-lt-F-第一个前置条件的目录名和文件名" class="headerlink" title="$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名"></a>$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名</h3><h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 判断当前编译器是否gcc，指定不同的库文件</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(CC)</span>, gcc)</span><br><span class="line">	libs = <span class="variable">$(libs_for_gcc)</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	libs = <span class="variable">$(normal_libs)</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<h3 id="比target更加新的所有前置条件"><a href="#比target更加新的所有前置条件" class="headerlink" title="$?比target更加新的所有前置条件"></a>$?比target更加新的所有前置条件</h3><h3 id="匹配符-匹配的部分"><a href="#匹配符-匹配的部分" class="headerlink" title="$*匹配符%匹配的部分"></a>$*匹配符%匹配的部分</h3><h3 id="D-目录名-F-文件名"><a href="#D-目录名-F-文件名" class="headerlink" title="$(@D)目录名  $(@F)文件名"></a>$(@D)目录名  $(@F)文件名</h3><h3 id="lt-D-lt-F-第一个前置条件的目录名和文件名"><a href="#lt-D-lt-F-第一个前置条件的目录名和文件名" class="headerlink" title="$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名"></a>$(&lt;D) $(&lt;F)第一个前置条件的目录名和文件名</h3><h3 id="模式匹配"><a href="#模式匹配" class="headerlink" title="模式匹配%"></a>模式匹配%</h3><p>​    Make命令允许对文件名，进行类似正则运算的匹配，主要用到的匹配符是%。比如，假定当前目录下有 f1.c 和 f2.c 两个源码文件，需要将它们编译为对应的对象文件。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">%.o: %.c</span></span><br></pre></td></tr></table></figure>
+<p>等同于下面的写法。</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">f1.o: f1.c</span></span><br><span class="line"><span class="section">f2.o: f2.c</span></span><br></pre></td></tr></table></figure>
+<p>使用匹配符%，可以将大量同类型的文件，只用一条规则就完成构建。</p>
+<h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><p>第1种写法if-else：<br><code>if-else-endif</code></p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 判断当前编译器是否gcc，指定不同的库文件</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(CC)</span>, gcc)</span><br><span class="line">	libs = <span class="variable">$(libs_for_gcc)</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	libs = <span class="variable">$(normal_libs)</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<p>第2种写法if：<br><code>if-then-fi</code></p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">obj/%.o:%.cpp</span></span><br><span class="line">    @if test ! -d<span class="string">"obj"</span>; then\</span><br><span class="line">        mkdir -p obj;\</span><br><span class="line">    fi;</span><br><span class="line">    g++ -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure>
+<p>​    上述代码用于检查当前目录下是否有名为“obj”的目录，如果没有，则使用mkdir命令创建这个目录。</p>
 <h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">LIST = one two three</span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    for i in <span class="variable">$(LIST)</span>; do \</span><br><span class="line">        echo $$i; \</span><br><span class="line">    done</span><br></pre></td></tr></table></figure>
 <h1 id="makefile实例-编译C语言项目"><a href="#makefile实例-编译C语言项目" class="headerlink" title="makefile实例-编译C语言项目"></a>makefile实例-编译C语言项目</h1><h2 id="版本1"><a href="#版本1" class="headerlink" title="版本1"></a>版本1</h2><p>​    举个例子，项目包含3个头文件（defs.h, command.h buffer.h）和8个.c文件（defs.c, command.c, buffer.c, main.c, kbd.c, insert.c, display.c, search.c, files.c, utils.c）</p>
 <p>​    编写的Makefile文件如下：</p>
@@ -73,8 +192,8 @@
 <p>​    <code>\</code>表示换行符，无实际意义，只是为了方便makefile文件的阅读和编写。</p>
 <p>​    上述Makefile文件，直接在该目录下输入<code>make</code>就可以生成文件edit；输入<code>make clean</code>则会删除可执行文件和所有的中间目标文件。</p>
 <p>​    <code>.o</code>文件是中间目标文件，每个.o文件都依赖于若干.c和.h文件，而最终的可执行文件edit又依赖于若干.o文件。</p>
-<blockquote>
-<h2 id="make是如何工作的"><a href="#make是如何工作的" class="headerlink" title="make是如何工作的"></a>make是如何工作的</h2><p>在默认的方式下，也就是我们只输入 <code>make</code> 命令。那么，</p>
+<h3 id="make如何工作"><a href="#make如何工作" class="headerlink" title="make如何工作"></a>make如何工作</h3><blockquote>
+<p>在默认的方式下，也就是我们只输入 <code>make</code> 命令。那么，</p>
 <ol>
 <li>make会在当前目录下找名字叫“Makefile”或“makefile”的文件。</li>
 <li>如果找到，它会找文件中的第一个目标文件（target），在上面的例子中，他会找到“edit”这个 文件，并把这个文件作为最终的目标文件。</li>
@@ -83,6 +202,15 @@
 <li>当然，你的C文件和H文件是存在的啦，于是make会生成 <code>.o</code> 文件，然后再用 <code>.o</code> 文件生 成make的终极任务，也就是执行文件 <code>edit</code> 了。</li>
 </ol>
 </blockquote>
+<h3 id="gcc和cc的区别"><a href="#gcc和cc的区别" class="headerlink" title="gcc和cc的区别"></a>gcc和cc的区别</h3><p>​    仔细阅读上面的Makefile，我们会发现编译的命令使用的是<code>cc</code>而不是<code>gcc</code>。这两个有什么区别？</p>
+<blockquote>
+<p>cc是Unix下使用的编译命令；</p>
+<p>gcc是Linux下使用的编译命令。</p>
+</blockquote>
+<p>​    由于许多Makefile文件是在Unix下编写的，即使用<code>cc</code>编译。但现在许多人喜欢用Linux来编译，所以有人想到在Linux上用连接的方法把cc连接到gcc命令上，即运行cc就是在运行gcc。</p>
+<p><img src="https://img-blog.csdn.net/20160414160340800?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<p>​    但是，我在Mac下实验了一下，发现在macOS下，cc和gcc皆可：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(base) congrong ~ $ <span class="built_in">which</span> cc</span><br><span class="line">/usr/bin/cc</span><br><span class="line">(base) congrong ~ $ <span class="built_in">which</span> gcc</span><br><span class="line">/usr/bin/gcc</span><br></pre></td></tr></table></figure>
 <h2 id="版本2"><a href="#版本2" class="headerlink" title="版本2"></a>版本2</h2><p>​    上述代码对于.o文件会增删的情况比较麻烦，需要在3个地方改动。为了方便后期维护，我们可以将可执行文件依赖的.o变为一个字符串变量。</p>
 <figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">objects = main.o kbd.o command.o display.o \</span><br><span class="line">        insert.o search.o files.o utils.o</span><br><span class="line">        </span><br><span class="line">edit : <span class="variable">$(objects)</span></span><br><span class="line">    cc -o edit <span class="variable">$(objects)</span></span><br><span class="line"></span><br><span class="line">main.o : main.c defs.h</span><br><span class="line">    cc -c main.c</span><br><span class="line">kbd.o : kbd.c defs.h command.h</span><br><span class="line">    cc -c kbd.c</span><br><span class="line">command.o : command.c defs.h command.h</span><br><span class="line">    cc -c command.c</span><br><span class="line">display.o : display.c defs.h buffer.h</span><br><span class="line">    cc -c display.c</span><br><span class="line">insert.o : insert.c defs.h buffer.h</span><br><span class="line">    cc -c insert.c</span><br><span class="line">search.o : search.c defs.h buffer.h</span><br><span class="line">    cc -c search.c</span><br><span class="line">files.o : files.c defs.h buffer.h command.h</span><br><span class="line">    cc -c files.c</span><br><span class="line">utils.o : utils.c defs.h</span><br><span class="line">    cc -c utils.c</span><br><span class="line">clean :</span><br><span class="line">    rm edit <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
 <h2 id="版本3"><a href="#版本3" class="headerlink" title="版本3"></a>版本3</h2><p>​    问题1：</p>
@@ -94,9 +222,25 @@
 <hr>
 <p>​    综合上述两个问题，我们得到版本3的Makefile文件：有没有感觉清爽了不少呢~</p>
 <figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">objects = main.o kbd.o command.o display.o \</span><br><span class="line">        insert.o search.o files.o utils.o</span><br><span class="line">        </span><br><span class="line">edit : <span class="variable">$(objects)</span></span><br><span class="line">    cc -o edit <span class="variable">$(objects)</span></span><br><span class="line"></span><br><span class="line">main.o : defs.h</span><br><span class="line">kbd.o : defs.h command.h</span><br><span class="line">command.o : defs.h command.h</span><br><span class="line">display.o : defs.h buffer.h</span><br><span class="line">insert.o : defs.h buffer.h</span><br><span class="line">search.o : defs.h buffer.h</span><br><span class="line">files.o :  defs.h buffer.h command.h</span><br><span class="line">utils.o :  defs.h</span><br><span class="line"></span><br><span class="line">.PHONY : clean</span><br><span class="line">clean :</span><br><span class="line">    rm edit <span class="variable">$(objects)</span></span><br></pre></td></tr></table></figure>
+<h2 id="版本4"><a href="#版本4" class="headerlink" title="版本4"></a>版本4</h2><p>​    经过网友提醒，发现版本3的Makefile可以使用gcc提供的<code>-M</code>选项进一步精简。r</p>
+<p>​    <a href="https://www.gnu.org/software/make/manual/make.html#Automatic-Prerequisites" target="_blank" rel="noopener">GNU的文档4.14章节:《4.14 Generating Prerequisites Automatically》</a>中专门给出了介绍. 这里我用自己的理解介绍下：</p>
+<hr>
+<p>​    举个例子，我们编写main.c文件中<code>#include &quot;defs.h&quot;``#include &lt;stdio.h&gt;</code>,那么在写Makefile时会在前置条件中这样写：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="section">main: defs.h stdio.h</span></span><br><span class="line">	cc -c main</span><br></pre></td></tr></table></figure>
+<p>​    但如果main.c中的<code>#include</code>改变，那么我们的Makefile也要随之改变，维护起来非常麻烦。是否有方法能够避免这个问题呢？</p>
+<blockquote>
+<p>To avoid this hassle, most modern C compilers can write these rules for you, by looking at the <code>#include</code> lines in the source files. Usually this is done with the ‘-M’ option to the compiler. </p>
+</blockquote>
+<p>​    gcc中提供了一个编译选项<code>-M</code>，比如上述的例子，如果我们调用编译命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ gcc -M main.c</span><br><span class="line">$ main.o: main.c \</span><br><span class="line">  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdio.h \</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<p>​    可以看出<code>-M</code>命令会自动生成文件的所有依赖关系。</p>
+<p>​    所以我们在编写Makefile时也可以不用直接写明所有的依赖文件，调用<code>-M</code>选项让编译器帮我们自动生成即可，这样还能减少后期维护makefile的成本。</p>
+<p>​    如何精简？见下篇博文~</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a href="http://www.ruanyifeng.com/blog/2015/02/make.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/02/make.html</a></li>
 <li><a href="https://seisman.github.io/how-to-write-makefile/introduction.html" target="_blank" rel="noopener">https://seisman.github.io/how-to-write-makefile/introduction.html</a></li>
+<li><a href="https://www.gnu.org/software/make/manual/make.html" target="_blank" rel="noopener">https://www.gnu.org/software/make/manual/make.html</a></li>
+<li><a href="https://blog.csdn.net/dddd0216/article/details/51152234" target="_blank" rel="noopener">https://blog.csdn.net/dddd0216/article/details/51152234</a></li>
 </ol>
 ]]></content>
       <categories>
