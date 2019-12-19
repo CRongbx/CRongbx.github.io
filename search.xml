@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C标准流输入输出函数-fputs fgets</title>
+    <url>/2019/12/19/%E5%B8%B8%E7%94%A8C%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p>​    本文总结下C语言标准库文件<code>&lt;stdio.h&gt;</code>中关于流输入输出函数。</p>
+<a id="more"></a>
+<h1 id="fputs"><a href="#fputs" class="headerlink" title="fputs"></a>fputs</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fputs</span> <span class="params">( <span class="keyword">const</span> <span class="keyword">char</span> * str, FILE * stream )</span></span>;</span><br></pre></td></tr></table></figure>
+<p>把C字符串str写到流stream中。</p>
+<p>参数：</p>
+<ul>
+<li>str: <em>C string</em> with the content to be written to <em>stream</em>.</li>
+<li>stream: Pointer to a <a href="http://www.cplusplus.com/FILE" target="_blank" rel="noopener">FILE</a> object that identifies an <strong>output stream.</strong></li>
+</ul>
+<p>返回：成功 非负数； 出错返回EOF，并置位error indicator</p>
+<h1 id="fgets"><a href="#fgets" class="headerlink" title="fgets"></a>fgets</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">fgets</span> <span class="params">( <span class="keyword">char</span> * str, <span class="keyword">int</span> num, FILE * stream )</span></span>;</span><br></pre></td></tr></table></figure>
+<p>从流stream（包括标准输入流stdin）获取字符串str。</p>
+<p>参数：</p>
+<ul>
+<li>str: Pointer to an array of <code>char</code>s where the string read is copied.</li>
+<li>num: Maximum number of characters to be copied into <em>str</em> (including the terminating null-character).缓冲区大小</li>
+<li>stream: Pointer to a <a href="http://www.cplusplus.com/FILE" target="_blank" rel="noopener">FILE</a> object that identifies an input stream.<br><strong><a href="http://www.cplusplus.com/stdin" target="_blank" rel="noopener">stdin</a> can be used as argument to read from the <em>standard input</em>.</strong></li>
+</ul>
+]]></content>
+      <categories>
+        <category>C语言</category>
+      </categories>
+      <tags>
+        <tag>stdio.h</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Makefile学习（二）</title>
     <url>/2019/12/16/Makefile%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
     <content><![CDATA[<p>​    <a href="https://crongbx.github.io/2019/12/15/Makefile%E5%85%A5%E9%97%A8/" target="_blank" rel="noopener">上一篇博客</a>只是介绍了Makefile的基本规则和语法，但是缺乏编写C项目的Makefile的实例。</p>
@@ -1061,8 +1090,8 @@
         <category>Unix网络编程卷1学习</category>
       </categories>
       <tags>
-        <tag>Catalina</tag>
         <tag>环境搭建</tag>
+        <tag>Catalina</tag>
         <tag>Unix网络编程</tag>
       </tags>
   </entry>
