@@ -46,15 +46,15 @@
   };
 </script>
 
-  <meta name="description" content="​    在学习Makefile时注意到不少人都讲述了在Makefile中使用静态库的方法，不由产生疑问：使用头文件不够么？为什么还要使用静态库？ 什么是静态库​    静态链接库，简称静态库。它是编译产生的二进制文件，在使用静态库的程序的最终编译过程中，链接器从库中复制这些函数与数据并把它们和应用程序的其他模块组合起来，生成可执行文件。库是不可以被执行的——或者说，库没有执行这个概念。 ​">
+  <meta name="description" content="​    在学习Makefile时注意到不少人都讲述了在Makefile中使用静态库的方法，不由产生疑问：使用头文件不够么？为什么还要使用静态库？">
 <meta name="keywords" content="静态链接库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="静态链接库简介">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;19&#x2F;%E4%B8%BA%E4%BD%95%E8%A6%81%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93&#x2F;index.html">
 <meta property="og:site_name" content="CRongbx Blog">
-<meta property="og:description" content="​    在学习Makefile时注意到不少人都讲述了在Makefile中使用静态库的方法，不由产生疑问：使用头文件不够么？为什么还要使用静态库？ 什么是静态库​    静态链接库，简称静态库。它是编译产生的二进制文件，在使用静态库的程序的最终编译过程中，链接器从库中复制这些函数与数据并把它们和应用程序的其他模块组合起来，生成可执行文件。库是不可以被执行的——或者说，库没有执行这个概念。 ​">
+<meta property="og:description" content="​    在学习Makefile时注意到不少人都讲述了在Makefile中使用静态库的方法，不由产生疑问：使用头文件不够么？为什么还要使用静态库？">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-20T04:57:54.885Z">
+<meta property="og:updated_time" content="2019-12-20T05:03:58.762Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/12/19/%E4%B8%BA%E4%BD%95%E8%A6%81%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93/">
@@ -236,7 +236,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-20 12:57:54" itemprop="dateModified" datetime="2019-12-20T12:57:54+08:00">2019-12-20</time>
+                <time title="修改时间：2019-12-20 13:03:58" itemprop="dateModified" datetime="2019-12-20T13:03:58+08:00">2019-12-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,6 +283,7 @@
 
       
         <p>​    在学习Makefile时注意到不少人都讲述了在Makefile中使用静态库的方法，不由产生疑问：使用头文件不够么？为什么还要使用静态库？</p>
+<a id="more"></a>
 <h1 id="什么是静态库"><a href="#什么是静态库" class="headerlink" title="什么是静态库"></a>什么是静态库</h1><p>​    静态链接库，简称静态库。它是编译产生的二进制文件，在使用静态库的程序的最终编译过程中，链接器从库中复制这些函数与数据并把它们和应用程序的其他模块组合起来，生成可执行文件。<strong><em>库是不可以被执行的——或者说，库没有执行这个概念。</em></strong></p>
 <p>​    在Windows下静态库文件后缀<code>.lib</code>，在Linux下静态库文件后缀<code>.a</code>.</p>
 <h1 id="为什么需要静态库"><a href="#为什么需要静态库" class="headerlink" title="为什么需要静态库"></a>为什么需要静态库</h1><p>​    使用静态库的理由主要为：</p>
