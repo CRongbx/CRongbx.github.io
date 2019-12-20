@@ -142,7 +142,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">38</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">39</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -152,7 +152,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">29</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">30</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -204,6 +204,135 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/%E4%B8%BA%E4%BD%95%E8%A6%81%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="CRongbx">
+      <meta itemprop="description" content="道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CRongbx Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/19/%E4%B8%BA%E4%BD%95%E8%A6%81%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93/" class="post-title-link" itemprop="url">静态链接库简介</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-19 11:15:51" itemprop="dateCreated datePublished" datetime="2019-12-19T11:15:51+08:00">2019-12-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-20 12:57:54" itemprop="dateModified" datetime="2019-12-20T12:57:54+08:00">2019-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">C语言</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/12/19/%E4%B8%BA%E4%BD%95%E8%A6%81%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93/" class="post-meta-item leancloud_visitors" data-flag-title="静态链接库简介" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/12/19/%E4%B8%BA%E4%BD%95%E8%A6%81%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/19/%E4%B8%BA%E4%BD%95%E8%A6%81%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>​    在学习Makefile时注意到不少人都讲述了在Makefile中使用静态库的方法，不由产生疑问：使用头文件不够么？为什么还要使用静态库？</p>
+<h1 id="什么是静态库"><a href="#什么是静态库" class="headerlink" title="什么是静态库"></a>什么是静态库</h1><p>​    静态链接库，简称静态库。它是编译产生的二进制文件，在使用静态库的程序的最终编译过程中，链接器从库中复制这些函数与数据并把它们和应用程序的其他模块组合起来，生成可执行文件。<strong><em>库是不可以被执行的——或者说，库没有执行这个概念。</em></strong></p>
+<p>​    在Windows下静态库文件后缀<code>.lib</code>，在Linux下静态库文件后缀<code>.a</code>.</p>
+<h1 id="为什么需要静态库"><a href="#为什么需要静态库" class="headerlink" title="为什么需要静态库"></a>为什么需要静态库</h1><p>​    使用静态库的理由主要为：</p>
+<ol>
+<li>代码重用。有些代码（轮子），可以在多个项目中重复使用，这对个人和企业团队来说无疑是省时省力且省钱的好方法。</li>
+<li>保护代码版权。这点乍一看有点难以理解，静态库和版权有什么关系？实际上，<strong>C/C++语言是编译运行程序，编译后生成的可执行文件（二进制）无法反编译成源程序。</strong>设想一下，如果你写了一个很厉害有商业价值的库，别人想引用你的轮子都需要给你交一笔钱，如果你直接把.c和.h文件都打包给A，A拥有了你的所有代码，他是不是可以把这些文件当做自己写的（或修改源码）再卖给别人呢，谁让A也知道了这个轮子是怎么编的呢？<br>静态库让开发者只关心库的接口和功能，库的内部实现对使用者来说是黑盒，所以保护了版权。</li>
+<li>提高编译效率。因为静态链接库是已经编译过的，所以相比于引用源代码，引用静态库在编译大型项目时可以大大提高编译效率。</li>
+</ol>
+<h1 id="如何使用静态库"><a href="#如何使用静态库" class="headerlink" title="如何使用静态库"></a>如何使用静态库</h1><p>​    下面介绍如何在makefile中使用静态库.</p>
+<h2 id="生成静态库"><a href="#生成静态库" class="headerlink" title="生成静态库"></a>生成静态库</h2><p>​    假设项目src目录下有lib目录（存放静态库）、common目录（存放公共库的源文件）、app目录（存放程序源文件）.现在我们想将common下的文件编译为静态库文件lib_common.a，下面是common目录的makefile：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 项目根目录</span></span><br><span class="line">top_srcdir = ../	</span><br><span class="line"><span class="comment"># 静态库目录</span></span><br><span class="line">libdir = <span class="variable">$(top_srcdir)</span>/lib</span><br><span class="line"><span class="comment"># 静态库名称</span></span><br><span class="line">libname = lib_common.a</span><br><span class="line"></span><br><span class="line">TARGET = <span class="variable">$(libdir)</span>/<span class="variable">$(libname)</span></span><br><span class="line"><span class="variable">$(TARGET)</span>: <span class="variable">$(OBJS)</span></span><br><span class="line">	-rm -f <span class="variable">$@</span></span><br><span class="line">  ar cr <span class="variable">$(TARGET)</span> <span class="variable">$(OBJS)</span></span><br></pre></td></tr></table></figure>
+<p>​    生成静态库文件的命令是: <code>ar</code></p>
+<blockquote>
+<p><strong>常用参数</strong></p>
+<p>格式：ar rcs libxxx.a xx1.o xx2.o</p>
+<p>参数<code>r</code>：在库中插入模块(替换)。当插入的模块名已经在库中存在，则替换同名的模块。如果若干模块中有一个模块在库中不存在，ar显示一个错误消息，并不替换其他同名模块。默认的情况下，新的成员增加在库的结尾处，可以使用其他任选项来改变增加的位置。</p>
+<p>参数<code>c</code>：创建一个库。不管库是否存在，都将创建。</p>
+<p>参数<code>s</code>：创建目标文件索引，这在创建较大的库时能加快时间。（补充：如果不需要创建索引，可改成大写S参数；如果.a文件缺少索引，可以使用ranlib命令添加）</p>
+<p>格式：ar t libxxx.a</p>
+<p>参数<code>t</code>: 显示库文件中有哪些目标文件，只显示名称。</p>
+<p>格式：ar tv libxxx.a</p>
+<p>参数<code>v</code>: 显示库文件中有哪些目标文件，显示文件名、时间、大小等详细信息。</p>
+</blockquote>
+<h2 id="使用静态库"><a href="#使用静态库" class="headerlink" title="使用静态库"></a>使用静态库</h2><p>​    在GCC或G++编译选项设定<code>-I</code>参数指定要引用的库的名称。</p>
+<p>​    比如在Makefile编辑编译选项时常写：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CC = gcc</span><br><span class="line">CFLAGS = -I../lib -g -O2 -D_REENTRANT -Wall</span><br><span class="line">LIBS = ../libunp.a -lresolv -lpthread</span><br></pre></td></tr></table></figure>
+<p>​    </p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://segmentfault.com/a/1190000016433897" target="_blank" rel="noopener">https://segmentfault.com/a/1190000016433897</a></li>
+<li><a href="https://segmentfault.com/a/1190000008634703" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008634703</a></li>
+<li><a href="http://blog.fatedier.com/2014/09/24/learn-to-write-makefile-02/" target="_blank" rel="noopener">http://blog.fatedier.com/2014/09/24/learn-to-write-makefile-02/</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/%E5%B8%B8%E7%94%A8C%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -229,7 +358,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2019-12-19 10:44:05 / 修改时间：10:53:31" itemprop="dateCreated datePublished" datetime="2019-12-19T10:44:05+08:00">2019-12-19</time>
+              <time title="创建时间：2019-12-19 10:44:05 / 修改时间：11:02:42" itemprop="dateCreated datePublished" datetime="2019-12-19T10:44:05+08:00">2019-12-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1105,104 +1234,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/06/Mac%E7%BB%88%E7%AB%AF%E5%BF%AB%E6%8D%B7%E9%94%AEhome-end-pageUp-pageDown/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="CRongbx">
-      <meta itemprop="description" content="道阻且长，行则将至">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CRongbx Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/06/Mac%E7%BB%88%E7%AB%AF%E5%BF%AB%E6%8D%B7%E9%94%AEhome-end-pageUp-pageDown/" class="post-title-link" itemprop="url">Mac终端快捷键home,end,pageUp,pageDown</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-12-06 10:29:45 / 修改时间：10:38:12" itemprop="dateCreated datePublished" datetime="2019-12-06T10:29:45+08:00">2019-12-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MacOS%E4%BD%BF%E7%94%A8%E7%BB%86%E8%8A%82/" itemprop="url" rel="index">
-                    <span itemprop="name">MacOS使用细节</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/12/06/Mac%E7%BB%88%E7%AB%AF%E5%BF%AB%E6%8D%B7%E9%94%AEhome-end-pageUp-pageDown/" class="post-meta-item leancloud_visitors" data-flag-title="Mac终端快捷键home,end,pageUp,pageDown" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/12/06/Mac%E7%BB%88%E7%AB%AF%E5%BF%AB%E6%8D%B7%E9%94%AEhome-end-pageUp-pageDown/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/06/Mac%E7%BB%88%E7%AB%AF%E5%BF%AB%E6%8D%B7%E9%94%AEhome-end-pageUp-pageDown/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>MacOS上快捷键：跳到行首（home），跳到行尾（end），翻页（pageUp, pageDown）,上一行下一行，到顶部，到底部。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/12/06/Mac%E7%BB%88%E7%AB%AF%E5%BF%AB%E6%8D%B7%E9%94%AEhome-end-pageUp-pageDown/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1273,7 +1304,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1286,7 +1317,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">39</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
