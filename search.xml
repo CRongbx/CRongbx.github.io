@@ -1,6 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>5-TCP C/S 程序示例</title>
+    <url>/2019/12/26/5-TCP-C-S-%E7%A8%8B%E5%BA%8F%E5%AE%9E%E4%BE%8B/</url>
+    <content><![CDATA[<p>​    本章利用3-4章介绍的TCP基本套接字函数编写一个完成的TCP客户端/服务器程序。完成文本回射，即：</p>
+<p>​    1. 客户从标准输入读入一行文本，发送给服务器；</p>
+<pre><code> 2. 服务器从网络输入读入这行文本，并回射给客户；
+ 3. 客户从网络输入读入这行文本，显示在标准输出上。
+</code></pre><p>​    这里的C/S网络I/O通过第三章介绍的函数<code>read</code> 、<code>writen</code>和<code>readline</code>实现。标准输入输出通过<code>fgets</code>和<code>fputs</code>来实现。</p>
+<a id="more"></a>
+<h1 id="版本1程序"><a href="#版本1程序" class="headerlink" title="版本1程序"></a>版本1程序</h1><p>​    程序功能： 实现客户端和服务器的回射，即客户端输入一行文本并发送给服务器，服务器将文本返回给客户端，客户端接收后输出该行文本。</p>
+<pre><code> 程序特点：
+</code></pre><ul>
+<li>IPV4</li>
+<li>并发服务器</li>
+</ul>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"unp.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>                 sockfd;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>  <span class="title">servaddr</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 命令行参数格式错误</span></span><br><span class="line">    <span class="keyword">if</span>(argc != <span class="number">2</span>)</span><br><span class="line">        err_quit(<span class="string">"usage: client &lt;IP address&gt;"</span>);</span><br><span class="line">    </span><br><span class="line">    sockfd = Socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    bzero(&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line">    servaddr.sin_family = AF_INET;</span><br><span class="line">    servaddr.sin_port = htons(SERV_PORT);</span><br><span class="line">    Inet_pton(AF_INET, argv[<span class="number">1</span>], &amp;servaddr.sin_addr);</span><br><span class="line"></span><br><span class="line">    Connect(sockfd, (struct sockaddr*)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line"></span><br><span class="line">    str_cli(<span class="built_in">stdin</span>, sockfd);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"unp.h"</span></span></span><br><span class="line"><span class="comment">/* 本程序只针对Ipv4（sockaddr_in） */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>                 listenfd, connfd;</span><br><span class="line">    <span class="keyword">pid_t</span>               childpid;</span><br><span class="line">    <span class="keyword">socklen_t</span>           clilen;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>  <span class="title">cliaddr</span>, <span class="title">servaddr</span>;</span></span><br><span class="line"></span><br><span class="line">    listenfd = Socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    bzero(&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line">    servaddr.sin_family      = AF_INET;</span><br><span class="line">    servaddr.sin_port        = htons(SERV_PORT);     <span class="comment">// "unp.h"</span></span><br><span class="line">    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);</span><br><span class="line"></span><br><span class="line">    Bind(listenfd, (struct sockaddr*)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line"></span><br><span class="line">    Listen(listenfd, LISTENQ);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>( ; ; )&#123;</span><br><span class="line">        clilen = <span class="keyword">sizeof</span>(cliaddr);</span><br><span class="line">        connfd = Accept(listenfd, (struct sockaddr*)&amp;cliaddr, &amp;clilen);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( (childpid = Fork()) == <span class="number">0</span> )&#123;</span><br><span class="line">            Close(listenfd);</span><br><span class="line">            str_echo(connfd);</span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Close(connfd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="状态分析："><a href="#状态分析：" class="headerlink" title="状态分析："></a>状态分析：</h2><h3 id="启动服务器"><a href="#启动服务器" class="headerlink" title="启动服务器"></a>启动服务器</h3><p>现在后台启动服务器程序server，它调用socket, bind, linsten,accept，并在accept阻塞。</p>
+<p>运行<code>netstat</code>程序来检查服务器监听套接字的状态：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(base) congrong lib $ netstat -a</span><br><span class="line">Active Internet connections (including servers)</span><br><span class="line">Proto Recv-Q Send-Q  Local Address          Foreign Address        (state)    </span><br><span class="line">tcp4       0      0  *.9877                 *.*                    LISTEN</span><br></pre></td></tr></table></figure>
+<p>本地指定端口9877，目的端地址此时还没有连接客户端，netstat用<code>*</code>表示通配地址<code>INADDR_ANY</code></p>
+<h3 id="启动客户端，建立连接"><a href="#启动客户端，建立连接" class="headerlink" title="启动客户端，建立连接"></a>启动客户端，建立连接</h3><p>在主机上启动客户端：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./client 127.0.0.1</span></span><br></pre></td></tr></table></figure>
+<p>客户端程序client调用socket, connect，connect函数引起TCP的三路握手。当三路握手完成后，CS建立连接。接着：</p>
+<ol>
+<li>客户端调用str_cli函数，该函数阻塞于fgets调用，等待用户对Stdin输入</li>
+<li>当服务器的accept返回时，服务器调用fork建立子进程处理该连接。子进程调用str_echo，该函数调用readline，readline调用read，read阻塞等待客户端送入一行文本。</li>
+<li>服务器父进程再次调用accept并阻塞，等待下一个用户的连接。</li>
+</ol>
+<p>查看监听套接字状态：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(base) congrong lib $ netstat -a</span><br><span class="line">Active Internet connections (including servers)</span><br><span class="line">Proto Recv-Q Send-Q  Local Address          Foreign Address        (state)    </span><br><span class="line">tcp4       0      0  localhost.9877         localhost.54659        ESTABLISHED</span><br><span class="line">tcp4       0      0  localhost.54659        localhost.9877         ESTABLISHED</span><br><span class="line">tcp4       0      0  *.9877                 *.*                    LISTEN</span><br></pre></td></tr></table></figure>
+<p>这里第6行对应服务器父进程，第4行对应服务器子进程。</p>
+<p>使用程序<code>ps</code>查看进程状态（<code>ps</code>命令默认不显示<code>ppid</code>，如果想要查看需要用<code>-o</code>选项指定）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">(base) congrong lib $ ps -o pid,ppid,tty,stat,args,wchan</span><br><span class="line">  PID  PPID TTY      STAT ARGS               WCHAN</span><br><span class="line">16852 13122 ttys000  S+   ./client 127.0.0.1 -     </span><br><span class="line">16851 16169 ttys001  S+   ./server           -     </span><br><span class="line">16853 16851 ttys001  S+   ./server           -</span><br></pre></td></tr></table></figure>
+<p><strong><em>由于子进程的PPID是继承父进程的PID</em></strong>，所以第5行时子进程，第4行时父进程。<br> stat字段<code>S</code>表示进程在为等待某些资源而睡眠。</p>
+<h3 id="终止客户端"><a href="#终止客户端" class="headerlink" title="终止客户端"></a>终止客户端</h3><p>客户端终止程序后，向服务器发送FIN，服务器通过TCP响应（具体见<a href="https://crongbx.github.io/2019/12/02/2-%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%9ATCP-UDP%E5%92%8CSCTP/" target="_blank" rel="noopener">第2章</a>）。<br>服务器子进程通过调用<code>exit</code>来终止进程，它打开的所有描述符随之关闭，从而完成TCP四次挥手中的后两次挥手（服务器发送FIN，客户端返回ACK），至此，连接完全终止。<br>在服务器子进程终止时，子进程给父进程发送一个<code>SIGCHLO</code>信号。该信号的默认行为是被忽略的，即父进程不会对终止的子进程进行处理，子进程于是陷入僵死状态（“僵尸进程”）。使用<code>ps</code>验证可以看到子进程对应的状态STAT为Z (zombie).</p>
+<p>所以上述的程序还<strong>缺少对僵尸进程的处理</strong>，这涉及Unix信号处理。</p>
+<h1 id="Signal简介"><a href="#Signal简介" class="headerlink" title="Signal简介"></a>Signal简介</h1><p>​    <strong>信号（signal）</strong>其实就是软中断，用于告知某个进程发生了某事件。即进程预先并不知道信号合适发生。</p>
+<hr>
+<p>​    信号的使用主要有2种：</p>
+<ol>
+<li>进程→进程（例如子进程和父进程通信）</li>
+<li>内核→进程</li>
+</ol>
+<hr>
+<p>​    我们对信号的处置有3种选择：</p>
+<ol>
+<li><p>catching. 捕获信号。<br>设置信号处理函数（signal handler）指定捕获到信号时要执行哪些操作。<br>通常使用<code>sigaction()</code>函数（头文件signal.h中）进行设置，这个在后文会讲到。</p>
+</li>
+<li><p>ignore. 忽略信号。<br>将信号的处置设置为<code>SIG_IGN</code>.</p>
+</li>
+<li><p>default.默认处置。<br>将信号的处置设置为<code>SIG_DFL</code>.<br>默认处置为捕获到信号后终止进程。</p>
+<p><code>SIGKILL</code>&amp;<code>SIGSTOP</code>信号不能被catching也不能被ignore.</p>
+</li>
+</ol>
+<h1 id="版本2程序"><a href="#版本2程序" class="headerlink" title="版本2程序"></a>版本2程序</h1><p>​    版本1程序的不足在于：</p>
+<ul>
+<li>fork子进程后，没有考虑子进程变为僵尸进程时如何消除（<code>SIGCHLD</code>信号的处理）；<br>僵尸进程如果不及时清楚会占用系统资源。</li>
+</ul>
+<p>​    处理僵尸进程，需要使用Unix中的信号机制。</p>
+<p>​    信号的使用需要非常小心，它可能会引发一些其他的问题：</p>
+<ul>
+<li>捕获信号引起的软中断，会导致我们的系统调用被中断，需要程序员主动处理该情况让它自动重启；</li>
+<li>只用<code>wait</code>函数清除僵尸进程无法处理“同一个信号的多个实例同时递交”的场景，需要使用<code>waitpid</code>函数解决。<br>因为<code>wait</code>在没有已经终止的子进程时会阻塞(内核阻塞)，如果在内核阻塞期间一个信号产生了多次，那么在阻塞解除后该信号只被处理1次，即信号“不排队”。<br><code>waitpid</code>函数可以通过指定最后一个参数为<code>WNOHANG</code>，设置为“在没有已经终止的子进程时”内核不处于阻塞态。</li>
+</ul>
+<hr>
+<p>​    针对上述的3个注意问题，我们给出版本2的服务器程序（客户端程序不用改变）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"unp.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*程序不足：</span></span><br><span class="line"><span class="comment"> *1. 只针对Ipv4（sockaddr_in） </span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span>                 listenfd, connfd;</span><br><span class="line">    <span class="keyword">pid_t</span>               childpid;</span><br><span class="line">    <span class="keyword">socklen_t</span>           clilen;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>  <span class="title">cliaddr</span>, <span class="title">servaddr</span>;</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span>                <span class="title">sig_child</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    listenfd = Socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    bzero(&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line">    servaddr.sin_family      = AF_INET;</span><br><span class="line">    servaddr.sin_port        = htons(SERV_PORT);     <span class="comment">// "unp.h"</span></span><br><span class="line">    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);</span><br><span class="line"></span><br><span class="line">    Bind(listenfd, (struct sockaddr*)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line"></span><br><span class="line">    Listen(listenfd, LISTENQ);</span><br><span class="line"></span><br><span class="line">    Signal(SIGCHLD, sig_child);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>( ; ; )&#123;</span><br><span class="line">        clilen = <span class="keyword">sizeof</span>(cliaddr);</span><br><span class="line">        <span class="comment">// connfd = Accept(listenfd, (struct sockaddr*)&amp;cliaddr, &amp;clilen); // 没有处理信号中断，自动重启</span></span><br><span class="line">        <span class="keyword">if</span> ( (connfd = accept(listenfd, (struct sockaddr*)&amp;cliaddr, &amp;clilen)) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span> (errno == EINTR)     <span class="comment">// 自己重启被中断的系统调用</span></span><br><span class="line">                <span class="keyword">continue</span>;           <span class="comment">// back to for()</span></span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">                err_sys(<span class="string">"accept error"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( (childpid = Fork()) == <span class="number">0</span> )&#123;</span><br><span class="line">            Close(listenfd);</span><br><span class="line">            str_echo(connfd);       <span class="comment">// 处理客户端请求</span></span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Close(connfd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    其中，清楚僵尸子进程的信号处理函数为：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> </span><br><span class="line">sig_child(<span class="keyword">int</span> signo)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">pid_t</span>   pid;</span><br><span class="line">    <span class="keyword">int</span>     stat;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>((pid = waitpid(<span class="number">-1</span>, &amp;stat, WNOHANG)) &gt; <span class="number">0</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"child process %d teminated.\n"</span>,pid);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><p>​    版本2的程序已经比版本1好了很多了，但是并不是完美的。</p>
+<p>​    它还存在一些隐患：</p>
+<p>​    1. 当服务器奔溃时，TCP关闭连接4段挥手只完成一半，客户端进程没有被告知服务器奔溃。准确的说，客户端被告知了，但是由于它正阻塞在<code>fgets</code>函数等待用户输入而未接受到该通知。</p>
+<p>​    这个问题的解决需要用到下章讲述的<code>poll</code>和<code>select</code>函数，它们等待多个描述符中的任何一个而非阻塞在某个固定的描述符。</p>
+<ol>
+<li>服务器奔溃的情形要等到客户端向服务器发送了数据才能检测到。有些进程要求能够尽早了解到这个事实。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Unix网络编程卷1学习</category>
+      </categories>
+      <tags>
+        <tag>TCP通信</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>静态链接库简介</title>
     <url>/2019/12/19/%E4%B8%BA%E4%BD%95%E8%A6%81%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93/</url>
     <content><![CDATA[<p>​    在学习Makefile时注意到不少人都讲述了在Makefile中使用静态库的方法，不由产生疑问：使用头文件不够么？为什么还要使用静态库？</p>

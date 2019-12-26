@@ -142,7 +142,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">39</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">40</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -152,7 +152,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">30</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">31</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -200,6 +200,168 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/21/%E6%A0%91%E8%8E%93%E6%B4%BE%E4%B8%8A%E6%89%8B%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="CRongbx">
+      <meta itemprop="description" content="道阻且长，行则将至">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CRongbx Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/21/%E6%A0%91%E8%8E%93%E6%B4%BE%E4%B8%8A%E6%89%8B%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">树莓派上手教程</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-21 21:10:57 / 修改时间：21:13:35" itemprop="dateCreated datePublished" datetime="2019-11-21T21:10:57+08:00">2019-11-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/" itemprop="url" rel="index">
+                    <span itemprop="name">树莓派</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/11/21/%E6%A0%91%E8%8E%93%E6%B4%BE%E4%B8%8A%E6%89%8B%E6%95%99%E7%A8%8B/" class="post-meta-item leancloud_visitors" data-flag-title="树莓派上手教程" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/21/%E6%A0%91%E8%8E%93%E6%B4%BE%E4%B8%8A%E6%89%8B%E6%95%99%E7%A8%8B/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/21/%E6%A0%91%E8%8E%93%E6%B4%BE%E4%B8%8A%E6%89%8B%E6%95%99%E7%A8%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>[TOC]</p>
+<h1 id="树莓派3B-入门配置"><a href="#树莓派3B-入门配置" class="headerlink" title="树莓派3B+入门配置"></a>树莓派3B+入门配置</h1><h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><p>电脑： Win10 一台 （烧卡用）</p>
+<p>​            Macbook Pro 一台 （后续使用）</p>
+<p>硬件：树莓派3B+板子</p>
+<p>​            网线</p>
+<p>​            16g 闪迪SD卡一张</p>
+<h2 id="入门步骤"><a href="#入门步骤" class="headerlink" title="入门步骤"></a>入门步骤</h2><ol>
+<li><p>烧录SD卡（Windows 10）</p>
+<ol>
+<li>格式化原卡</li>
+<li>烧录系统</li>
+<li>在boot盘中添加ssh文件</li>
+</ol>
+<hr>
+<p>下列操作均在Mac上执行：</p>
+</li>
+<li><p>ssh连接树莓派</p>
+<p><strong><em>第一次连接\</em>时将树莓派接网线连路由器，如何登陆路由器管理界面获取树莓派IP。</strong></p>
+<p><strong>打开Mac终端，输入如下命令连接树莓派</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@raspberry.local</span><br></pre></td></tr></table></figure>
+<p><strong>第一次密码默认是<code>raspberry</code></strong></p>
+<p><strong>出现绿色命令行后，代表ssh连接成功！</strong></p>
+<p><strong><em>\</em>后续连接*\</strong>时使用IP连接即可：**</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh pi@树莓派IP</span><br></pre></td></tr></table></figure>
+<p><strong>这里我使用的是电脑和树莓派同时连接手机热点的方式。</strong></p>
+<p><strong><em>\</em>始终要保持电脑和树莓派在同一个网络下，才可以进行后续操作！**</strong></p>
+</li>
+<li><p><strong>初次使用，配置树莓派VCN（远程桌面）显示</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
+<p><strong>选择：<code>5-p3(VCN)</code></strong></p>
+<p><strong>打开VCN登陆树莓派桌面</strong></p>
+<p><strong>在VCN输入树莓派的IP和密码即可远程登陆树莓派桌面啦~</strong></p>
+<p><strong>为了以后不再插网线使用树莓派，我们设置下树莓派的wife（第一次使用时开机启动页面即可设置）</strong></p>
+<p><strong>设置分辨率</strong></p>
+<p><strong>打开树莓派终端，输入命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo raspi-config</span><br></pre></td></tr></table></figure>
+<p><strong>选择<code>7-A5</code>，finish后重启即可。</strong></p>
+</li>
+</ol>
+<h2 id="基本环境配置"><a href="#基本环境配置" class="headerlink" title="基本环境配置"></a><strong>基本环境配置</strong></h2><p><strong><em>下列操作均在树莓派终端完成。\</em></strong></p>
+<h3 id="Root账户"><a href="#Root账户" class="headerlink" title="Root账户"></a><strong>Root账户</strong></h3><p><strong>树莓派系统默认root用户是禁用且没有密码的，为了后续使用我们先创建一个root用户。</strong></p>
+<p><strong>创建root用户并设置密码：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure>
+<p><strong>开启root用户：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd --unlock root</span><br></pre></td></tr></table></figure>
+<p><strong>p.s. 禁用root用户：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd --lock root</span><br></pre></td></tr></table></figure>
+<p><strong>P.S. 进入root模式<code>su</code>；退出root模式<code>exit</code></strong></p>
+<h3 id="Git"><a href="#Git" class="headerlink" title="Git"></a><strong>Git</strong></h3><p><strong>树莓派自带wget，所以后续大多数环境通过wget下载即可</strong></p>
+<p><strong>先看看是否安装Git：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pi@raspberrypi:~ $ git --version</span><br><span class="line">git version 2.20.1</span><br><span class="line">pi@raspberrypi:~ $</span><br></pre></td></tr></table></figure>
+<p><strong>装了，OK！</strong></p>
+<p><strong>设置用户名和电子邮箱：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">pi@raspberrypi:~ $ git --version</span><br><span class="line">git version 2.20.1</span><br><span class="line">pi@raspberrypi:~ $ git config --global user.name <span class="string">"Git的用户名"</span></span><br><span class="line">pi@raspberrypi:~ $ git config --global user.email <span class="string">"你的邮箱"</span></span><br><span class="line">pi@raspberrypi:~ $ ls -al     </span><br><span class="line">total 100</span><br><span class="line">drwxr-xr-x 17 pi   pi   4096 Nov 21 20:02 .</span><br><span class="line">drwxr-xr-x  3 root root 4096 Sep 26 08:09 ..</span><br><span class="line">-rw-------  1 pi   pi     82 Nov 21 19:20 .bash_history</span><br><span class="line">-rw-r--r--  1 pi   pi    220 Sep 26 08:09 .bash_logout</span><br><span class="line">-rw-r--r--  1 pi   pi   3523 Sep 26 08:09 .bashrc</span><br><span class="line">drwxr-xr-x  5 pi   pi   4096 Sep 26 08:31 .cache</span><br><span class="line">drwx------  4 pi   pi   4096 Nov 21 19:56 .config</span><br><span class="line">drwxr-xr-x  2 pi   pi   4096 Sep 26 08:31 Desktop</span><br><span class="line">drwxr-xr-x  2 pi   pi   4096 Sep 26 08:31 Documents</span><br><span class="line">drwxr-xr-x  2 pi   pi   4096 Sep 26 08:31 Downloads</span><br><span class="line">-rw-r--r--  1 pi   pi     50 Nov 21 20:02 .gitconfig  <span class="comment">#为了生成这个文件！</span></span><br><span class="line">drwx------  3 pi   pi   4096 Sep 26 08:31 .gnupg</span><br><span class="line">drwxr-xr-x  3 pi   pi   4096 Sep 26 08:18 .<span class="built_in">local</span></span><br><span class="line">drwxr-xr-x  2 pi   pi   4096 Sep 26 08:18 MagPi</span><br><span class="line">drwxr-xr-x  2 pi   pi   4096 Sep 26 08:31 Music</span><br><span class="line">drwxr-xr-x  2 pi   pi   4096 Sep 26 08:31 Pictures</span><br><span class="line">drwx------  2 pi   pi   4096 Nov 21 19:15 .pp_backup</span><br><span class="line">-rw-r--r--  1 pi   pi    807 Sep 26 08:09 .profile</span><br><span class="line">drwxr-xr-x  2 pi   pi   4096 Sep 26 08:31 Public</span><br><span class="line">drwxr-xr-x  2 pi   pi   4096 Sep 26 08:31 Templates</span><br><span class="line">drwxr-xr-x  2 pi   pi   4096 Sep 26 08:31 Videos</span><br><span class="line">drwx------  3 pi   pi   4096 Nov 21 18:47 .vnc</span><br><span class="line">-rw-------  1 pi   pi     56 Nov 21 19:20 .Xauthority</span><br><span class="line">-rw-------  1 pi   pi   2425 Nov 21 19:20 .xsession-errors</span><br><span class="line">-rw-------  1 pi   pi   2425 Nov 21 19:07 .xsession-errors.old</span><br><span class="line">pi@raspberrypi:~ $</span><br></pre></td></tr></table></figure>
+<p><strong>生成SSH公钥：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">pi@raspberrypi:~ $ ssh-keygen -t rsa -C <span class="string">"你的Git邮箱"</span></span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/home/pi/.ssh/id_rsa): </span><br><span class="line">Created directory <span class="string">'/home/pi/.ssh'</span>.</span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase): </span><br><span class="line">Enter same passphrase again: </span><br><span class="line">Your identification has been saved <span class="keyword">in</span> /home/pi/.ssh/id_rsa.</span><br><span class="line">Your public key has been saved <span class="keyword">in</span> /home/pi/.ssh/id_rsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">SHA256:JsOyQ5ehHW/vBR40EtUWZvO6jsIcF6piPTg4uhxUJnU crong0507@163.com</span><br><span class="line">The key<span class="string">'s randomart image is:</span></span><br><span class="line"><span class="string">+---[RSA 2048]----+</span></span><br><span class="line"><span class="string">|   . E  ....=.   |</span></span><br><span class="line"><span class="string">|  . .    . ooo   |</span></span><br><span class="line"><span class="string">| . o  o . o.  .  |</span></span><br><span class="line"><span class="string">|  +  + = o.. .   |</span></span><br><span class="line"><span class="string">| .  + B S.o..    |</span></span><br><span class="line"><span class="string">|.  . + =oo.o .   |</span></span><br><span class="line"><span class="string">| . .oo + oo o    |</span></span><br><span class="line"><span class="string">|. + =.+ +. +     |</span></span><br><span class="line"><span class="string">|o+ o o . .o .    |</span></span><br><span class="line"><span class="string">+----[SHA256]-----+</span></span><br><span class="line"><span class="string">pi@raspberrypi:~ $</span></span><br></pre></td></tr></table></figure>
+<p>p.s. 公钥和私钥可以在<code>/home/pi/.ssh/id_rsa.pub</code>或<code>/home/pi/.ssh/id_rsa</code>查看</p>
+<hr>
+<p>登陆自己的GitHub页面</p>
+<p>选择setting -&gt; SSH and GPG keys -&gt; New SSH key</p>
+<p>添加即可。</p>
+<p>可以回到树莓派验证下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pi@raspberrypi:~ $ ssh -T git@github.com</span><br><span class="line">The authenticity of host <span class="string">'github.com (13.250.177.223)'</span> can<span class="string">'t be established.</span></span><br><span class="line"><span class="string">RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added '</span>github.com,13.250.177.223<span class="string">' (RSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">Hi CRongbx! You'</span>ve successfully authenticated, but GitHub does not provide shell access.</span><br><span class="line">pi@raspberrypi:~ $</span><br></pre></td></tr></table></figure>
+<p>成功！！</p>
+<h3 id="Python-3-7"><a href="#Python-3-7" class="headerlink" title="Python 3.7"></a>Python 3.7</h3><p>树莓派自带的Python版本是2.7</p>
+<p>顺应时代潮流，我们删除原有2.7版本，更新为3.7版本~</p>
+<p>删除Python 2</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get autoremove python2.7 <span class="comment">#删除2.7</span></span><br><span class="line">sudo ln -s /usr/bin/python3.7 /usr/bin/python  <span class="comment">#为了让Python命令执行时默认就是3，链接Python3.7</span></span><br></pre></td></tr></table></figure>
+<p>检查下：ok!</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pi@raspberrypi:~ $ python</span><br><span class="line">Python 3.7.3 (default, Apr  3 2019, 05:39:12) </span><br><span class="line">[GCC 8.2.0] on linux</span><br><span class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> or <span class="string">"license"</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>链接pip3:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /usr/bin/pip3 /usr/bin/pip</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -1282,109 +1444,11 @@ p{_{ij}^k}(t)= \left\{\begin{matrix}
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/25/HelloMyBlog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="CRongbx">
-      <meta itemprop="description" content="道阻且长，行则将至">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CRongbx Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/25/HelloMyBlog/" class="post-title-link" itemprop="url">HelloMyBlog</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-10-25 15:25:03" itemprop="dateCreated datePublished" datetime="2019-10-25T15:25:03+08:00">2019-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-26 13:59:43" itemprop="dateModified" datetime="2019-10-26T13:59:43+08:00">2019-10-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%97%A5%E5%BF%97%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index">
-                    <span itemprop="name">日志随笔</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/10/25/HelloMyBlog/" class="post-meta-item leancloud_visitors" data-flag-title="HelloMyBlog" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/10/25/HelloMyBlog/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/25/HelloMyBlog/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>第一次使用hexo搭建了葱蓉的博客~</p>
-<p>撒花！！</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1450,7 +1514,7 @@ p{_{ij}^k}(t)= \left\{\begin{matrix}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1463,7 +1527,7 @@ p{_{ij}^k}(t)= \left\{\begin{matrix}
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
