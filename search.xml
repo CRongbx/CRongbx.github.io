@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>mac下besttrace:icmp open socket不允许接入的解决</title>
+    <url>/2020/03/26/mac%E4%B8%8Bbesttrace-icmp-open-socket%E4%B8%8D%E5%85%81%E8%AE%B8%E6%8E%A5%E5%85%A5%E7%9A%84%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<p>使用besttrace查看路由详情时，显示：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dial ip:icmp ***(目标IP): socket: operation not permitted</span><br></pre></td></tr></table></figure>
+<p>原因：</p>
+<p>即使增加了besttracemac文件的执行权限（x）但没有s权限，即必须要在root模式下执行才可。</p>
+<p>解决方法：</p>
+<ol>
+<li><code>sudo</code>执行该命令</li>
+<li><code>chmod u+s ./besttracemac</code>修改普通用户对该文件的权限</li>
+</ol>
+]]></content>
+      <categories>
+        <category>MacOS使用细节</category>
+      </categories>
+      <tags>
+        <tag>MacOS</tag>
+        <tag>besttrace</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>5-TCP C/S 程序示例</title>
     <url>/2019/12/26/5-TCP-C-S-%E7%A8%8B%E5%BA%8F%E5%AE%9E%E4%BE%8B/</url>
     <content><![CDATA[<p>​    本章利用3-4章介绍的TCP基本套接字函数编写一个完成的TCP客户端/服务器程序。完成文本回射，即：</p>
@@ -1226,8 +1247,8 @@
         <category>Unix网络编程卷1学习</category>
       </categories>
       <tags>
-        <tag>Catalina</tag>
         <tag>环境搭建</tag>
+        <tag>Catalina</tag>
         <tag>Unix网络编程</tag>
       </tags>
   </entry>
