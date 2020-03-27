@@ -46,17 +46,18 @@
   };
 </script>
 
-  <meta name="description" content="第一次使用hexo搭建了葱蓉的博客~ 撒花！！">
+  <meta name="description" content="​    刚搭建没多久的VPS服务器中午被人SSH暴力破解…为安全起见，准备和朋友双管齐下：1）denyhosts脚本禁掉重复登录ssh失败的IP（结果别人的IP没ban掉，我自己的IP进了黑名单 T T）；2）取消掉服务器密码登录方式，改用ssh认证方式登录。 ​    本篇博客介绍内容：如何在服务器开启多个用户的ssh认证登陆方式 步骤 添加用户下文统一假设新添用户名为lihua 添加用户li">
+<meta name="keywords" content="“ssh”">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HelloMyBlog">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;25&#x2F;HelloMyBlog&#x2F;index.html">
+<meta property="og:title" content="服务器ssh部署">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;27&#x2F;%E6%9C%8D%E5%8A%A1%E5%99%A8ssh%E9%83%A8%E7%BD%B2&#x2F;index.html">
 <meta property="og:site_name" content="CRongbx Blog">
-<meta property="og:description" content="第一次使用hexo搭建了葱蓉的博客~ 撒花！！">
+<meta property="og:description" content="​    刚搭建没多久的VPS服务器中午被人SSH暴力破解…为安全起见，准备和朋友双管齐下：1）denyhosts脚本禁掉重复登录ssh失败的IP（结果别人的IP没ban掉，我自己的IP进了黑名单 T T）；2）取消掉服务器密码登录方式，改用ssh认证方式登录。 ​    本篇博客介绍内容：如何在服务器开启多个用户的ssh认证登陆方式 步骤 添加用户下文统一假设新添用户名为lihua 添加用户li">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-26T05:59:43.025Z">
+<meta property="og:updated_time" content="2020-03-27T15:15:23.432Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/10/25/HelloMyBlog/">
+<link rel="canonical" href="http://yoursite.com/2020/03/27/%E6%9C%8D%E5%8A%A1%E5%99%A8ssh%E9%83%A8%E7%BD%B2/">
 
 
 <script id="page-configurations">
@@ -68,7 +69,7 @@
   };
 </script>
 
-  <title>HelloMyBlog | CRongbx Blog</title>
+  <title>服务器ssh部署 | CRongbx Blog</title>
   
 
 
@@ -205,7 +206,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/25/HelloMyBlog/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/27/%E6%9C%8D%E5%8A%A1%E5%99%A8ssh%E9%83%A8%E7%BD%B2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -218,7 +219,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          HelloMyBlog
+          服务器ssh部署
         </h1>
 
         <div class="post-meta">
@@ -227,30 +228,24 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2019-10-25 15:25:03" itemprop="dateCreated datePublished" datetime="2019-10-25T15:25:03+08:00">2019-10-25</time>
+              <time title="创建时间：2020-03-27 22:04:21 / 修改时间：23:15:23" itemprop="dateCreated datePublished" datetime="2020-03-27T22:04:21+08:00">2020-03-27</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-26 13:59:43" itemprop="dateModified" datetime="2019-10-26T13:59:43+08:00">2019-10-26</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%97%A5%E5%BF%97%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index">
-                    <span itemprop="name">日志随笔</span>
+                  <a href="/categories/Linux%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux服务器</span>
                   </a>
                 </span>
             </span>
 
           
-            <span id="/2019/10/25/HelloMyBlog/" class="post-meta-item leancloud_visitors" data-flag-title="HelloMyBlog" title="阅读次数">
+            <span id="/2020/03/27/%E6%9C%8D%E5%8A%A1%E5%99%A8ssh%E9%83%A8%E7%BD%B2/" class="post-meta-item leancloud_visitors" data-flag-title="服务器ssh部署" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -265,8 +260,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/10/25/HelloMyBlog/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/10/25/HelloMyBlog/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/03/27/%E6%9C%8D%E5%8A%A1%E5%99%A8ssh%E9%83%A8%E7%BD%B2/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/27/%E6%9C%8D%E5%8A%A1%E5%99%A8ssh%E9%83%A8%E7%BD%B2/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -281,8 +276,44 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>第一次使用hexo搭建了葱蓉的博客~</p>
-<p>撒花！！</p>
+        <p>​    <em>刚搭建没多久的VPS服务器中午被人SSH暴力破解…为安全起见，准备和朋友双管齐下：1）denyhosts脚本禁掉重复登录ssh失败的IP（结果别人的IP没ban掉，我自己的IP进了黑名单 T T）；2）取消掉服务器密码登录方式，改用ssh认证方式登录。</em></p>
+<p>​    本篇博客介绍内容：如何在服务器开启多个用户的ssh认证登陆方式</p>
+<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><ol>
+<li><p>添加用户<br><strong><em>下文统一假设新添用户名为lihua</em></strong></p>
+<p>添加用户lihua</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser -s /bin/bash(shell路径) -d /home/lihua/(账户路径) -m(创建用户home目录) -G sudo (给该用户root权限) lihua</span><br></pre></td></tr></table></figure>
+<p>设置李华小盆友的账户密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd lihua</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>转到”/home/用户名“路径下<br>换回客户端终端，利用上一步获得的密码，ssh密码连接服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh lihua@服务器IP</span><br></pre></td></tr></table></figure>
+<p>输入密码连接到服务器，连接成功后会自动进入<code>/home/lihua</code>路径下</p>
+</li>
+<li><p>为该用户创建.ssh目录 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/lihua/.ssh/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将对应用户的客户端机器公钥放入服务器authorized_keys文件<br>客户端终端，获取ssh公钥：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>复制到服务器路径<code>/home/lihua/.ssh/authorized_keys</code>文件下，赋予该目录和该文件700和600权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod 700 ~/.ssh</span><br><span class="line">chmod 600 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<p>编辑<code>/etc/ssh/sshd_config</code>文件中<code>AllowUsers</code>参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AllowUsers lihua xxx(后续新添加的用户)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重复上述步骤，直至添加完所有新用户</p>
+</li>
+<li><p>修改服务器sshd配置文件</p>
+<p>文件<code>/etc/ssh/sshd_config</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基于密码验证的方式登录（默认为yes），改为no</span></span><br><span class="line">PasswordAuthentication no</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 基于公钥验证的方式登录（默认即为yes）</span></span><br><span class="line">PubkeyAuthentication yes</span><br><span class="line"> </span><br><span class="line"><span class="comment"># root用户远程登录（默认为yes），改为no</span></span><br><span class="line">PermitRootLogin no</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新启动ssh服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service sshd restart</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="参加"><a href="#参加" class="headerlink" title="参加"></a>参加</h1><ol>
+<li><a href="https://docs.oracle.com/en/cloud/cloud-at-customer/occ-get-started/add-ssh-enabled-user.html" target="_blank" rel="noopener">https://docs.oracle.com/en/cloud/cloud-at-customer/occ-get-started/add-ssh-enabled-user.html</a></li>
+<li><a href="https://www.cyberciti.biz/faq/create-a-user-account-on-ubuntu-linux/" target="_blank" rel="noopener">https://www.cyberciti.biz/faq/create-a-user-account-on-ubuntu-linux/</a></li>
+<li><a href="https://www.hawu.me/operation/983" target="_blank" rel="noopener">https://www.hawu.me/operation/983</a></li>
+</ol>
 
     </div>
 
@@ -291,17 +322,20 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E2%80%9Cssh%E2%80%9D/" rel="tag"># “ssh”</a>
+          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2019/10/26/%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/" rel="next" title="蚁群算法简介及Python实现">
-      蚁群算法简介及Python实现 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/03/26/mac%E4%B8%8Bbesttrace-icmp-open-socket%E4%B8%8D%E5%85%81%E8%AE%B8%E6%8E%A5%E5%85%A5%E7%9A%84%E8%A7%A3%E5%86%B3/" rel="prev" title="mac下besttrace:icmp open socket不允许接入的解决">
+      <i class="fa fa-chevron-left"></i> mac下besttrace:icmp open socket不允许接入的解决
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -362,6 +396,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#步骤"><span class="nav-number">1.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参加"><span class="nav-number">2.</span> <span class="nav-text">参加</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
