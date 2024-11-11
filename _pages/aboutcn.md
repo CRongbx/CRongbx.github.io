@@ -2,12 +2,10 @@
 layout: page
 title: 中文简介
 permalink: /aboutcn/
-description: 
 
 profile:
   align: right
   image: cr_bio.jpeg
-  address: 
   
 nav: true
 
@@ -18,8 +16,9 @@ nav: true
 [英文介绍(English Page)](https://crongbx.github.io) 
 
 #### 博士生
-A-527教研室（[MobiNets团队](https://mobinets.cn/site/Main_Page)）, 四号科研楼, 清水河校区<br>
+A-527教研室（[MobiNets实验室](https://mobinets.cn/site/Main_Page)）, 四号科研楼, 清水河校区<br>
 电子科技大学<br>
+成都，四川，中国<br>
 **邮件**: congrongcs[at]outlook.com<br>
 
 
